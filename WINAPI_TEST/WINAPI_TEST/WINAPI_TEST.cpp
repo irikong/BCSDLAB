@@ -17,6 +17,14 @@ BOOL                InitInstance(HINSTANCE, int);
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
 
+struct _tagArea {
+	bool bStart;
+	POINT ptStart;
+	POINT ptEnd;
+};
+
+_tagArea g_tArea;
+
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,
                      _In_ LPWSTR    lpCmdLine,
@@ -142,11 +150,73 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             }
         }
         break;
+	case WM_LBUTTONDOWN: // 마우스 왼쪽 버튼이 눌렸을 때
+		// 마우스의 위치는 lParam에 들어옵니다. 각각 16비트로 쪼개져서 x, y 값이 32비트 변수에 들어옵니다.
+		// LOWORD, HIWORD 매크로를 이용하여 하위, 상위 16비트의 값을 얻어올 수 있습니다.
+		if (!g_tArea.bStart) {
+			g_tArea.bStart = true;
+			g_tArea.ptStart.x = lParam & 0x0000ffff;
+			g_tArea.ptStart.y = lParam >> 16;
+			g_tArea.ptEnd = g_tArea.ptStart;
+
+			InvalidateRect(hWnd, nullptr, TRUE); // InvalidatRect 함수는 WM_PAINT 메세지를 강제로 호출해주는 함수입니다.
+												 // 1번 인자 : 윈도우 핸들, 2번 인자 : 초기화할 영역(NULL을 넣을 경우 전체 화면),
+												 // 3번 인자 : TRUE일 경우 현재 화면을 지우고 갱신하며 FALSE일 경우 현재 화면을 지우지 않고 갱신
+		}
+		break;
+	case WM_MOUSEMOVE: // 마우스가 움직일 때
+		if (g_tArea.bStart) {
+			g_tArea.ptEnd.x = lParam & 0x0000ffff;
+			g_tArea.ptEnd.y = lParam >> 16;
+			InvalidateRect(hWnd, nullptr, TRUE);
+		}
+		break;
+	case WM_LBUTTONUP: // 마우스 왼쪽 버튼이 올라왔을 때
+		if (g_tArea.bStart) {
+			g_tArea.bStart = false;
+			g_tArea.ptEnd.x = lParam & 0x0000ffff;
+			g_tArea.ptEnd.y = lParam >> 16;
+			InvalidateRect(hWnd, nullptr, TRUE);
+		}
+		break;
+	case WM_KEYDOWN: // 키가 눌렸을 때
+		switch (wParam) { // wParam에 어떤 키가 눌렸는지 들어옵니다.
+		case VK_ESCAPE: // wParam == ESC 일 때
+			DestroyWindow(hWnd);
+			break;
+		}
+		break;
     case WM_PAINT:
         {
             PAINTSTRUCT ps;
             HDC hdc = BeginPaint(hWnd, &ps);
             // TODO: 여기에 hdc를 사용하는 그리기 코드를 추가합니다...
+
+			TextOut(hdc, 50, 0, L"BCSDLAB", 7); // 유니코드 문자열은 "" 앞에 L을 붙여줍니다.
+			TextOut(hdc, 50, 20, TEXT("WinAPI"), 6); // TEXT 매크로를 사용하면 멀티바이트와 유니코드를 알아서 처리해줍니다.
+
+			TCHAR strMouse[64] = {};
+			wsprintf(strMouse, TEXT("Startx : %d, Starty : %d"), g_tArea.ptStart.x, g_tArea.ptStart.y); // wsprintf : 유니코드 문자열 생성 함수
+			TextOut(hdc, 600, 50, strMouse, lstrlen(strMouse)); // lstrlen : 유니코드 문자열의 길이를 구해주는 함수
+
+			Ellipse(hdc, 75, 75, 225, 225);
+			
+			Rectangle(hdc, 100, 100, 200, 200);
+			
+			Ellipse(hdc, 100, 100, 200, 200);
+
+			MoveToEx(hdc, 300, 300, nullptr);
+			LineTo(hdc, 400, 400);
+			LineTo(hdc, 500, 300);
+
+			MoveToEx(hdc, 100, 300, nullptr);
+			LineTo(hdc, 200, 400);
+			LineTo(hdc, 300, 300);
+
+			if (g_tArea.bStart) {
+				Rectangle(hdc, g_tArea.ptStart.x, g_tArea.ptStart.y, g_tArea.ptEnd.x, g_tArea.ptEnd.y);
+			}
+
             EndPaint(hWnd, &ps);
         }
         break;
