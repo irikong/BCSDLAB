@@ -160,8 +160,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			g_tArea.ptEnd = g_tArea.ptStart;
 
 			InvalidateRect(hWnd, nullptr, TRUE); // InvalidatRect 함수는 WM_PAINT 메세지를 강제로 호출해주는 함수입니다.
-												 // 1번 인자 : 윈도우 핸들, 2번 인자 : 초기화할 영역(NULL을 넣을 경우 전체 화면),
-												 // 3번 인자 : TRUE일 경우 현재 화면을 지우고 갱신하며 FALSE일 경우 현재 화면을 지우지 않고 갱신
+                                                 // 1번 인자 : 윈도우 핸들, 2번 인자 : 초기화할 영역(NULL을 넣을 경우 전체 화면)
+                                                 // 3번 인자 : TRUE일 경우 현재 화면을 지우고 갱신하며 FALSE일 경우 현재 화면을 지우지 않고 갱신
 		}
 		break;
 	case WM_MOUSEMOVE: // 마우스가 움직일 때
