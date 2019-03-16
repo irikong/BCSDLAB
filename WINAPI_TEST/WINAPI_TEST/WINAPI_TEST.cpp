@@ -10,12 +10,18 @@
 HINSTANCE hInst;                                // 현재 인스턴스입니다.
 WCHAR szTitle[MAX_LOADSTRING];                  // 제목 표시줄 텍스트입니다.
 WCHAR szWindowClass[MAX_LOADSTRING];            // 기본 창 클래스 이름입니다.
+HWND g_hWnd;
+HDC g_hDC;
+bool g_bLoop = true;
+RECT g_tPlayerRC = { 100, 100, 200, 200 };
 
 // 이 코드 모듈에 포함된 함수의 선언을 전달합니다:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
 BOOL                InitInstance(HINSTANCE, int);
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
+
+void Run();
 
 struct _tagArea {
 	bool bStart;
@@ -46,19 +52,33 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         return FALSE;
     }
 
+	g_hDC = GetDC(g_hWnd);
+
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_WINAPITEST));
 
     MSG msg;
 
     // 기본 메시지 루프입니다:
-    while (GetMessage(&msg, nullptr, 0, 0))
+    while (g_bLoop)
     {
-        if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))
+        if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
         {
             TranslateMessage(&msg);
             DispatchMessage(&msg);
         }
+
+		else {
+			static int iCount = 0;
+			++iCount;
+
+			if (iCount == 2000) {
+				iCount = 0;
+				Run();
+			}
+		}
     }
+
+	ReleaseDC(g_hWnd, g_hDC);
 
     return (int) msg.wParam;
 }
@@ -112,6 +132,13 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    {
       return FALSE;
    }
+
+   g_hWnd = hWnd;
+
+   RECT rc = { 0, 0, 800, 600 };
+   AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE);
+
+   SetWindowPos(hWnd, HWND_TOPMOST, 100, 100, rc.right - rc.left, rc.bottom - rc.top, SWP_NOMOVE | SWP_NOZORDER);
 
    ShowWindow(hWnd, nCmdShow);
    UpdateWindow(hWnd);
@@ -221,6 +248,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         }
         break;
     case WM_DESTROY:
+		g_bLoop = false;
         PostQuitMessage(0);
         break;
     default:
@@ -247,4 +275,25 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
         break;
     }
     return (INT_PTR)FALSE;
+}
+
+void Run() {
+	if (GetAsyncKeyState('D') & 0x8000) {
+		g_tPlayerRC.left += 1;
+		g_tPlayerRC.right += 1;
+	}
+	if (GetAsyncKeyState('A') & 0x8000) {
+		g_tPlayerRC.left -= 1;
+		g_tPlayerRC.right -= 1;
+	}
+	if (GetAsyncKeyState('W') & 0x8000) {
+		g_tPlayerRC.top -= 1;
+		g_tPlayerRC.bottom -= 1;
+	}
+	if (GetAsyncKeyState('S') & 0x8000) {
+		g_tPlayerRC.top += 1;
+		g_tPlayerRC.bottom += 1;
+	}
+
+	Rectangle(g_hDC, g_tPlayerRC.left, g_tPlayerRC.top, g_tPlayerRC.right, g_tPlayerRC.bottom);
 }
