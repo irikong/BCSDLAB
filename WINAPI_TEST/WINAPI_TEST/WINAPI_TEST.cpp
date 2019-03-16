@@ -6,6 +6,10 @@
 
 #define MAX_LOADSTRING 100
 
+typedef struct _tagRectangle {
+	float l, t, r, b;
+}RECTANGLE, *PRECTANGLE;
+
 // 전역 변수:
 HINSTANCE hInst;                                // 현재 인스턴스입니다.
 WCHAR szTitle[MAX_LOADSTRING];                  // 제목 표시줄 텍스트입니다.
@@ -13,7 +17,12 @@ WCHAR szWindowClass[MAX_LOADSTRING];            // 기본 창 클래스 이름�
 HWND g_hWnd;
 HDC g_hDC;
 bool g_bLoop = true;
-RECT g_tPlayerRC = { 100, 100, 200, 200 };
+RECTANGLE g_tPlayerRC = { 100, 100, 200, 200 };
+
+// 시간을 구하기 위한 전역 변수:
+LARGE_INTEGER g_tSecond;
+LARGE_INTEGER g_tTime;
+float g_fDeltaTime;
 
 // 이 코드 모듈에 포함된 함수의 선언을 전달합니다:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
@@ -58,6 +67,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     MSG msg;
 
+	QueryPerformanceFrequency(&g_tSecond);
+	QueryPerformanceCounter(&g_tTime);
+
     // 기본 메시지 루프입니다:
     while (g_bLoop)
     {
@@ -68,13 +80,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         }
 
 		else {
-			static int iCount = 0;
-			++iCount;
-
-			if (iCount == 2000) {
-				iCount = 0;
-				Run();
-			}
+			Run();
 		}
     }
 
@@ -278,22 +284,65 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 }
 
 void Run() {
-	if (GetAsyncKeyState('D') & 0x8000) {
-		g_tPlayerRC.left += 1;
-		g_tPlayerRC.right += 1;
+	// DeltaTime을 구해줍니다.
+	LARGE_INTEGER tTime;
+	QueryPerformanceCounter(&tTime);
+
+	g_fDeltaTime = (tTime.QuadPart - g_tTime.QuadPart) / (float)g_tSecond.QuadPart;
+
+	g_tTime = tTime;
+
+	static float fTimeScale = 1.f;
+	if (GetAsyncKeyState(VK_F1) & 0x8000) { // F1키 누를 시 전체 속도 감소
+		fTimeScale -= g_fDeltaTime;
+
+		if (fTimeScale < 0.f) fTimeScale = 0.f;
 	}
-	if (GetAsyncKeyState('A') & 0x8000) {
-		g_tPlayerRC.left -= 1;
-		g_tPlayerRC.right -= 1;
-	}
-	if (GetAsyncKeyState('W') & 0x8000) {
-		g_tPlayerRC.top -= 1;
-		g_tPlayerRC.bottom -= 1;
-	}
-	if (GetAsyncKeyState('S') & 0x8000) {
-		g_tPlayerRC.top += 1;
-		g_tPlayerRC.bottom += 1;
+	if (GetAsyncKeyState(VK_F2) & 0x8000) { // F2키 누를 시 전체 속도 증가
+		fTimeScale += g_fDeltaTime;
+
+		if (fTimeScale > 1.f) fTimeScale = 1.f;
 	}
 
-	Rectangle(g_hDC, g_tPlayerRC.left, g_tPlayerRC.top, g_tPlayerRC.right, g_tPlayerRC.bottom);
+	// 초당 이동속도
+	float fSpeed = 300 * g_fDeltaTime * fTimeScale;
+
+	if (GetAsyncKeyState('D') & 0x8000) {
+		g_tPlayerRC.l += fSpeed;
+		g_tPlayerRC.r += fSpeed;
+	}
+	if (GetAsyncKeyState('A') & 0x8000) {
+		g_tPlayerRC.l -= fSpeed;
+		g_tPlayerRC.r -= fSpeed;
+	}
+	if (GetAsyncKeyState('W') & 0x8000) {
+		g_tPlayerRC.t -= fSpeed;
+		g_tPlayerRC.b -= fSpeed;
+	}
+	if (GetAsyncKeyState('S') & 0x8000) {
+		g_tPlayerRC.t += fSpeed;
+		g_tPlayerRC.b += fSpeed;
+	}
+
+	RECT rcWindow;
+	GetClientRect(g_hWnd, &rcWindow);
+
+	if (g_tPlayerRC.l < rcWindow.left) {
+		g_tPlayerRC.l = (float)rcWindow.left;
+		g_tPlayerRC.r = (float)rcWindow.left + 100;
+	}
+	else if (g_tPlayerRC.r > rcWindow.right) {
+		g_tPlayerRC.l = (float)rcWindow.right - 100;
+		g_tPlayerRC.r = (float)rcWindow.right;
+	}
+	if (g_tPlayerRC.t < rcWindow.top) {
+		g_tPlayerRC.t = (float)rcWindow.top;
+		g_tPlayerRC.b = (float)rcWindow.top + 100;
+	}
+	else if (g_tPlayerRC.b > rcWindow.bottom) {
+		g_tPlayerRC.t = (float)rcWindow.bottom - 100;
+		g_tPlayerRC.b = (float)rcWindow.bottom;
+	}
+
+	Rectangle(g_hDC, g_tPlayerRC.l, g_tPlayerRC.t, g_tPlayerRC.r, g_tPlayerRC.b);
 }
