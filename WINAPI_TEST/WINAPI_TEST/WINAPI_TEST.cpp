@@ -3,12 +3,21 @@
 
 #include "stdafx.h"
 #include "WINAPI_TEST.h"
+#include <list>
+
+using namespace std;
 
 #define MAX_LOADSTRING 100
 
 typedef struct _tagRectangle {
 	float l, t, r, b;
 }RECTANGLE, *PRECTANGLE;
+
+typedef struct _tagBullet {
+	RECTANGLE rc;
+	float fDist;
+	float fLimitDist;
+}BULLET, *PBULLET;
 
 // 전역 변수:
 HINSTANCE hInst;                                // 현재 인스턴스입니다.
@@ -18,6 +27,9 @@ HWND g_hWnd;
 HDC g_hDC;
 bool g_bLoop = true;
 RECTANGLE g_tPlayerRC = { 100, 100, 200, 200 };
+
+// 플레이어 총알
+list<BULLET> g_PlayerBulletList;
 
 // 시간을 구하기 위한 전역 변수:
 LARGE_INTEGER g_tSecond;
@@ -41,52 +53,52 @@ struct _tagArea {
 _tagArea g_tArea;
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
-                     _In_opt_ HINSTANCE hPrevInstance,
-                     _In_ LPWSTR    lpCmdLine,
-                     _In_ int       nCmdShow)
+	_In_opt_ HINSTANCE hPrevInstance,
+	_In_ LPWSTR    lpCmdLine,
+	_In_ int       nCmdShow)
 {
-    UNREFERENCED_PARAMETER(hPrevInstance);
-    UNREFERENCED_PARAMETER(lpCmdLine);
+	UNREFERENCED_PARAMETER(hPrevInstance);
+	UNREFERENCED_PARAMETER(lpCmdLine);
 
-    // TODO: 여기에 코드를 입력합니다.
+	// TODO: 여기에 코드를 입력합니다.
 
-    // 전역 문자열을 초기화합니다.
-    LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
-    LoadStringW(hInstance, IDC_WINAPITEST, szWindowClass, MAX_LOADSTRING);
-    MyRegisterClass(hInstance);
+	// 전역 문자열을 초기화합니다.
+	LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
+	LoadStringW(hInstance, IDC_WINAPITEST, szWindowClass, MAX_LOADSTRING);
+	MyRegisterClass(hInstance);
 
-    // 응용 프로그램 초기화를 수행합니다:
-    if (!InitInstance (hInstance, nCmdShow))
-    {
-        return FALSE;
-    }
+	// 응용 프로그램 초기화를 수행합니다:
+	if (!InitInstance(hInstance, nCmdShow))
+	{
+		return FALSE;
+	}
 
 	g_hDC = GetDC(g_hWnd);
 
-    HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_WINAPITEST));
+	HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_WINAPITEST));
 
-    MSG msg;
+	MSG msg;
 
 	QueryPerformanceFrequency(&g_tSecond);
 	QueryPerformanceCounter(&g_tTime);
 
-    // 기본 메시지 루프입니다:
-    while (g_bLoop)
-    {
-        if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
-        {
-            TranslateMessage(&msg);
-            DispatchMessage(&msg);
-        }
+	// 기본 메시지 루프입니다:
+	while (g_bLoop)
+	{
+		if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
+		{
+			TranslateMessage(&msg);
+			DispatchMessage(&msg);
+		}
 
 		else {
 			Run();
 		}
-    }
+	}
 
 	ReleaseDC(g_hWnd, g_hDC);
 
-    return (int) msg.wParam;
+	return (int)msg.wParam;
 }
 
 
@@ -98,23 +110,23 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 //
 ATOM MyRegisterClass(HINSTANCE hInstance)
 {
-    WNDCLASSEXW wcex;
+	WNDCLASSEXW wcex;
 
-    wcex.cbSize = sizeof(WNDCLASSEX);
+	wcex.cbSize = sizeof(WNDCLASSEX);
 
-    wcex.style          = CS_HREDRAW | CS_VREDRAW;
-    wcex.lpfnWndProc    = WndProc;
-    wcex.cbClsExtra     = 0;
-    wcex.cbWndExtra     = 0;
-    wcex.hInstance      = hInstance;
-    wcex.hIcon          = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_WINAPITEST));
-    wcex.hCursor        = LoadCursor(nullptr, IDC_ARROW);
-    wcex.hbrBackground  = (HBRUSH)(COLOR_WINDOW+1);
-	wcex.lpszMenuName   = NULL; //MAKEINTRESOURCEW(IDC_WINAPITEST);
-    wcex.lpszClassName  = szWindowClass;
-    wcex.hIconSm        = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
+	wcex.style = CS_HREDRAW | CS_VREDRAW;
+	wcex.lpfnWndProc = WndProc;
+	wcex.cbClsExtra = 0;
+	wcex.cbWndExtra = 0;
+	wcex.hInstance = hInstance;
+	wcex.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_WINAPITEST));
+	wcex.hCursor = LoadCursor(nullptr, IDC_ARROW);
+	wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
+	wcex.lpszMenuName = NULL; //MAKEINTRESOURCEW(IDC_WINAPITEST);
+	wcex.lpszClassName = szWindowClass;
+	wcex.hIconSm = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
 
-    return RegisterClassExW(&wcex);
+	return RegisterClassExW(&wcex);
 }
 
 //
@@ -129,27 +141,27 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 //
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
-   hInst = hInstance; // 인스턴스 핸들을 전역 변수에 저장합니다.
+	hInst = hInstance; // 인스턴스 핸들을 전역 변수에 저장합니다.
 
-   HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-      CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
+	HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
+		CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
 
-   if (!hWnd)
-   {
-      return FALSE;
-   }
+	if (!hWnd)
+	{
+		return FALSE;
+	}
 
-   g_hWnd = hWnd;
+	g_hWnd = hWnd;
 
-   RECT rc = { 0, 0, 800, 600 };
-   AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE);
+	RECT rc = { 0, 0, 800, 600 };
+	AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE);
 
-   SetWindowPos(hWnd, HWND_TOPMOST, 100, 100, rc.right - rc.left, rc.bottom - rc.top, SWP_NOMOVE | SWP_NOZORDER);
+	SetWindowPos(hWnd, HWND_TOPMOST, 100, 100, rc.right - rc.left, rc.bottom - rc.top, SWP_NOMOVE | SWP_NOZORDER);
 
-   ShowWindow(hWnd, nCmdShow);
-   UpdateWindow(hWnd);
+	ShowWindow(hWnd, nCmdShow);
+	UpdateWindow(hWnd);
 
-   return TRUE;
+	return TRUE;
 }
 
 //
@@ -164,25 +176,25 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-    switch (message)
-    {
-    case WM_COMMAND:
-        {
-            int wmId = LOWORD(wParam);
-            // 메뉴 선택을 구문 분석합니다:
-            switch (wmId)
-            {
-            case IDM_ABOUT:
-                DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
-                break;
-            case IDM_EXIT:
-                DestroyWindow(hWnd);
-                break;
-            default:
-                return DefWindowProc(hWnd, message, wParam, lParam);
-            }
-        }
-        break;
+	switch (message)
+	{
+	case WM_COMMAND:
+	{
+		int wmId = LOWORD(wParam);
+		// 메뉴 선택을 구문 분석합니다:
+		switch (wmId)
+		{
+		case IDM_ABOUT:
+			DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
+			break;
+		case IDM_EXIT:
+			DestroyWindow(hWnd);
+			break;
+		default:
+			return DefWindowProc(hWnd, message, wParam, lParam);
+		}
+	}
+	break;
 	case WM_LBUTTONDOWN: // 마우스 왼쪽 버튼이 눌렸을 때
 		// 마우스의 위치는 lParam에 들어옵니다. 각각 16비트로 쪼개져서 x, y 값이 32비트 변수에 들어옵니다.
 		// LOWORD, HIWORD 매크로를 이용하여 하위, 상위 16비트의 값을 얻어올 수 있습니다.
@@ -193,8 +205,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			g_tArea.ptEnd = g_tArea.ptStart;
 
 			InvalidateRect(hWnd, nullptr, TRUE); // InvalidatRect 함수는 WM_PAINT 메세지를 강제로 호출해주는 함수입니다.
-                                                 // 1번 인자 : 윈도우 핸들, 2번 인자 : 초기화할 영역(NULL을 넣을 경우 전체 화면)
-                                                 // 3번 인자 : TRUE일 경우 현재 화면을 지우고 갱신하며 FALSE일 경우 현재 화면을 지우지 않고 갱신
+												 // 1번 인자 : 윈도우 핸들, 2번 인자 : 초기화할 영역(NULL을 넣을 경우 전체 화면)
+												 // 3번 인자 : TRUE일 경우 현재 화면을 지우고 갱신하며 FALSE일 경우 현재 화면을 지우지 않고 갱신
 		}
 		break;
 	case WM_MOUSEMOVE: // 마우스가 움직일 때
@@ -219,68 +231,68 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			break;
 		}
 		break;
-    case WM_PAINT:
-        {
-            PAINTSTRUCT ps;
-            HDC hdc = BeginPaint(hWnd, &ps);
-            // TODO: 여기에 hdc를 사용하는 그리기 코드를 추가합니다...
+	case WM_PAINT:
+	{
+		PAINTSTRUCT ps;
+		HDC hdc = BeginPaint(hWnd, &ps);
+		// TODO: 여기에 hdc를 사용하는 그리기 코드를 추가합니다...
 
-			TextOut(hdc, 50, 0, L"BCSDLAB", 7); // 유니코드 문자열은 "" 앞에 L을 붙여줍니다.
-			TextOut(hdc, 50, 20, TEXT("WinAPI"), 6); // TEXT 매크로를 사용하면 멀티바이트와 유니코드를 알아서 처리해줍니다.
+		TextOut(hdc, 50, 0, L"BCSDLAB", 7); // 유니코드 문자열은 "" 앞에 L을 붙여줍니다.
+		TextOut(hdc, 50, 20, TEXT("WinAPI"), 6); // TEXT 매크로를 사용하면 멀티바이트와 유니코드를 알아서 처리해줍니다.
 
-			TCHAR strMouse[64] = {};
-			wsprintf(strMouse, TEXT("Startx : %d, Starty : %d"), g_tArea.ptStart.x, g_tArea.ptStart.y); // wsprintf : 유니코드 문자열 생성 함수
-			TextOut(hdc, 600, 50, strMouse, lstrlen(strMouse)); // lstrlen : 유니코드 문자열의 길이를 구해주는 함수
+		TCHAR strMouse[64] = {};
+		wsprintf(strMouse, TEXT("Startx : %d, Starty : %d"), g_tArea.ptStart.x, g_tArea.ptStart.y); // wsprintf : 유니코드 문자열 생성 함수
+		TextOut(hdc, 600, 50, strMouse, lstrlen(strMouse)); // lstrlen : 유니코드 문자열의 길이를 구해주는 함수
 
-			Ellipse(hdc, 75, 75, 225, 225);
-			
-			Rectangle(hdc, 100, 100, 200, 200);
-			
-			Ellipse(hdc, 100, 100, 200, 200);
+		Ellipse(hdc, 75, 75, 225, 225);
 
-			MoveToEx(hdc, 300, 300, nullptr);
-			LineTo(hdc, 400, 400);
-			LineTo(hdc, 500, 300);
+		Rectangle(hdc, 100, 100, 200, 200);
 
-			MoveToEx(hdc, 100, 300, nullptr);
-			LineTo(hdc, 200, 400);
-			LineTo(hdc, 300, 300);
+		Ellipse(hdc, 100, 100, 200, 200);
 
-			if (g_tArea.bStart) {
-				Rectangle(hdc, g_tArea.ptStart.x, g_tArea.ptStart.y, g_tArea.ptEnd.x, g_tArea.ptEnd.y);
-			}
+		MoveToEx(hdc, 300, 300, nullptr);
+		LineTo(hdc, 400, 400);
+		LineTo(hdc, 500, 300);
 
-            EndPaint(hWnd, &ps);
-        }
-        break;
-    case WM_DESTROY:
+		MoveToEx(hdc, 100, 300, nullptr);
+		LineTo(hdc, 200, 400);
+		LineTo(hdc, 300, 300);
+
+		if (g_tArea.bStart) {
+			Rectangle(hdc, g_tArea.ptStart.x, g_tArea.ptStart.y, g_tArea.ptEnd.x, g_tArea.ptEnd.y);
+		}
+
+		EndPaint(hWnd, &ps);
+	}
+	break;
+	case WM_DESTROY:
 		g_bLoop = false;
-        PostQuitMessage(0);
-        break;
-    default:
-        return DefWindowProc(hWnd, message, wParam, lParam);
-    }
-    return 0;
+		PostQuitMessage(0);
+		break;
+	default:
+		return DefWindowProc(hWnd, message, wParam, lParam);
+	}
+	return 0;
 }
 
 // 정보 대화 상자의 메시지 처리기입니다.
 INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
-    UNREFERENCED_PARAMETER(lParam);
-    switch (message)
-    {
-    case WM_INITDIALOG:
-        return (INT_PTR)TRUE;
+	UNREFERENCED_PARAMETER(lParam);
+	switch (message)
+	{
+	case WM_INITDIALOG:
+		return (INT_PTR)TRUE;
 
-    case WM_COMMAND:
-        if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL)
-        {
-            EndDialog(hDlg, LOWORD(wParam));
-            return (INT_PTR)TRUE;
-        }
-        break;
-    }
-    return (INT_PTR)FALSE;
+	case WM_COMMAND:
+		if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL)
+		{
+			EndDialog(hDlg, LOWORD(wParam));
+			return (INT_PTR)TRUE;
+		}
+		break;
+	}
+	return (INT_PTR)FALSE;
 }
 
 void Run() {
@@ -305,7 +317,7 @@ void Run() {
 	}
 
 	// 초당 이동속도
-	float fSpeed = 300 * g_fDeltaTime * fTimeScale;
+	float fSpeed = 300.f * g_fDeltaTime * fTimeScale;
 
 	if (GetAsyncKeyState('D') & 0x8000) {
 		g_tPlayerRC.l += fSpeed;
@@ -324,8 +336,22 @@ void Run() {
 		g_tPlayerRC.b += fSpeed;
 	}
 
+	if (GetAsyncKeyState(VK_SPACE) & 0x8000) {
+		BULLET tBullet;
+
+		tBullet.rc.l = g_tPlayerRC.r;
+		tBullet.rc.r = g_tPlayerRC.r + 50.f;
+		tBullet.rc.t = (g_tPlayerRC.t + g_tPlayerRC.b) / 2.f - 25.f;
+		tBullet.rc.b = tBullet.rc.t + 50.f;
+		tBullet.fDist = 0.f;
+		tBullet.fLimitDist = 500.f;
+
+		g_PlayerBulletList.push_back(tBullet);
+	}
+
 	RECT rcWindow;
 	GetClientRect(g_hWnd, &rcWindow);
+	SetRect(&rcWindow, 0, 0, 800, 600);
 
 	if (g_tPlayerRC.l < rcWindow.left) {
 		g_tPlayerRC.l = (float)rcWindow.left;
@@ -344,5 +370,34 @@ void Run() {
 		g_tPlayerRC.b = (float)rcWindow.bottom;
 	}
 
+	list<BULLET>::iterator iter;
+	list<BULLET>::iterator iterEnd = g_PlayerBulletList.end();
+
+	fSpeed = 600.f * g_fDeltaTime * fTimeScale;
+
+	for (iter = g_PlayerBulletList.begin(); iter != iterEnd;) {
+		(*iter).rc.l += fSpeed;
+		(*iter).rc.r += fSpeed;
+
+		(*iter).fDist += fSpeed;
+
+		if ((*iter).fDist >= (*iter).fLimitDist) {
+			iter = g_PlayerBulletList.erase(iter);
+			iterEnd = g_PlayerBulletList.end();
+		}
+
+		else if ((*iter).rc.l >= rcWindow.right) {
+			iter = g_PlayerBulletList.erase(iter);
+			iterEnd = g_PlayerBulletList.end();
+		}
+		else {
+			++iter;
+		}
+	}
+
 	Rectangle(g_hDC, g_tPlayerRC.l, g_tPlayerRC.t, g_tPlayerRC.r, g_tPlayerRC.b);
+	
+	for (iter = g_PlayerBulletList.begin(); iter != iterEnd; iter++) {
+		Rectangle(g_hDC, (*iter).rc.l, (*iter).rc.t, (*iter).rc.r, (*iter).rc.b);
+	}
 }
