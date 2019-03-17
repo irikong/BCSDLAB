@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "WINAPI_TEST.h"
 #include <list>
+#include <cmath>
 
 using namespace std;
 
@@ -19,14 +20,19 @@ typedef struct _tagRectangle {
 	float l, t, r, b;
 }RECTANGLE, *PRECTANGLE;
 
+typedef struct _tagSphere {
+	float x, y;
+	float r;
+}SPHERE, *PSPHERE;
+
 typedef struct _tagBullet {
-	RECTANGLE rc;
+	SPHERE tSphere;
 	float fDist;
 	float fLimitDist;
 }BULLET, *PBULLET;
 
 typedef struct _tagMonster {
-	RECTANGLE tRC;
+	SPHERE tSphere;
 	float fSpeed;
 	float fTime;
 	float fLimitTime;
@@ -94,10 +100,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	g_hDC = GetDC(g_hWnd); // 화면용 DC 생성
 
 	// 몬스터 초기화
-	g_tMonster.tRC.l = 800.f - 100.f;
-	g_tMonster.tRC.t = 0.f;
-	g_tMonster.tRC.r = 800.f;
-	g_tMonster.tRC.b = 100.f;
+	g_tMonster.tSphere.x = 800.f - 50.f;
+	g_tMonster.tSphere.y = 50.f;
+	g_tMonster.tSphere.r = 50.f;
 	g_tMonster.fSpeed = 300.f;
 	g_tMonster.fTime = 0.f;
 	g_tMonster.fLimitTime = 1.3f;
@@ -367,10 +372,9 @@ void Run() {
 	if (GetAsyncKeyState(VK_SPACE) & 0x8000) {
 		BULLET tBullet;
 
-		tBullet.rc.l = g_tPlayerRC.r;
-		tBullet.rc.r = g_tPlayerRC.r + 50.f;
-		tBullet.rc.t = (g_tPlayerRC.t + g_tPlayerRC.b) / 2.f - 25.f;
-		tBullet.rc.b = tBullet.rc.t + 50.f;
+		tBullet.tSphere.x = g_tPlayerRC.r + 50.f;
+		tBullet.tSphere.y = g_tPlayerRC.t + 50.f;
+		tBullet.tSphere.r = 25.f;
 		tBullet.fDist = 0.f;
 		tBullet.fLimitDist = 500.f;
 
@@ -399,18 +403,16 @@ void Run() {
 	}
 
 	// 몬스터 이동
-	g_tMonster.tRC.t += g_tMonster.fSpeed * g_fDeltaTime * fTimeScale * g_tMonster.iDir;
-	g_tMonster.tRC.b += g_tMonster.fSpeed * g_fDeltaTime * fTimeScale * g_tMonster.iDir;
+	g_tMonster.tSphere.y += g_tMonster.fSpeed * g_fDeltaTime * fTimeScale * g_tMonster.iDir;
+	//g_tMonster.tSphere.b += g_tMonster.fSpeed * g_fDeltaTime * fTimeScale * g_tMonster.iDir;
 
-	if (g_tMonster.tRC.b >= 600) {
+	if (g_tMonster.tSphere.y + g_tMonster.tSphere.r >= 600) {
 		g_tMonster.iDir = MD_BACK;
-		g_tMonster.tRC.b = 600;
-		g_tMonster.tRC.t = 500;
+		g_tMonster.tSphere.y = 550;
 	}
-	else if (g_tMonster.tRC.t <= 0) {
+	else if (g_tMonster.tSphere.y - g_tMonster.tSphere.r <= 0) {
 		g_tMonster.iDir = MD_FRONT;
-		g_tMonster.tRC.b = 100;
-		g_tMonster.tRC.t = 0;
+		g_tMonster.tSphere.y = 50;
 	}
 
 	// 몬스터 총알 이동
@@ -420,10 +422,9 @@ void Run() {
 
 		BULLET tBullet = {};
 
-		tBullet.rc.r = g_tMonster.tRC.l;
-		tBullet.rc.l = g_tMonster.tRC.l - 50.f;
-		tBullet.rc.t = (g_tMonster.tRC.t + g_tMonster.tRC.b) / 2.f - 25.f;
-		tBullet.rc.b = tBullet.rc.t + 50.f;
+		tBullet.tSphere.x = g_tMonster.tSphere.x - g_tMonster.tSphere.r - 25.f;
+		tBullet.tSphere.y = g_tMonster.tSphere.y;
+		tBullet.tSphere.r = 25.f;
 		tBullet.fDist = 0.f;
 		tBullet.fLimitDist = 800.f;
 
@@ -437,16 +438,24 @@ void Run() {
 	fSpeed = 600.f * g_fDeltaTime * fTimeScale;
 
 	for (iter = g_PlayerBulletList.begin(); iter != iterEnd;) {
-		(*iter).rc.l += fSpeed;
-		(*iter).rc.r += fSpeed;
+		(*iter).tSphere.x += fSpeed;
 
 		(*iter).fDist += fSpeed;
 
-		if ((*iter).fDist >= (*iter).fLimitDist) {
+		float fX = (*iter).tSphere.x - g_tMonster.tSphere.x;
+		float fY = (*iter).tSphere.y - g_tMonster.tSphere.y;
+		float fDist = sqrtf((fX * fX) + (fY * fY));
+
+		if (fDist <= (*iter).tSphere.r + g_tMonster.tSphere.r) {
 			iter = g_PlayerBulletList.erase(iter);
 			iterEnd = g_PlayerBulletList.end();
 		}
-		else if ((*iter).rc.l >= 800) {
+
+		else if ((*iter).fDist >= (*iter).fLimitDist) {
+			iter = g_PlayerBulletList.erase(iter);
+			iterEnd = g_PlayerBulletList.end();
+		}
+		else if ((*iter).tSphere.x - (*iter).tSphere.r >= 800) {
 			iter = g_PlayerBulletList.erase(iter);
 			iterEnd = g_PlayerBulletList.end();
 		}
@@ -458,8 +467,7 @@ void Run() {
 	// 몬스터 총알 이동
 	iterEnd = g_MonsterBulletList.end();
 	for (iter = g_MonsterBulletList.begin(); iter != iterEnd;) {
-		(*iter).rc.l -= fSpeed;
-		(*iter).rc.r -= fSpeed;
+		(*iter).tSphere.x -= fSpeed;
 
 		(*iter).fDist += fSpeed;
 
@@ -467,28 +475,31 @@ void Run() {
 			iter = g_MonsterBulletList.erase(iter);
 			iterEnd = g_MonsterBulletList.end();
 		}
-		else if ((*iter).rc.r <= 0) {
+		else if ((*iter).tSphere.x + (*iter).tSphere.r <= 0) {
 			iter = g_MonsterBulletList.erase(iter);
 			iterEnd = g_MonsterBulletList.end();
 		}
-		else if (g_tPlayerRC.l <= (*iter).rc.r && (*iter).rc.l <= g_tPlayerRC.r && g_tPlayerRC.t <= (*iter).rc.b && (*iter).rc.t <= g_tPlayerRC.b) {
+		/*else if (g_tPlayerRC.l <= (*iter).rc.r && (*iter).rc.l <= g_tPlayerRC.r && g_tPlayerRC.t <= (*iter).rc.b && (*iter).rc.t <= g_tPlayerRC.b) {
 			iter = g_MonsterBulletList.erase(iter);
 			iterEnd = g_MonsterBulletList.end();
-		}
+		}*/
 		else {
 			++iter;
 		}
 	}
 
 	Rectangle(g_hDC, g_tPlayerRC.l, g_tPlayerRC.t, g_tPlayerRC.r, g_tPlayerRC.b);
-	Rectangle(g_hDC, g_tMonster.tRC.l, g_tMonster.tRC.t, g_tMonster.tRC.r, g_tMonster.tRC.b);
+	Ellipse(g_hDC, g_tMonster.tSphere.x - g_tMonster.tSphere.r, g_tMonster.tSphere.y - g_tMonster.tSphere.r,
+		g_tMonster.tSphere.x + g_tMonster.tSphere.r, g_tMonster.tSphere.y + g_tMonster.tSphere.r);
 
 	iterEnd = g_PlayerBulletList.end();
 	for (iter = g_PlayerBulletList.begin(); iter != iterEnd; iter++) {
-		Rectangle(g_hDC, (*iter).rc.l, (*iter).rc.t, (*iter).rc.r, (*iter).rc.b);
+		Ellipse(g_hDC, (*iter).tSphere.x - (*iter).tSphere.r, (*iter).tSphere.y - (*iter).tSphere.r,
+			(*iter).tSphere.x + (*iter).tSphere.r, (*iter).tSphere.y + (*iter).tSphere.r);
 	}
 	iterEnd = g_MonsterBulletList.end();
 	for (iter = g_MonsterBulletList.begin(); iter != iterEnd; iter++) {
-		Rectangle(g_hDC, (*iter).rc.l, (*iter).rc.t, (*iter).rc.r, (*iter).rc.b);
+		Ellipse(g_hDC, (*iter).tSphere.x - (*iter).tSphere.r, (*iter).tSphere.y - (*iter).tSphere.r,
+			(*iter).tSphere.x + (*iter).tSphere.r, (*iter).tSphere.y + (*iter).tSphere.r);
 	}
 }
