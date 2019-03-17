@@ -29,6 +29,7 @@ typedef struct _tagBullet {
 	SPHERE tSphere;
 	float fDist;
 	float fLimitDist;
+	float fAngle;
 }BULLET, *PBULLET;
 
 typedef struct _tagMonster {
@@ -46,8 +47,12 @@ WCHAR szWindowClass[MAX_LOADSTRING];            // 기본 창 클래스 이름�
 HWND g_hWnd;
 HDC g_hDC;
 bool g_bLoop = true;
-RECTANGLE g_tPlayerRC = { 100, 100, 200, 200 };
+SPHERE g_tPlayer = { 50.f, 50.f, 50.f };
+POINT g_tGunPos;
+float g_fGunLength = 70.f;
+float g_fPlayerAngle;
 MONSTER g_tMonster;
+const int PI = 3.141592f;
 
 // 플레이어 총알
 list<BULLET> g_PlayerBulletList;
@@ -107,6 +112,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	g_tMonster.fTime = 0.f;
 	g_tMonster.fLimitTime = 1.3f;
 	g_tMonster.iDir = MD_FRONT;
+
+	// 플레이어 총구의 위치를 구해줍니다.
+	g_tGunPos.x = g_tPlayer.x + cosf(g_fPlayerAngle) * g_fGunLength;
+	g_tGunPos.y = g_tPlayer.y + sinf(g_fPlayerAngle) * g_fGunLength;
+
 
 	HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_WINAPITEST));
 
@@ -353,39 +363,80 @@ void Run() {
 	float fSpeed = 300.f * g_fDeltaTime * fTimeScale;
 
 	if (GetAsyncKeyState('D') & 0x8000) {
-		g_tPlayerRC.l += fSpeed;
-		g_tPlayerRC.r += fSpeed;
+		g_fPlayerAngle += PI * g_fDeltaTime * fTimeScale;
 	}
 	if (GetAsyncKeyState('A') & 0x8000) {
-		g_tPlayerRC.l -= fSpeed;
-		g_tPlayerRC.r -= fSpeed;
+		g_fPlayerAngle -= PI * g_fDeltaTime * fTimeScale;
 	}
 	if (GetAsyncKeyState('W') & 0x8000) {
-		g_tPlayerRC.t -= fSpeed;
-		g_tPlayerRC.b -= fSpeed;
+		g_tPlayer.x += fSpeed * cosf(g_fPlayerAngle);
+		g_tPlayer.y += fSpeed * sinf(g_fPlayerAngle);
 	}
 	if (GetAsyncKeyState('S') & 0x8000) {
-		g_tPlayerRC.t += fSpeed;
-		g_tPlayerRC.b += fSpeed;
+		g_tPlayer.x -= fSpeed * cosf(g_fPlayerAngle);
+		g_tPlayer.y -= fSpeed * sinf(g_fPlayerAngle);
 	}
+
+	// 총구 위치를 구해줍니다.
+	g_tGunPos.x = g_tPlayer.x + cosf(g_fPlayerAngle) * g_fGunLength;
+	g_tGunPos.y = g_tPlayer.y + sinf(g_fPlayerAngle) * g_fGunLength;
 
 	if (GetAsyncKeyState(VK_SPACE) & 0x8000) {
 		BULLET tBullet;
 
-		tBullet.tSphere.x = g_tPlayerRC.r + 50.f;
-		tBullet.tSphere.y = g_tPlayerRC.t + 50.f;
+		tBullet.tSphere.x = g_tGunPos.x + cosf(g_fPlayerAngle) * 25.f;
+		tBullet.tSphere.y = g_tGunPos.y + sinf(g_fPlayerAngle) * 25.f;
 		tBullet.tSphere.r = 25.f;
 		tBullet.fDist = 0.f;
 		tBullet.fLimitDist = 500.f;
+		tBullet.fAngle = g_fPlayerAngle;
 
 		g_PlayerBulletList.push_back(tBullet);
+	}
+
+	if (GetAsyncKeyState('1') & 0x8000) {
+		float fAngle = g_fPlayerAngle - PI / 12.f;
+
+		for (int i = 0; i < 3; i++) {
+			BULLET tBullet;
+
+			tBullet.tSphere.x = g_tGunPos.x + cosf(fAngle) * 25.f;
+			tBullet.tSphere.y = g_tGunPos.y + sinf(fAngle) * 25.f;
+			tBullet.tSphere.r = 25.f;
+			tBullet.fDist = 0.f;
+			tBullet.fLimitDist = 500.f;
+			tBullet.fAngle = fAngle;
+
+			g_PlayerBulletList.push_back(tBullet);
+
+			fAngle += PI / 12.f;
+		}
+	}
+
+	if (GetAsyncKeyState('2') & 0x8000) {
+		float fAngle = 0.f;
+
+		for (int i = 0; i < 30; i++) {
+			BULLET tBullet;
+
+			tBullet.tSphere.x = g_tGunPos.x + cosf(fAngle) * 25.f;
+			tBullet.tSphere.y = g_tGunPos.y + sinf(fAngle) * 25.f;
+			tBullet.tSphere.r = 25.f;
+			tBullet.fDist = 0.f;
+			tBullet.fLimitDist = 500.f;
+			tBullet.fAngle = fAngle;
+
+			g_PlayerBulletList.push_back(tBullet);
+
+			fAngle += PI / 12.f;
+		}
 	}
 
 	RECT rcWindow;
 	GetClientRect(g_hWnd, &rcWindow);
 	SetRect(&rcWindow, 0, 0, 800, 600);
 
-	if (g_tPlayerRC.l < rcWindow.left) {
+	/*if (g_tPlayerRC.l < rcWindow.left) {
 		g_tPlayerRC.l = (float)rcWindow.left;
 		g_tPlayerRC.r = (float)rcWindow.left + 100;
 	}
@@ -400,7 +451,7 @@ void Run() {
 	else if (g_tPlayerRC.b > rcWindow.bottom) {
 		g_tPlayerRC.t = (float)rcWindow.bottom - 100;
 		g_tPlayerRC.b = (float)rcWindow.bottom;
-	}
+	}*/
 
 	// 몬스터 이동
 	g_tMonster.tSphere.y += g_tMonster.fSpeed * g_fDeltaTime * fTimeScale * g_tMonster.iDir;
@@ -438,8 +489,8 @@ void Run() {
 	fSpeed = 600.f * g_fDeltaTime * fTimeScale;
 
 	for (iter = g_PlayerBulletList.begin(); iter != iterEnd;) {
-		(*iter).tSphere.x += fSpeed;
-
+		(*iter).tSphere.x += cosf((*iter).fAngle) * fSpeed;
+		(*iter).tSphere.y += sinf((*iter).fAngle) * fSpeed;
 		(*iter).fDist += fSpeed;
 
 		float fX = (*iter).tSphere.x - g_tMonster.tSphere.x;
@@ -488,9 +539,12 @@ void Run() {
 		}
 	}
 
-	Rectangle(g_hDC, g_tPlayerRC.l, g_tPlayerRC.t, g_tPlayerRC.r, g_tPlayerRC.b);
+	Ellipse(g_hDC, g_tPlayer.x - g_tPlayer.r, g_tPlayer.y - g_tPlayer.r, g_tPlayer.x + g_tPlayer.r, g_tPlayer.y + g_tPlayer.r);
 	Ellipse(g_hDC, g_tMonster.tSphere.x - g_tMonster.tSphere.r, g_tMonster.tSphere.y - g_tMonster.tSphere.r,
 		g_tMonster.tSphere.x + g_tMonster.tSphere.r, g_tMonster.tSphere.y + g_tMonster.tSphere.r);
+
+	MoveToEx(g_hDC, g_tPlayer.x, g_tPlayer.y, NULL);
+	LineTo(g_hDC, g_tGunPos.x, g_tGunPos.y);
 
 	iterEnd = g_PlayerBulletList.end();
 	for (iter = g_PlayerBulletList.begin(); iter != iterEnd; iter++) {
