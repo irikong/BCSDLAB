@@ -1,4 +1,5 @@
 #include "Core.h"
+#include "Scene\SceneManager.h"
 
 CCore* CCore::m_pInst = NULL;
 bool CCore::m_bLoop = true;
@@ -11,6 +12,7 @@ CCore::CCore()
 
 CCore::~CCore()
 {
+	DESTROY_SINGLE(CSceneManager);
 }
 
 bool CCore::Init(HINSTANCE hInst) {
@@ -23,6 +25,9 @@ bool CCore::Init(HINSTANCE hInst) {
 	m_tRs.iH = 720;
 
 	Create();
+
+	// 장면관리자 초기화
+	if (!GET_SINGLE(CSceneManager)->Init()) return false;
 
 	return true;
 }

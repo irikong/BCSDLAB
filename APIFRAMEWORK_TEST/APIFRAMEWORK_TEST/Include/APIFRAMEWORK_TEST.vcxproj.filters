@@ -16,12 +16,21 @@
     <Filter Include="01.Core">
       <UniqueIdentifier>{595b7893-bb4c-41f4-b01d-c18c2c489953}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.Scene">
+      <UniqueIdentifier>{9f3ebf0b-44b1-4bf2-8c7c-59c873e0d844}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Core.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\SceneManager.cpp">
+      <Filter>02.Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\Scene.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
@@ -39,6 +48,12 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Types.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\SceneManager.h">
+      <Filter>02.Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Scene.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
