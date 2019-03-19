@@ -1,8 +1,16 @@
 #pragma once
+
+#include "..\Game.h"
+
 class Scene
 {
-public:
+protected:
+	friend class SceneManager;
+protected:
 	Scene();
-	~Scene();
+	virtual ~Scene() = 0;
+
+public:
+	virtual bool Init();
 };
 
