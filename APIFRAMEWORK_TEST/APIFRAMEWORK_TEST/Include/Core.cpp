@@ -2,6 +2,7 @@
 #include "Scene\SceneManager.h"
 #include "Core\Timer.h"
 
+// static 멤버 변수를 사용하기 위해 선언
 CCore* CCore::m_pInst = NULL;
 bool CCore::m_bLoop = true;
 
@@ -13,8 +14,8 @@ CCore::CCore()
 
 CCore::~CCore()
 {
-	DESTROY_SINGLE(SceneManager);
-	DESTROY_SINGLE(Timer);
+	DESTROY_SINGLE(CSceneManager);
+	DESTROY_SINGLE(CTimer);
 }
 
 bool CCore::Init(HINSTANCE hInst) {
@@ -23,17 +24,16 @@ bool CCore::Init(HINSTANCE hInst) {
 	MyRegisterClass();
 
 	// 해상도 설정
-	m_tRs.iW = 1280;
-	m_tRs.iH = 720;
+	m_tRS.iW = 1280;
+	m_tRS.iH = 720;
 
 	Create();
 
 	// 타이머 초기화
-	if (!GET_SINGLE(Timer)->Init())
-		return false;
+	if (!GET_SINGLE(CTimer)->Init()) return false;
 
 	// 장면관리자 초기화
-	if (!GET_SINGLE(SceneManager)->Init()) return false;
+	if (!GET_SINGLE(CSceneManager)->Init()) return false;
 
 	return true;
 }
@@ -50,6 +50,7 @@ int CCore::Run() {
 			DispatchMessage(&msg);
 		}
 
+		// 윈도우 데드타임일 경우
 		else {
 			Logic();
 		}
@@ -61,9 +62,9 @@ int CCore::Run() {
 void CCore::Logic()
 {
 	// 타이머 갱신
-	GET_SINGLE(Timer)->Update();
+	GET_SINGLE(CTimer)->Update();
 
-	float fDeltaTime = GET_SINGLE(Timer)->GetDeltaTime();
+	float fDeltaTime = GET_SINGLE(CTimer)->GetDeltaTime();
 }
 
 ATOM CCore::MyRegisterClass()
@@ -92,12 +93,12 @@ BOOL CCore::Create()
 	m_hWnd = CreateWindowW(L"API", L"API", WS_OVERLAPPEDWINDOW,
 		CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, m_hInst, nullptr);
 
-	if (!m_hWnd)
+	if (!m_hWnd) // 핸들이 NULL일 경우 윈도우 생성에 실패한 것
 	{
 		return FALSE;
 	}
 
-	RECT rc = { 0, 0, m_tRs.iW, m_tRs.iH };
+	RECT rc = { 0, 0, (long)m_tRS.iW, (long)m_tRS.iH };
 	AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE);
 
 	SetWindowPos(m_hWnd, HWND_TOPMOST, 100, 100, rc.right - rc.left, rc.bottom - rc.top, SWP_NOMOVE | SWP_NOZORDER);

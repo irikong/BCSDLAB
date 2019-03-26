@@ -1,23 +1,23 @@
 #include "SceneManager.h"
 #include "InGameScene.h"
 
-DEFINITION_SINGLE(SceneManager)
+DEFINITION_SINGLE(CSceneManager)
 
-SceneManager::SceneManager() :
+CSceneManager::CSceneManager() :
 	m_pScene(NULL),
 	m_pNextScene(NULL)
 {
 }
 
 
-SceneManager::~SceneManager()
+CSceneManager::~CSceneManager()
 {
 	SAFE_DELETE(m_pScene);
 }
 	
-bool SceneManager::Init()
+bool CSceneManager::Init()
 {
-	CreateScene<InGameScene>(SC_CURRENT);
+	CreateScene<CInGameScene>(SC_CURRENT);
 	
 	return true;
 }

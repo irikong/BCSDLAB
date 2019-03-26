@@ -2,11 +2,11 @@
 
 #include "../Game.h"
 
-class SceneManager
+class CSceneManager
 {
 private:
-	class Scene* m_pScene;
-	class Scene* m_pNextScene;
+	class CScene* m_pScene;
+	class CScene* m_pNextScene;
 
 public:
 	bool Init();
@@ -30,12 +30,10 @@ public:
 			SAFE_DELETE(m_pNextScene);
 			m_pNextScene = pScene;
 			break;
-
 		}
 
 		return pScene;
 	}
 
-	DECLARE_SINGLE(SceneManager)
+	DECLARE_SINGLE(CSceneManager)
 };
-

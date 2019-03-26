@@ -2,18 +2,20 @@
 
 
 
-InGameScene::InGameScene()
+CInGameScene::CInGameScene()
 {
 }
 
 
-InGameScene::~InGameScene()
+CInGameScene::~CInGameScene()
 {
 }
 
-bool InGameScene::Init()
+bool CInGameScene::Init()
 {
 	// 부모 Scene 클래스의 초기화 함수를 호출해준다.
-	if (!Scene::Init()) return false;
+	if (!CScene::Init())
+		return false;
+
 	return true;
 }

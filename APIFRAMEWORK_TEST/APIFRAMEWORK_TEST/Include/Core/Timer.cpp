@@ -1,17 +1,17 @@
 #include "Timer.h"
 
-DEFINITION_SINGLE(Timer)
+DEFINITION_SINGLE(CTimer)
 
-Timer::Timer()
+CTimer::CTimer()
 {
 }
 
 
-Timer::~Timer()
+CTimer::~CTimer()
 {
 }
 
-bool Timer::Init()
+bool CTimer::Init()
 {
 	QueryPerformanceFrequency(&m_tSecond);
 	QueryPerformanceCounter(&m_tTime);
@@ -25,7 +25,7 @@ bool Timer::Init()
 	return true;
 }
 
-void Timer::Update()
+void CTimer::Update()
 {
 	LARGE_INTEGER tTime;
 	QueryPerformanceCounter(&tTime);

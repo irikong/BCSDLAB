@@ -11,3 +11,15 @@ using namespace std;
 #include "Macro.h"
 #include "Types.h"
 #include "Flag.h"
+
+template <typename T>
+void Safe_Delete_VecList(T& p) {
+	typename T::iterator iter; // T::iterater iter;
+	typename T::iterator iterEnd = p.end(); // T::iterater iterEnd = p.end();
+
+	for (iter = p.begin(); iter != iterEnd; ++iter) {
+		SAFE_DELETE((*iter));
+	}
+
+	p.clear();
+}

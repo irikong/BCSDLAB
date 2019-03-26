@@ -22,6 +22,12 @@
     <Filter Include="01.Core\01.Timer">
       <UniqueIdentifier>{b40b1dc8-ad77-4507-9ac1-3152b51abb1c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.Scene\01.Layer">
+      <UniqueIdentifier>{02600a8c-6ee3-4a60-afbc-6e7818fcecb8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Object">
+      <UniqueIdentifier>{811b209d-6f9e-4391-88ab-027879d889f6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -33,14 +39,20 @@
     <ClCompile Include="Scene\Scene.cpp">
       <Filter>02.Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Scene\InGameScene.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="Core.cpp">
       <Filter>01.Core</Filter>
     </ClCompile>
     <ClCompile Include="Core\Timer.cpp">
       <Filter>01.Core\01.Timer</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\Layer.cpp">
+      <Filter>02.Scene\01.Layer</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\InGameScene.cpp">
+      <Filter>02.Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Obj.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -62,9 +74,6 @@
     <ClInclude Include="Scene\Scene.h">
       <Filter>02.Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Scene\InGameScene.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="Flag.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
@@ -73,6 +82,15 @@
     </ClInclude>
     <ClInclude Include="Core\Timer.h">
       <Filter>01.Core\01.Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Layer.h">
+      <Filter>02.Scene\01.Layer</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\InGameScene.h">
+      <Filter>02.Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Obj.h">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

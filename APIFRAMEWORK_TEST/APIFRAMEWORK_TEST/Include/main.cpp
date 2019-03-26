@@ -1,4 +1,4 @@
-#include"Core.h"
+#include "Core.h"
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	_In_opt_ HINSTANCE hPrevInstance,
@@ -10,7 +10,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		return 0;
 	}
 
-	int iRev = CCore::GetInst()->Run();
+	int iRev = CCore::GetInst()->Run(); // Run() 끝나면 iRev로 값이 들어갑니다.
 
 	CCore::DestroyInst();
 

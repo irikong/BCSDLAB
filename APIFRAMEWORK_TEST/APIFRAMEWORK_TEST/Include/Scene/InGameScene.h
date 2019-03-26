@@ -1,16 +1,15 @@
 #pragma once
 #include "Scene.h"
-class InGameScene :
-	public Scene
+class CInGameScene :
+	public CScene
 {
 private:
-	friend class SceneManager;
+	friend class CSceneManager;
 	
 private:
-	InGameScene();
-	~InGameScene();
+	CInGameScene();
+	~CInGameScene();
 
 public:
 	virtual bool Init();
 };
-

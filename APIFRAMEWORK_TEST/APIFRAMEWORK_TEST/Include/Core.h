@@ -23,10 +23,12 @@ private:
 	~CCore();
 
 private:
+	static bool m_bLoop;
+
+private:
 	HINSTANCE m_hInst;
 	HWND m_hWnd;
-	RESOLUTION m_tRs;
-	static bool m_bLoop;
+	RESOLUTION m_tRS;
 
 public:
 	bool Init(HINSTANCE hInst);

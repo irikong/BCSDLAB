@@ -2,8 +2,7 @@
 
 #include "..\Game.h"
 
-
-class Timer
+class CTimer
 {
 private:
 	LARGE_INTEGER m_tSecond;
@@ -27,6 +26,6 @@ public:
 	bool Init();
 	void Update();
 
-	DECLARE_SINGLE(Timer)
+	DECLARE_SINGLE(CTimer)
 };
 
