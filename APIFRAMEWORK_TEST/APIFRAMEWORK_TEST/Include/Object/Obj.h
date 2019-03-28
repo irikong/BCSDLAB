@@ -100,8 +100,6 @@ public:
 			pLayer->AddObject(pObj);
 		}
 		
-		pObj->AddRef();
-
 		return pObj;
 	}
 };

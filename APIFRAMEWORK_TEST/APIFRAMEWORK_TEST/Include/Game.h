@@ -4,13 +4,14 @@
 #include <list>
 #include <vector>
 #include <unordered_map>
-
-using namespace std;
+#include <crtdbg.h>
 
 #include "resource.h"
 #include "Macro.h"
 #include "Types.h"
 #include "Flag.h"
+
+using namespace std;
 
 template <typename T>
 void Safe_Delete_VecList(T& p) {

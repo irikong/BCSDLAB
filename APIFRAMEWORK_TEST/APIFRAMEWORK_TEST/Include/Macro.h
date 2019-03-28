@@ -25,3 +25,5 @@
 #define DEFINITION_SINGLE(Type) Type* Type ::m_pInst = NULL; // static 멤버변수 초기화
 #define GET_SINGLE(Type) Type::GetInst()
 #define DESTROY_SINGLE(Type) Type::DestroyInst()
+
+#define GETRESOLUTION CCore::GetInst()->GetResolution()
