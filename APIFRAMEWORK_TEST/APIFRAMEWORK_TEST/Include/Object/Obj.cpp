@@ -2,20 +2,19 @@
 
 
 
-CObj::CObj() :
-	m_iRef(1)
+CObj::CObj()
 {
 
+}
+
+CObj::CObj(const CObj & obj)
+{
+	*this = obj;
 }
 
 
 CObj::~CObj()
 {
-}
-
-bool CObj::Init()
-{
-	return true;
 }
 
 void CObj::Input(float fDeltaTime)

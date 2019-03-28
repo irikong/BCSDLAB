@@ -28,7 +28,7 @@ public:
 		m_iZOrder = iZOrder;
 	}
 
-	void SetScene(class CScene* pScene) {
+	void SetScene(CScene* pScene) {
 		m_pScene = pScene;
 	}
 
@@ -45,6 +45,7 @@ public:
 	}
 
 public:
+	void AddObject(CObj* pObj);
 	void Input(float fDeltaTime);
 	int	Update(float fDeltaTime);
 	int	LateUpdate(float fDeltaTime);
