@@ -18,6 +18,25 @@ private:
 	string m_strTag;
 	int m_iZOrder; // 여러가지 레이어들의 출력 우선 순위를 정해줍니다.
 	list<class CObj*> m_ObjList;
+	bool m_bEnable;
+	bool m_bLife;
+
+public:
+	void SetEnable(bool bEnable) {
+		m_bEnable = bEnable;
+	}
+
+	void Die() {
+		m_bLife = false;
+	}
+
+	bool GetEnable() const {
+		return m_bEnable;
+	}
+
+	bool GetLife() const {
+		return m_bLife;
+	}
 
 public:
 	void SetTag(const string& strTag) {

@@ -10,6 +10,8 @@ public:
 
 protected:
 	int m_iRef;
+	bool m_bEnable; // 객체 비활성 활성
+	bool m_bLife; // 죽어있음 살아있음
 
 public:
 	void AddRef() {
@@ -25,6 +27,22 @@ public:
 		}
 
 		return m_iRef;
+	}
+
+	void SetEnable(bool bEnable) {
+		m_bEnable = bEnable;
+	}
+
+	void Die() {
+		m_bLife = false;
+	}
+
+	bool GetEnable() const {
+		return m_bEnable;
+	}
+
+	bool GetLife() const {
+		return m_bLife;
 	}
 };
 

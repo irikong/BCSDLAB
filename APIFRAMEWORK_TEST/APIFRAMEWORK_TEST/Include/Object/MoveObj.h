@@ -40,8 +40,8 @@ public:
 	void MoveY(float y);
 	void MoveYFromSpeed(float fDeltaTime, MOVE_DIR eDir);
 	void MoveY(float y, float fDeltaTime);
-	void MoveAngle(float fSpeed);
-	void MoveAngle(float fSpeed, float fDeltaTime);
+	void MoveAngle();
+	void MoveAngle(float fDeltaTime);
 
 public:
 	virtual bool Init() = 0;
@@ -50,5 +50,6 @@ public:
 	virtual int	LateUpdate(float fDeltaTime);
 	virtual void Collision(float fDeltaTime);
 	virtual void Render(HDC hDC, float fDeltaTime);
+	virtual CMoveObj* Clone() = 0;
 };
 
