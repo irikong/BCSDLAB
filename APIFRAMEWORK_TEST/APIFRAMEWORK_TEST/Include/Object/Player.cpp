@@ -1,7 +1,5 @@
 #include "Player.h"
 
-
-
 CPlayer::CPlayer()
 {
 }
@@ -44,9 +42,10 @@ void CPlayer::Fire()
 
 bool CPlayer::Init()
 {
-	SetPos(100.f, 100.f);
+	SetPos(0.f, 0.f);
 	SetSize(300.f, 300.f);
 	SetSpeed(400.f);
+	SetPivot(0.f, 0.f);
 
 	SetTexture("Player", L"HOS.bmp");
 

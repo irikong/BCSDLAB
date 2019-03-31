@@ -1,7 +1,5 @@
 #include "StaticObj.h"
 
-
-
 CStaticObj::CStaticObj()
 {
 }

@@ -66,6 +66,9 @@ public:
 		return m_tSize;
 	}
 
+	POSITION GetPivot() const { return m_tPivot; }
+
+
 public:
 	void SetTag(const string& strTag) {
 		m_strTag = strTag;
@@ -91,6 +94,17 @@ public:
 	void SetSize(float x, float y) {
 		m_tSize.x = x;
 		m_tSize.y = y;
+	}
+
+	void SetPivot(const _SIZE& tPivot)
+	{
+		m_tPivot = tPivot;
+	}
+
+	void SetPivot(float x, float y)
+	{
+		m_tPivot.x = x;
+		m_tPivot.y = y;
 	}
 
 public:
