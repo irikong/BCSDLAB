@@ -21,7 +21,7 @@ void CPlayer::Fire()
 	//m_bAttack = true;
 
 	CObj* pBullet = CObj::CreateCloneObj("Bullet", "PlayerBullet", m_pLayer);
-	pBullet->SetPos(m_tPos.x + m_tSize.x, m_tPos.y + m_tPos.y + m_tSize.y / 2.f - pBullet->GetSize().y / 2.f);
+	pBullet->SetPos(m_tPos.x + m_tSize.x, (m_tPos.y + m_tPos.y + m_tSize.y) / 2.f - pBullet->GetSize().y / 2.f);
 	//pBullet->AddCollisionFunction("Bullet", CS_STAY, (CBullet*)pBullet, &CBullet::Hit);
 
 	// 오른쪽 가운데를 구한다.
@@ -72,7 +72,7 @@ void CPlayer::Input(float fDeltaTime)
 	}
 
 	if (GetAsyncKeyState(VK_SPACE) & 0x8000) {
-
+		Fire();
 	}
 }
 

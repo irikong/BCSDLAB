@@ -43,6 +43,12 @@
     <Filter Include="03.Object\01.MoveObj\03.Bullet">
       <UniqueIdentifier>{e883e2fb-2c59-424a-8f37-6432f05c7c20}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Core\02.Path">
+      <UniqueIdentifier>{5d2a6f9d-4479-4466-a64e-cd9776acc71e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Resource">
+      <UniqueIdentifier>{84064f7f-949e-46ed-9e6e-ccc2c652fb25}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -86,6 +92,15 @@
     </ClCompile>
     <ClCompile Include="Object\Bullet.cpp">
       <Filter>03.Object\01.MoveObj\03.Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\PathManager.cpp">
+      <Filter>01.Core\02.Path</Filter>
+    </ClCompile>
+    <ClCompile Include="Resources\ResourcesManager.cpp">
+      <Filter>04.Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="Resources\Texture.cpp">
+      <Filter>04.Resource</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -142,6 +157,15 @@
     </ClInclude>
     <ClInclude Include="Object\Bullet.h">
       <Filter>03.Object\01.MoveObj\03.Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\PathManager.h">
+      <Filter>01.Core\02.Path</Filter>
+    </ClInclude>
+    <ClInclude Include="Resources\ResourcesManager.h">
+      <Filter>04.Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="Resources\Texture.h">
+      <Filter>04.Resource</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

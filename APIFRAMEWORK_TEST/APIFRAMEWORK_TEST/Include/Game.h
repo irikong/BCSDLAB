@@ -13,6 +13,10 @@
 
 #define PI 3.141592f
 
+// Path Key
+#define ROOT_PATH		"RootPath"
+#define TEXTURE_PATH	"TexturePath"
+
 using namespace std;
 
 template <typename T>
