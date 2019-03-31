@@ -1,9 +1,7 @@
 #pragma once
 
 #include "..\Ref.h"
-#include "../Scene/Layer.h" //
-#include "Minion.h" //
-#include "Player.h" //
+#include "../Scene/Layer.h"
 
 class CObj :
 	public CRef
@@ -109,7 +107,7 @@ public:
 	{
 		T* pObj = new T;
 
-		pObj->setTag(strTag);
+		pObj->SetTag(strTag);
 
 		if (!pObj->Init())
 		{
@@ -129,6 +127,4 @@ public:
 
 	static CObj* CreateCloneObj(const string& strPrototypeKey,
 		const string& strTag, class CLayer* pLayer = NULL);
-
-	
 };

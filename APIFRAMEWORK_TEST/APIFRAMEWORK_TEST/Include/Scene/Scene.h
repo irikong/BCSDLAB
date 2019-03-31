@@ -39,7 +39,7 @@ public:
 	{
 		T* pObj = new T;
 
-		pObj->setTag(strTag);
+		pObj->SetTag(strTag);
 
 		if (!pObj->Init())
 		{
