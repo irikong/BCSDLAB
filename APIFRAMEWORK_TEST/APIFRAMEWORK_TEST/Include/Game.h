@@ -11,6 +11,8 @@
 #include "Types.h"
 #include "Flag.h"
 
+#pragma comment(lib, "msimg32")
+
 #define PI 3.141592f
 
 // Path Key

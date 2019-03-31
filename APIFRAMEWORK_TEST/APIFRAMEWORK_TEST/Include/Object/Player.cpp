@@ -45,8 +45,10 @@ void CPlayer::Fire()
 bool CPlayer::Init()
 {
 	SetPos(100.f, 100.f);
-	SetSize(100.f, 100.f);
+	SetSize(300.f, 300.f);
 	SetSpeed(400.f);
+
+	SetTexture("Player", L"HOS.bmp");
 
 	return true;
 }
@@ -96,7 +98,7 @@ void CPlayer::Collision(float fDeltaTime)
 void CPlayer::Render(HDC hDC, float fDeltaTime)
 {
 	CMoveObj::Render(hDC, fDeltaTime);
-	Rectangle(hDC, (int)m_tPos.x, (int)m_tPos.y, (int)(m_tPos.x + m_tSize.x), (int)(m_tPos.y + m_tSize.y));
+	//Rectangle(hDC, (int)m_tPos.x, (int)m_tPos.y, (int)(m_tPos.x + m_tSize.x), (int)(m_tPos.y + m_tSize.y));
 }
 
 CPlayer * CPlayer::Clone()

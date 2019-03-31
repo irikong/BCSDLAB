@@ -19,22 +19,21 @@ CTexture * CResourcesManager::GetBackBuffer() const
 	m_pBackBuffer->AddRef();
 	return m_pBackBuffer;
 }
-
+*/
 bool CResourcesManager::Init(HINSTANCE hInst, HDC hDC)
 {
 	m_hInst = hInst;
 	m_hDC = hDC;
 
 	// 백버퍼를 불러온다.
-	m_pBackBuffer = LoadTexture("BackBuffer", L"BackBuffer.bmp");
+	//m_pBackBuffer = LoadTexture("BackBuffer", L"BackBuffer.bmp");
 
 	return true;
 }
-*/
+
 CTexture * CResourcesManager::LoadTexture(const string & strKey,
 	const wchar_t * pFileName, const string & strPathKey)
 {
-	/*
 	CTexture* pTexture = FindTexture(strKey);
 
 	if (pTexture)
@@ -52,10 +51,8 @@ CTexture * CResourcesManager::LoadTexture(const string & strKey,
 	m_mapTexture.insert(make_pair(strKey, pTexture));
 	
 	return pTexture;
-	*/
-	return nullptr;
 }
-/*
+
 CTexture * CResourcesManager::FindTexture(const string & strKey)
 {
 	unordered_map<string, class CTexture*>::iterator iter = m_mapTexture.find(strKey);
@@ -67,4 +64,3 @@ CTexture * CResourcesManager::FindTexture(const string & strKey)
 
 	return iter->second;
 }
-*/

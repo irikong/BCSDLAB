@@ -1,11 +1,11 @@
 #include "Texture.h"
-//#include "../Core/PathManager.h"
+#include "../Core/PathManager.h"
 
 
 CTexture::CTexture() :
-	m_hMemDC(NULL),
-	m_bColorKeyEnable(false),
-	m_ColorKey(RGB(255, 0, 255))
+	m_hMemDC(NULL)//,
+	//m_bColorKeyEnable(false),
+	//m_ColorKey(RGB(255, 0, 255))
 {
 }
 
@@ -33,7 +33,7 @@ void CTexture::SetColorKey(COLORREF colorKey)
 	m_ColorKey = colorKey;
 	m_bColorKeyEnable = true;
 }
-
+*/
 bool CTexture::LoadTexture(HINSTANCE hInst, HDC hDC
 	, const string & strKey, const wchar_t * pFileName,
 	const string & strPathKey)
@@ -52,7 +52,7 @@ bool CTexture::LoadTexture(HINSTANCE hInst, HDC hDC
 	strPath += pFileName;
 
 	m_hBitmap = (HBITMAP)LoadImage(hInst, strPath.c_str(),
-		IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
+		IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE); // 0, 0 으로 지정할 시 이미지 원본 크기에 맞춰준다.
 
 	// 위에서 만들어준 비트맵 도구를 DC에 지정한다.
 	// 지정할 때 반환되는 값은 DC에 기본으로 지정되어 있던
@@ -60,7 +60,6 @@ bool CTexture::LoadTexture(HINSTANCE hInst, HDC hDC
 	m_hOldBitmap = (HBITMAP)SelectObject(m_hMemDC, m_hBitmap);
 
 	GetObject(m_hBitmap, sizeof(m_tInfo), &m_tInfo);
-
+	
 	return true;
 }
-*/
