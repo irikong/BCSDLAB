@@ -2,12 +2,12 @@
 #include "..\Object\Player.h"
 #include "..\Object\Minion.h"
 #include "..\Object\Bullet.h"
+#include "..\Object\Stage.h"
 #include "Layer.h"
 
 CInGameScene::CInGameScene()
 {
 }
-
 
 CInGameScene::~CInGameScene()
 {
@@ -37,17 +37,18 @@ bool CInGameScene::Init()
 
 	SAFE_RELEASE(pBullet);
 
-	//CLayer* pStageLayer = FindLayer("Stage");
+	CLayer* pStageLayer = FindLayer("Stage");
 
-	//CStage* pStage = CObj::CreateObj<CStage>("Stage", pStageLayer);
-
+	CStage* pStage = CObj::CreateObj<CStage>("Stage", pStageLayer);
+	
+	SAFE_RELEASE(pStage);
 	//CColliderPixel* pPixel = pStage->AddCollider<CColliderPixel>("StageColl");
 
 	//pPixel->SetPixelInfo("Stage1.bmp");
 
 	//SAFE_RELEASE(pPixel);
 
-	//SAFE_RELEASE(pStage);
+	
 
 	return true;
 }
