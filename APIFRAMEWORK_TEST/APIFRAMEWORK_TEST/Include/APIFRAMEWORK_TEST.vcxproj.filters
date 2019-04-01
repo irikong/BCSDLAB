@@ -52,6 +52,9 @@
     <Filter Include="03.Object\02.StaticObj\01.Stage">
       <UniqueIdentifier>{97616be9-1402-4230-a68c-578ece1304e9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Core\03.Camera">
+      <UniqueIdentifier>{90f1a335-9af3-4d44-a7cf-4808b34ab207}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -107,6 +110,9 @@
     </ClCompile>
     <ClCompile Include="Object\Stage.cpp">
       <Filter>03.Object\02.StaticObj\01.Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Camera.cpp">
+      <Filter>01.Core\03.Camera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -175,6 +181,9 @@
     </ClInclude>
     <ClInclude Include="Object\Stage.h">
       <Filter>03.Object\02.StaticObj\01.Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Camera.h">
+      <Filter>01.Core\03.Camera</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

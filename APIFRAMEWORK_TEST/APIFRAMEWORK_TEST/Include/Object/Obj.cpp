@@ -4,6 +4,7 @@
 #include "../Scene/Scene.h"
 #include "../Resources/ResourcesManager.h"
 #include "../Resources/Texture.h"
+#include "..\Core\Camera.h"
 
 // static 멤버 사용한다고 선언
 list<CObj*> CObj::m_ObjList;
@@ -122,8 +123,9 @@ void CObj::Render(HDC hDC, float fDeltaTime)
 {
 	if (m_pTexture) {
 		POSITION tPos = m_tPos - m_tSize * m_tPivot;
+		tPos -= GET_SINGLE(CCamera)->GetPos();
 
-		BitBlt(hDC, tPos.x, tPos.y, m_tSize.x, m_tSize.y,
+		BitBlt(hDC, (int)tPos.x, (int)tPos.y, (int)m_tSize.x, (int)m_tSize.y,
 			m_pTexture->GetDC(), 0, 0, SRCCOPY);
 	}
 }
