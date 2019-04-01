@@ -26,6 +26,9 @@ bool CMinion::Init()
 	SetPos(800.f, 100.f);
 	SetSize(100.f, 100.f);
 	SetSpeed(300.f);
+	SetPivot(0.5f, 0.5f);
+
+	SetTexture("Minion", L"LOL.bmp");
 
 	m_eDir = MD_FRONT;
 
@@ -72,7 +75,6 @@ void CMinion::Collision(float fDeltaTime)
 void CMinion::Render(HDC hDC, float fDeltaTime)
 {
 	CMoveObj::Render(hDC, fDeltaTime);
-	Rectangle(hDC, (int)m_tPos.x, (int)m_tPos.y, (int)(m_tPos.x + m_tSize.x), (int)(m_tPos.y + m_tSize.y));
 }
 
 CMinion * CMinion::Clone()
@@ -89,10 +91,10 @@ void CMinion::Fire()
 
 	((CMoveObj*)pBullet)->SetAngle(PI);
 
-	//float x = GetLeft() - (pBullet->GetSize().x * (1.f - GetPivot().x));
-	//float y = GetCenter().y;
-	pBullet->SetPos(m_tPos.x - pBullet->GetSize().x, (m_tPos.y + m_tPos.y + m_tSize.y) / 2.f - pBullet->GetSize().y / 2.f);
-	//pBullet->SetPos(x, y);
+	float x = GetLeft() - (pBullet->GetSize().x * (1.f - GetPivot().x));
+	float y = GetCenter().y;
+	
+	pBullet->SetPos(x, y);
 
 	SAFE_RELEASE(pBullet);
 }

@@ -24,19 +24,16 @@ void CPlayer::Fire()
 
 	// 오른쪽 가운데를 구한다.
 	POSITION tPos;
-	tPos.x = m_tPos.x + (1.f - m_tPivot.x) * m_tSize.x;
-	tPos.y = m_tPos.y + (0.5f - m_tPivot.y) * m_tSize.y;
 
-	pBullet->SetPos(tPos.x, tPos.y - pBullet->GetSize().y / 2.f);
 	//if (m_iDir == -1)
 		//tPos.x = GetLeft() - pBullet->GetSize().x * (1.f - pBullet->GetPivot().x);
 
 	//else
 		//tPos.x = GetRight() + pBullet->GetSize().x * pBullet->GetPivot().x;
+	tPos.x = GetRight() + pBullet->GetSize().x * pBullet->GetPivot().x;
+	tPos.y = GetCenter().y;
 
-	//tPos.y = GetCenter().y;
-
-	//pBullet->SetPos(tPos);
+	pBullet->SetPos(tPos);
 
 	//if (m_iDir == -1)
 		//((CMoveObj*)pBullet)->SetAngle(PI);
