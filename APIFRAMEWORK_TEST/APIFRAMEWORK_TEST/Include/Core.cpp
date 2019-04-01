@@ -5,6 +5,8 @@
 #include "Resources\ResourcesManager.h"
 #include "Resources\Texture.h"
 #include "Core/Camera.h"
+#include "Core\Input.h"
+
 
 // static 멤버 변수를 사용하기 위해 선언
 CCore* CCore::m_pInst = NULL;
@@ -21,6 +23,7 @@ CCore::CCore()
 CCore::~CCore()
 {
 	DESTROY_SINGLE(CSceneManager);
+	DESTROY_SINGLE(CInput);
 	DESTROY_SINGLE(CCamera);
 	DESTROY_SINGLE(CResourcesManager);
 	DESTROY_SINGLE(CPathManager);
@@ -48,6 +51,10 @@ bool CCore::Init(HINSTANCE hInst) {
 
 	// 경로관리자 초기화
 	if (!GET_SINGLE(CPathManager)->Init())
+		return false;
+
+	// 입력관리자 초기화
+	if (!GET_SINGLE(CInput)->Init(m_hWnd))
 		return false;
 
 	// 리소스 관리자 초기화
@@ -107,6 +114,8 @@ void CCore::Input(float fDeltaTime)
 
 int CCore::Update(float fDeltaTime)
 {
+	GET_SINGLE(CInput)->Update(fDeltaTime);
+
 	GET_SINGLE(CSceneManager)->Update(fDeltaTime);
 	GET_SINGLE(CCamera)->Update(fDeltaTime);
 	return 0;

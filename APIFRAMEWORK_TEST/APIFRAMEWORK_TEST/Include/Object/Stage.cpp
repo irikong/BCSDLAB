@@ -61,9 +61,9 @@ void CStage::Render(HDC hDC, float fDeltaTime)
 		POSITION tPos = m_tPos - m_tSize * m_tPivot;
 		POSITION tCamPos = GET_SINGLE(CCamera)->GetPos();
 
-		BitBlt(hDC, tPos.x, tPos.y,
+		BitBlt(hDC, (int)tPos.x, (int)tPos.y,
 			GETRESOLUTION.iW, GETRESOLUTION.iH,
-			m_pTexture->GetDC(), tCamPos.x, tCamPos.y, SRCCOPY);
+			m_pTexture->GetDC(), (int)tCamPos.x, (int)tCamPos.y, SRCCOPY);
 	}
 }
 
