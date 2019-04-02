@@ -1,5 +1,6 @@
 #include "Bullet.h"
 #include "..\Resources\Texture.h"
+#include "..\Collider\ColliderRect.h"
 
 CBullet::CBullet() :
 	m_fDist(0.f), m_fLimitDist(500.f)
@@ -26,13 +27,14 @@ bool CBullet::Init()
 	SetTexture("Bullet", L"Fish.bmp");
 	
 	m_pTexture->SetColorKey(255, 255, 255);
-	/*
-	CColliderSphere* pSphere = AddCollider<CColliderSphere>("Bullet");
-
-	pSphere->SetSphere(POSITION(0.f, 0.f), 25.f);
-
-	SAFE_RELEASE(pSphere);
-	*/
+	
+	//CColliderSphere* pSphere = AddCollider<CColliderSphere>("Bullet");
+	CColliderRect* pRC = AddCollider<CColliderRect>("Bullet");
+	//pSphere->SetSphere(POSITION(0.f, 0.f), 25.f);
+	pRC->SetRect(-25.f, -25.f, 25.f, 25.f);
+	//SAFE_RELEASE(pSphere);
+	SAFE_RELEASE(pRC);
+	
 
 	return true;
 }

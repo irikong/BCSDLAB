@@ -7,6 +7,7 @@
 #include <crtdbg.h>
 #include <typeinfo>
 #include <string>
+#include <functional>
 
 #include "resource.h"
 #include "Macro.h"

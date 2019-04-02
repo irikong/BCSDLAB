@@ -1,7 +1,9 @@
 #pragma once
 
-#include "..\Ref.h"
+#include "../Ref.h"
 #include "../Scene/Layer.h"
+#include "../Collider/Collider.h"
+#include "../Collider/ColliderRect.h"
 
 class CObj :
 	public CRef
@@ -30,21 +32,13 @@ protected:
 	class CLayer* m_pLayer;
 
 public:
-	void SetScene(class CScene* pScene) {
-		m_pScene = pScene;
-	}
+	void SetScene(class CScene* pScene) { m_pScene = pScene; }
 
-	void SetLayer(class CLayer* pLayer) {
-		m_pLayer = pLayer;
-	}
+	void SetLayer(class CLayer* pLayer) { m_pLayer = pLayer; }
 
-	class CScene* GetScene() const {
-		return m_pScene;
-	}
+	class CScene* GetScene() const { return m_pScene; }
 
-	class CLayer* GetLayer() const {
-		return m_pLayer;
-	}
+	class CLayer* GetLayer() const { return m_pLayer; }
 
 protected:
 	string m_strTag;
@@ -52,6 +46,7 @@ protected:
 	_SIZE m_tSize;
 	POSITION m_tPivot;
 	class CTexture* m_pTexture;
+	list<class CCollider*> m_ColliderList;
 
 public:
 	float GetLeft() const { return m_tPos.x - m_tSize.x * m_tPivot.x; }
@@ -113,13 +108,11 @@ public:
 		m_tPivot.y = y;
 	}
 
-public:
 	void SetTexture(class CTexture* pTexture);
 	void SetTexture(const string& strKey,
 		const wchar_t* pFileName = NULL,
 		const string& strPathKey = TEXTURE_PATH);
 
-public:
 	virtual bool Init() = 0;
 	virtual void Input(float fDeltaTime);
 	virtual int	Update(float fDeltaTime);
@@ -128,7 +121,6 @@ public:
 	virtual void Render(HDC hDC, float fDeltaTime);
 	virtual CObj* Clone() = 0;
 
-public:
 	template <typename T>
 	static T* CreateObj(const string& strTag, class CLayer* pLayer = NULL)
 	{
@@ -151,6 +143,31 @@ public:
 
 		return pObj;
 	}
+
+	public:	const list <CCollider*>* GetColliderList() const { return &m_ColliderList; }
+			CCollider* GetCollider(const string& strTag);
+
+	template <typename T>
+	T* AddCollider(const string& strTag)
+	{
+		T* pCollider = new T;
+
+		pCollider->SetObj(this);
+		pCollider->SetTag(strTag);
+
+		if (!pCollider->Init())
+		{
+			SAFE_RELEASE(pCollider);
+			return NULL;
+		}
+
+		pCollider->AddRef();
+		m_ColliderList.push_back(pCollider);
+
+		return pCollider;
+	}
+
+	bool CheckCollider() { return !m_ColliderList.empty(); }
 
 	static CObj* CreateCloneObj(const string& strPrototypeKey,
 		const string& strTag, class CLayer* pLayer = NULL);

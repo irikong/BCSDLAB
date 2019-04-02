@@ -25,4 +25,6 @@ public:
 	virtual void Collision(float fDeltaTime);
 	virtual void Render(HDC hDC, float fDeltaTime);
 	virtual CMinion* Clone();
+
+	void CollisionBullet(class CCollider* pSrc, class CCollider* pDest, float fDeltaTime);
 };

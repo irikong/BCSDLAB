@@ -6,6 +6,7 @@
 #include "Resources\Texture.h"
 #include "Core/Camera.h"
 #include "Core\Input.h"
+#include "Collider/CollisionManager.h"
 
 
 // static 멤버 변수를 사용하기 위해 선언
@@ -23,6 +24,7 @@ CCore::CCore()
 CCore::~CCore()
 {
 	DESTROY_SINGLE(CSceneManager);
+	DESTROY_SINGLE(CCollisionManager);
 	DESTROY_SINGLE(CInput);
 	DESTROY_SINGLE(CCamera);
 	DESTROY_SINGLE(CResourcesManager);
@@ -130,6 +132,8 @@ int CCore::LateUpdate(float fDeltaTime)
 void CCore::Collision(float fDeltaTime)
 {
 	GET_SINGLE(CSceneManager)->Collision(fDeltaTime);
+
+	GET_SINGLE(CCollisionManager)->Collision(fDeltaTime);
 }
 
 void CCore::Render(float fDeltaTime)

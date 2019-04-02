@@ -4,7 +4,7 @@
 #include "../Scene/Scene.h"
 #include "../Resources/ResourcesManager.h"
 #include "../Resources/Texture.h"
-#include "..\Core\Camera.h"
+#include "../Core/Camera.h"
 
 // static 멤버 사용한다고 선언
 list<CObj*> CObj::m_ObjList;
@@ -21,11 +21,26 @@ CObj::CObj(const CObj & obj)
 
 	if (m_pTexture)
 		m_pTexture->AddRef();
+
+	m_ColliderList.clear();
+
+	list<CCollider*>::const_iterator iter;
+	list<CCollider*>::const_iterator iterEnd = obj.m_ColliderList.end();
+
+	for (iter = obj.m_ColliderList.begin(); iter != iterEnd; ++iter)
+	{
+		CCollider* pColl = (*iter)->Clone();
+
+		pColl->SetObj(this);
+
+		m_ColliderList.push_back(pColl);
+	}
 }
 
 
 CObj::~CObj()
 {
+	Safe_Release_VecList(m_ColliderList);
 	SAFE_RELEASE(m_pTexture);
 }
 
@@ -103,15 +118,62 @@ void CObj::SetTexture(const string & strKey, const wchar_t * pFileName, const st
 
 void CObj::Input(float fDeltaTime)
 {
+
 }
 
 int CObj::Update(float fDeltaTime)
 {
+	list<CCollider*>::iterator iter;
+	list<CCollider*>::iterator iterEnd = m_ColliderList.end();
+
+	for (iter = m_ColliderList.begin(); iter != iterEnd;)
+	{
+		if (!(*iter)->GetEnable())
+		{
+			++iter;
+			continue;
+		}
+
+		(*iter)->Update(fDeltaTime);
+
+		if (!(*iter)->GetLife())
+		{
+			SAFE_RELEASE((*iter));
+			iter = m_ColliderList.erase(iter);
+			iterEnd = m_ColliderList.end();
+		}
+
+		else
+			++iter;
+	}
 	return 0;
 }
 
 int CObj::LateUpdate(float fDeltaTime)
 {
+	list<CCollider*>::iterator iter;
+	list<CCollider*>::iterator iterEnd = m_ColliderList.end();
+
+	for (iter = m_ColliderList.begin(); iter != iterEnd;)
+	{
+		if (!(*iter)->GetEnable())
+		{
+			++iter;
+			continue;
+		}
+
+		(*iter)->LateUpdate(fDeltaTime);
+
+		if (!(*iter)->GetLife())
+		{
+			SAFE_RELEASE((*iter));
+			iter = m_ColliderList.erase(iter);
+			iterEnd = m_ColliderList.end();
+		}
+
+		else
+			++iter;
+	}
 	return 0;
 }
 
@@ -133,6 +195,30 @@ void CObj::Render(HDC hDC, float fDeltaTime)
 			BitBlt(hDC, (int)tPos.x, (int)tPos.y, (int)m_tSize.x, (int)m_tSize.y,
 				m_pTexture->GetDC(), 0, 0, SRCCOPY);
 		}
+	}
+
+	list<CCollider*>::iterator iter;
+	list<CCollider*>::iterator iterEnd = m_ColliderList.end();
+
+	for (iter = m_ColliderList.begin(); iter != iterEnd;)
+	{
+		if (!(*iter)->GetEnable())
+		{
+			++iter;
+			continue;
+		}
+
+		(*iter)->Render(hDC, fDeltaTime);
+
+		if (!(*iter)->GetLife())
+		{
+			SAFE_RELEASE((*iter));
+			iter = m_ColliderList.erase(iter);
+			iterEnd = m_ColliderList.end();
+		}
+
+		else
+			++iter;
 	}
 }
 
