@@ -143,8 +143,9 @@ public:
 		return pObj;
 	}
 
-	public:	const list <CCollider*>* GetColliderList() const { return &m_ColliderList; }
-			CCollider* GetCollider(const string& strTag);
+public:
+	const list <CCollider*>* GetColliderList() const { return &m_ColliderList; }
+	CCollider* GetCollider(const string& strTag);
 
 	template <typename T>
 	T* AddCollider(const string& strTag)

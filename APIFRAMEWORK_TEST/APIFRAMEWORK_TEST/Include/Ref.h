@@ -9,6 +9,7 @@ public:
 	virtual ~CRef() = 0;
 
 protected:
+	string m_strTag;
 	int m_iRef;
 	bool m_bEnable; // 객체 비활성 활성
 	bool m_bLife; // 죽어있음 살아있음
@@ -27,6 +28,16 @@ public:
 		}
 
 		return m_iRef;
+	}
+
+	string GetTag() const
+	{
+		return m_strTag;
+	}
+
+	void SetTag(const string& strTag)
+	{
+		m_strTag = strTag;
 	}
 
 	void SetEnable(bool bEnable) {
