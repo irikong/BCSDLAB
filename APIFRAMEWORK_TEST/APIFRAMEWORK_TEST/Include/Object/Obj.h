@@ -3,7 +3,6 @@
 #include "../Ref.h"
 #include "../Scene/Layer.h"
 #include "../Collider/Collider.h"
-#include "../Collider/ColliderRect.h"
 
 class CObj :
 	public CRef
