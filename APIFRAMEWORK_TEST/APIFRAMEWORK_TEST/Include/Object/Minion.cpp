@@ -1,6 +1,6 @@
 #include "Minion.h"
 #include "..\Core.h"
-#include "..\Collider\ColliderRect.h"
+#include "..\Collider\ColliderRect.h" //
 #include "Bullet.h"
 
 CMinion::CMinion() :
