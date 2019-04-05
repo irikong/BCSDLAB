@@ -54,55 +54,37 @@ public:
 	float GetBottom() const { return GetTop() + m_tSize.y; }
 	POSITION GetCenter() const { return POSITION(GetLeft() + m_tSize.x / 2.f, GetTop() + m_tSize.y / 2.f); }
 
-	string GetTag() const {
-		return m_strTag;
-	}
+	string GetTag() const { return m_strTag; }
 
-	POSITION GetPos() const {
-		return m_tPos;
-	}
+	POSITION GetPos() const { return m_tPos; }
 
-	_SIZE GetSize() const {
-		return m_tSize;
-	}
+	_SIZE GetSize() const {	return m_tSize;	}
 
 	POSITION GetPivot() const { return m_tPivot; }
 
 
 public:
-	void SetTag(const string& strTag) {
-		m_strTag = strTag;
-	}
+	void SetTag(const string& strTag) {	m_strTag = strTag; }
 
-	void SetPos(const POSITION& tPos) {
-		m_tPos = tPos;
-	}
+	void SetPos(const POSITION& tPos) {	m_tPos = tPos; }
 
-	void SetPos(const POINT& tPos) {
-		m_tPos = tPos;
-	}
+	void SetPos(const POINT& tPos) { m_tPos = tPos; }
 
 	void SetPos(float x, float y) {
 		m_tPos.x = x;
 		m_tPos.y = y;
 	}
 
-	void SetSize(const _SIZE& tSize) {
-		m_tSize = tSize;
-	}
+	void SetSize(const _SIZE& tSize) { m_tSize = tSize;	}
 
 	void SetSize(float x, float y) {
 		m_tSize.x = x;
 		m_tSize.y = y;
 	}
 
-	void SetPivot(const _SIZE& tPivot)
-	{
-		m_tPivot = tPivot;
-	}
+	void SetPivot(const _SIZE& tPivot) { m_tPivot = tPivot; }
 
-	void SetPivot(float x, float y)
-	{
+	void SetPivot(float x, float y) {
 		m_tPivot.x = x;
 		m_tPivot.y = y;
 	}
@@ -143,8 +125,9 @@ public:
 		return pObj;
 	}
 
-	public:	const list <CCollider*>* GetColliderList() const { return &m_ColliderList; }
-			CCollider* GetCollider(const string& strTag);
+public:	
+	const list <CCollider*>* GetColliderList() const { return &m_ColliderList; }
+	CCollider* GetCollider(const string& strTag);
 
 	template <typename T>
 	T* AddCollider(const string& strTag)
