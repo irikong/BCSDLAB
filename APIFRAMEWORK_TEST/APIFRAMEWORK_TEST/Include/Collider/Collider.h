@@ -17,8 +17,7 @@ protected:
 	CCollider(const CCollider& coll);
 	virtual ~CCollider() = 0;
 	
-	bool CollisionRectToRect(const RECTANGLE& src,
-		const RECTANGLE& dest);
+	bool CollisionRectToRect(const RECTANGLE& src, const RECTANGLE& dest);
 	/*bool CollisionRectToSphere(const RECTANGLE& src,
 		const SPHERE& dest);
 	bool CollisionSphereToSphere(const SPHERE& src,
@@ -43,8 +42,7 @@ public:
 	void AddCollider(CCollider* pCollider) { m_CollisionList.push_back(pCollider); }
 	void SetObj(class CObj* pObj) { m_pObj = pObj; }
 	
-	void AddCollisionFunction(COLLISION_STATE eState,
-		void(*pFunc)(CCollider*, CCollider*, float))
+	void AddCollisionFunction(COLLISION_STATE eState, void(*pFunc)(CCollider*, CCollider*, float))
 	{
 		function<void(CCollider*, CCollider*, float)> func;
 
@@ -54,8 +52,7 @@ public:
 	}
 	
 	template <typename T>
-	void AddCollisionFunction(COLLISION_STATE eState, T* pObj,
-		void(T::*pFunc)(CCollider*, CCollider*, float))
+	void AddCollisionFunction(COLLISION_STATE eState, T* pObj, void(T::*pFunc)(CCollider*, CCollider*, float))
 	{
 		function<void(CCollider*, CCollider*, float)> func;
 
@@ -65,8 +62,7 @@ public:
 		m_FuncList[eState].push_back(func);
 	}
 	
-	void CallFunction(COLLISION_STATE eState,
-		CCollider* pDest, float fDeltaTime)
+	void CallFunction(COLLISION_STATE eState, CCollider* pDest, float fDeltaTime)
 	{
 		list<function<void(CCollider*, CCollider*, float)>>::iterator iter;
 		list<function<void(CCollider*, CCollider*, float)>>::iterator iterEnd = m_FuncList[eState].end();

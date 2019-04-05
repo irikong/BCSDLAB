@@ -13,21 +13,13 @@ private:
 	float m_fSpeed;
 
 public:
-	void SetAngle(float fAngle) {
-		m_fAngle = fAngle;
-	}
+	void SetAngle(float fAngle) { m_fAngle = fAngle; }
 
-	void SetSpeed(float fSpeed) {
-		m_fSpeed = fSpeed;
-	}
+	void SetSpeed(float fSpeed) { m_fSpeed = fSpeed; }
 
-	float GetAngle() const {
-		return m_fAngle;
-	}
+	float GetAngle() const { return m_fAngle; }
 
-	float GetSpeed() const {
-		return m_fSpeed; 
-	}
+	float GetSpeed() const { return m_fSpeed; }
 
 public:
 	void Move(float x, float y);

@@ -10,8 +10,7 @@ private:
 
 public:
 	bool Init();
-	bool CreatePath(const string& strKey, const wchar_t* pPath,
-		const string& strBaseKey = ROOT_PATH);
+	bool CreatePath(const string& strKey, const wchar_t* pPath, const string& strBaseKey = ROOT_PATH);
 
 	const wchar_t* FindPath(const string& strKey);
 	//const char* FindPathMultiByte(const string& strKey);

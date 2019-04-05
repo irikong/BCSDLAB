@@ -22,46 +22,26 @@ private:
 	bool m_bLife;
 
 public:
-	void SetEnable(bool bEnable) {
-		m_bEnable = bEnable;
-	}
+	void SetEnable(bool bEnable) { m_bEnable = bEnable; }
 
-	void Die() {
-		m_bLife = false;
-	}
+	void Die() { m_bLife = false; }
 
-	bool GetEnable() const {
-		return m_bEnable;
-	}
+	bool GetEnable() const { return m_bEnable; }
 
-	bool GetLife() const {
-		return m_bLife;
-	}
+	bool GetLife() const { return m_bLife; }
 
 public:
-	void SetTag(const string& strTag) {
-		m_strTag = strTag;
-	}
+	void SetTag(const string& strTag) {	m_strTag = strTag; }
 
-	void SetZOrder(int iZOrder) {
-		m_iZOrder = iZOrder;
-	}
+	void SetZOrder(int iZOrder) { m_iZOrder = iZOrder; }
 
-	void SetScene(CScene* pScene) {
-		m_pScene = pScene;
-	}
+	void SetScene(CScene* pScene) {	m_pScene = pScene; }
 
-	int GetZOrder() const {
-		return m_iZOrder;
-	}
+	int GetZOrder() const { return m_iZOrder; }
 
-	string GetTag() const {
-		return m_strTag;
-	}
+	string GetTag() const { return m_strTag; }
 
-	CScene* GetScene() const {
-		return m_pScene;
-	}
+	CScene* GetScene() const { return m_pScene; }
 
 public:
 	void AddObject(CObj* pObj);

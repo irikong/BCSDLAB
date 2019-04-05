@@ -151,6 +151,5 @@ public:
 
 	bool CheckCollider() { return !m_ColliderList.empty(); }
 
-	static CObj* CreateCloneObj(const string& strPrototypeKey,
-		const string& strTag, class CLayer* pLayer = NULL);
+	static CObj* CreateCloneObj(const string& strPrototypeKey, const string& strTag, class CLayer* pLayer = NULL);
 };

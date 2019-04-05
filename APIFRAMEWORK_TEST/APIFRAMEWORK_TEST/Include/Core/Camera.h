@@ -30,8 +30,7 @@ public:
 	POSITION GetPos() const { return m_tPos; }
 	RESOLUTION GetCllientRS() const { return m_tClientRS; }
 
-	bool Init(const POSITION& tPos, const RESOLUTION& tRS,
-		const RESOLUTION& tWorldRS);
+	bool Init(const POSITION& tPos, const RESOLUTION& tRS, const RESOLUTION& tWorldRS);
 	void Input(float fDeltaTime);
 	void Update(float fDeltaTime);
 

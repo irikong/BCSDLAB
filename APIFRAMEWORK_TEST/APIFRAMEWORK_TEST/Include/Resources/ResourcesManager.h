@@ -14,8 +14,7 @@ public:
 	class CTexture* GetBackBuffer() const;
 
 	bool Init(HINSTANCE hInst, HDC hDC);
-	class CTexture* LoadTexture(const string& strKey,
-		const wchar_t* pFileName, const string& strPathKey = TEXTURE_PATH);
+	class CTexture* LoadTexture(const string& strKey, const wchar_t* pFileName, const string& strPathKey = TEXTURE_PATH);
 	class CTexture* FindTexture(const string& strKey);
 
 	DECLARE_SINGLE(CResourcesManager)
