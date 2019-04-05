@@ -45,7 +45,7 @@ protected:
 	_SIZE m_tSize;
 	POSITION m_tPivot;
 	class CTexture* m_pTexture;
-	list<class CCollider*> m_ColliderList;
+	list<CCollider*> m_ColliderList;
 
 public:
 	float GetLeft() const { return m_tPos.x - m_tSize.x * m_tPivot.x; }
@@ -62,8 +62,6 @@ public:
 
 	POSITION GetPivot() const { return m_tPivot; }
 
-
-public:
 	void SetTag(const string& strTag) {	m_strTag = strTag; }
 
 	void SetPos(const POSITION& tPos) {	m_tPos = tPos; }
@@ -101,6 +99,23 @@ public:
 	virtual void Collision(float fDeltaTime);
 	virtual void Render(HDC hDC, float fDeltaTime);
 	virtual CObj* Clone() = 0;
+
+	template <typename T>
+	void AddCollisionFunction(const string& strTag,	COLLISION_STATE eState, T* pObj,
+		void(T::*pFunc)(CCollider*, CCollider*, float))
+	{
+		list<CCollider*>::iterator iter;
+		list<CCollider*>::iterator iterEnd = m_ColliderList.end();
+
+		for (iter = m_ColliderList.begin(); iter != iterEnd; ++iter)
+		{
+			if ((*iter)->GetTag() == strTag)
+			{
+				(*iter)->AddCollisionFunction(eState, pObj, pFunc);
+				break;
+			}
+		}
+	}
 
 	template <typename T>
 	static T* CreateObj(const string& strTag, class CLayer* pLayer = NULL)

@@ -29,7 +29,7 @@ bool CBullet::Init()
 	m_pTexture->SetColorKey(255, 255, 255);
 	
 	//CColliderSphere* pSphere = AddCollider<CColliderSphere>("Bullet");
-	CColliderRect* pRC = AddCollider<CColliderRect>("Bullet");
+	CColliderRect* pRC = AddCollider<CColliderRect>("BulletBody");
 	//pSphere->SetSphere(POSITION(0.f, 0.f), 25.f);
 	pRC->SetRect(-25.f, -25.f, 25.f, 25.f);
 	//SAFE_RELEASE(pSphere);
@@ -75,11 +75,11 @@ CBullet * CBullet::Clone()
 	return new CBullet(*this);
 }
 
-//void CBullet::Hit(CCollider * pSrc, CCollider * pDest, float fDeltaTime)
-//{
-//	if (GetTag() == "PlayerBullet" && pDest->GetTag() == "Minion")
-//		Die();
-//
-//	else if (GetTag() == "MinionBullet" && pDest->GetTag() == "Player")
-//		Die();
-//}
+void CBullet::Hit(CCollider * pSrc, CCollider * pDest, float fDeltaTime)
+{
+	if (GetTag() == "PlayerBullet" && pDest->GetTag() == "Minion")
+		Die();
+
+	else if (GetTag() == "MinionBullet" && pDest->GetTag() == "Player")
+		Die();
+}

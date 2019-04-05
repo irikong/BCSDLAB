@@ -1,6 +1,6 @@
 #include "Collider.h"
 #include "../Object/Obj.h"
-//#include "../Math.h"
+#include "../Math.h"
 
 CCollider::CCollider()
 {
@@ -38,7 +38,7 @@ bool CCollider::CollisionRectToRect(const RECTANGLE & src, const RECTANGLE & des
 
 	return true;
 }
-/*
+
 bool CCollider::CollisionRectToSphere(const RECTANGLE & src, const SPHERE & dest)
 {
 	// 원의 중점의 x좌표가 사각형의 가로 영역 안에 있는지,
@@ -90,9 +90,9 @@ bool CCollider::CollisionSphereToSphere(const SPHERE & src, const SPHERE & dest)
 {
 	float fDist = CMath::Distance(src.tCenter, dest.tCenter);
 
-	return fDist <= src.fRadius + dest.fRadius;
+	return (fDist <= src.fRadius + dest.fRadius);
 }
-
+/*
 bool CCollider::CollisionRectToPixel(const RECTANGLE & src, const vector<PIXEL>& vecPixel, int iWidth, int iHeight)
 {
 	m_tHitPoint.x = -1;

@@ -61,6 +61,9 @@
     <Filter Include="05.Collider">
       <UniqueIdentifier>{1694a9ae-ba75-4641-b6fc-38006f096e9f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Core\05.Math">
+      <UniqueIdentifier>{5dc91cb1-44e8-4774-ba23-027fde5ed0ef}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -131,6 +134,12 @@
     </ClCompile>
     <ClCompile Include="Collider\CollisionManager.cpp">
       <Filter>05.Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="Collider\ColliderSphere.cpp">
+      <Filter>05.Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="Math.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -214,6 +223,12 @@
     </ClInclude>
     <ClInclude Include="Collider\CollisionManager.h">
       <Filter>05.Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="Collider\ColliderSphere.h">
+      <Filter>05.Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="Math.h">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

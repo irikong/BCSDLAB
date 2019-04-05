@@ -18,11 +18,9 @@ protected:
 	virtual ~CCollider() = 0;
 	
 	bool CollisionRectToRect(const RECTANGLE& src, const RECTANGLE& dest);
-	/*bool CollisionRectToSphere(const RECTANGLE& src,
-		const SPHERE& dest);
-	bool CollisionSphereToSphere(const SPHERE& src,
-		const SPHERE& dest);
-	bool CollisionRectToPixel(const RECTANGLE& src,
+	bool CollisionRectToSphere(const RECTANGLE& src, const SPHERE& dest);
+	bool CollisionSphereToSphere(const SPHERE& src, const SPHERE& dest);
+	/*bool CollisionRectToPixel(const RECTANGLE& src,
 		const vector<PIXEL>& vecPixel, int iWidth, int iHeight);
 	bool CollisionSphereToPixel(const SPHERE& src,
 		const vector<PIXEL>& vecPixel, int iWidth, int iHeight);
@@ -56,8 +54,7 @@ public:
 	{
 		function<void(CCollider*, CCollider*, float)> func;
 
-		func = bind(pFunc, pObj, placeholders::_1, placeholders::_2,
-			placeholders::_3);
+		func = bind(pFunc, pObj, placeholders::_1, placeholders::_2, placeholders::_3);
 
 		m_FuncList[eState].push_back(func);
 	}
