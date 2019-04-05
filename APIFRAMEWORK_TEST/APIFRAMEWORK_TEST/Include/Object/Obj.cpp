@@ -222,6 +222,11 @@ void CObj::Render(HDC hDC, float fDeltaTime)
 	}
 }
 
+CCollider * CObj::GetCollider(const string & strTag)
+{
+	return nullptr;
+}
+
 CObj * CObj::CreateCloneObj(const string & strPrototypeKey, const string & strTag, class CLayer* pLayer)
 {
 	CObj* pProto = CScene::FindPrototype(strPrototypeKey);

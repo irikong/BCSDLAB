@@ -109,7 +109,7 @@ void CPlayer::Collision(float fDeltaTime)
 void CPlayer::Render(HDC hDC, float fDeltaTime)
 {
 	CMoveObj::Render(hDC, fDeltaTime);
-	//Rectangle(hDC, (int)m_tPos.x, (int)m_tPos.y, (int)(m_tPos.x + m_tSize.x), (int)(m_tPos.y + m_tSize.y));
+	Rectangle(hDC, (int)m_tPos.x, (int)m_tPos.y, (int)(m_tPos.x + m_tSize.x), (int)(m_tPos.y + m_tSize.y));
 }
 
 CPlayer * CPlayer::Clone()
