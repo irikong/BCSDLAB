@@ -47,6 +47,7 @@ public:
 
 	class CLayer* GetLayer() const { return m_pLayer; }	
 
+	void ClearGravity() { m_fGravityTime = 0.f; }
 	void SetPhysics(bool bPhysics) { m_bIsPhysics = bPhysics; }
 	bool GetPhysics() const noexcept { return m_bIsPhysics; }
 
@@ -57,33 +58,25 @@ public:
 	POSITION GetCenter() const { return POSITION(GetLeft() + m_tSize.x / 2.f, GetTop() + m_tSize.y / 2.f); }
 
 	string GetTag() const { return m_strTag; }
+	void SetTag(const string& strTag) { m_strTag = strTag; }
 
 	POSITION GetPos() const { return m_tPos; }
-
-	_SIZE GetSize() const {	return m_tSize;	}
-
-	POSITION GetPivot() const { return m_tPivot; }
-
-	void SetTag(const string& strTag) {	m_strTag = strTag; }
-
 	void SetPos(const POSITION& tPos) {	m_tPos = tPos; }
-
 	void SetPos(const POINT& tPos) { m_tPos = tPos; }
-
 	void SetPos(float x, float y) {
 		m_tPos.x = x;
 		m_tPos.y = y;
 	}
 
+	_SIZE GetSize() const { return m_tSize; }
 	void SetSize(const _SIZE& tSize) { m_tSize = tSize;	}
-
 	void SetSize(float x, float y) {
 		m_tSize.x = x;
 		m_tSize.y = y;
 	}
 
+	POSITION GetPivot() const { return m_tPivot; }
 	void SetPivot(const _SIZE& tPivot) { m_tPivot = tPivot; }
-
 	void SetPivot(float x, float y) {
 		m_tPivot.x = x;
 		m_tPivot.y = y;

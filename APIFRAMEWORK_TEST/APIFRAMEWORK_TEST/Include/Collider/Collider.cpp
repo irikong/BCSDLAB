@@ -92,20 +92,20 @@ bool CCollider::CollisionSphereToSphere(const SPHERE & src, const SPHERE & dest)
 
 	return (fDist <= src.fRadius + dest.fRadius);
 }
-/*
+
 bool CCollider::CollisionRectToPixel(const RECTANGLE & src, const vector<PIXEL>& vecPixel, int iWidth, int iHeight)
 {
-	m_tHitPoint.x = -1;
-	m_tHitPoint.y = -1;
+	//m_tHitPoint.x = -1;
+	//m_tHitPoint.y = -1;
 
 	int iStartX, iEndX;
 	int iStartY, iEndY;
 
 	iStartX = (src.l < 0) ? 0 : src.l;
-	iEndX = (src.r >= iWidth) ? iWidth - 1 : src.r;
+	iEndX = (src.r >= iWidth) ? (iWidth - 1) : src.r;
 
 	iStartY = (src.t < 0) ? 0 : src.t;
-	iEndY = (src.b >= iHeight) ? iHeight - 1 : src.b;
+	iEndY = (src.b >= iHeight) ? (iHeight - 1) : src.b;
 
 	for (int i = iStartY; i <= iEndY; ++i)
 	{
@@ -113,10 +113,10 @@ bool CCollider::CollisionRectToPixel(const RECTANGLE & src, const vector<PIXEL>&
 		{
 			int idx = i * iWidth + j;
 			const PIXEL& pixel = vecPixel[idx];
-			if (pixel.r == 0 && pixel.g == 255 && pixel.b == 0)
+			if (pixel.r == 255 && pixel.g == 0 && pixel.b == 255)
 			{
-				m_tHitPoint.x = j;
-				m_tHitPoint.y = i;
+				//m_tHitPoint.x = j;
+				//m_tHitPoint.y = i;
 				return true;
 			}
 		}
@@ -124,7 +124,7 @@ bool CCollider::CollisionRectToPixel(const RECTANGLE & src, const vector<PIXEL>&
 
 	return false;
 }
-
+/*
 bool CCollider::CollisionSphereToPixel(const SPHERE & src, const vector<PIXEL>& vecPixel, int iWidth, int iHeight)
 {
 	return false;

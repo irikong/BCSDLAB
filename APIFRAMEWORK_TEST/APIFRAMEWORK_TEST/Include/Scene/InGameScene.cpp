@@ -1,10 +1,11 @@
 #include "InGameScene.h"
-#include "..\Object\Player.h"
-#include "..\Object\Minion.h"
-#include "..\Object\Bullet.h"
-#include "..\Object\Stage.h"
+#include "../Object/Player.h"
+#include "../Object/Minion.h"
+#include "../Object/Bullet.h"
+#include "../Object/Stage.h"
 #include "Layer.h"
-#include "..\Core\Camera.h"
+#include "../Core/Camera.h"
+#include "../Collider/ColliderPixel.h"
 
 CInGameScene::CInGameScene()
 {
@@ -44,15 +45,14 @@ bool CInGameScene::Init()
 	CLayer* pStageLayer = FindLayer("Stage");
 
 	CStage* pStage = CObj::CreateObj<CStage>("Stage", pStageLayer);
-	
+
+	CColliderPixel* pPixel = pStage->AddCollider<CColliderPixel>("StageColl");
+
+	pPixel->SetPixelInfo((char*)"Stage1.bmp"); // const char* to char*
+
+	SAFE_RELEASE(pPixel);
+
 	SAFE_RELEASE(pStage);
-	//CColliderPixel* pPixel = pStage->AddCollider<CColliderPixel>("StageColl");
-
-	//pPixel->SetPixelInfo("Stage1.bmp");
-
-	//SAFE_RELEASE(pPixel);
-
-	
 
 	return true;
 }

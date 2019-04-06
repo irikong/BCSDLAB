@@ -24,52 +24,48 @@ CColliderPixel::~CColliderPixel()
 {
 }
 
-bool CColliderPixel::SetPixelInfo(char * pFileName, const string & strPathKey)
+bool CColliderPixel::SetPixelInfo(char* pFileName, const string & strPathKey)
 {
-	//const char* pPath = GET_SINGLE(CPathManager)->FindPathMultiByte(strPathKey);
-	//string strPath;
+	const char* pPath = GET_SINGLE(CPathManager)->FindPathMultiByte(strPathKey);
+	string strPath;
 
-	//if (pPath)
-	//	strPath = pPath;
+	if (pPath) 
+		strPath = pPath;
 
-	//strPath += pFileName;
+	strPath += pFileName;
 
-	//FILE* pFile = NULL;
+	FILE* pFile = NULL;
 
-	//fopen_s(&pFile, strPath.c_str(), "rb");
+	fopen_s(&pFile, strPath.c_str(), "rb");
 
-	//if (!pFile)
-	//	return false;
+	if (!pFile)
+		return false;
 
-	//BITMAPFILEHEADER	fh;
-	//BITMAPINFOHEADER	ih;
+	BITMAPFILEHEADER	fh;
+	BITMAPINFOHEADER	ih;
 
-	//fread(&fh, sizeof(fh), 1, pFile);
-	//fread(&ih, sizeof(ih), 1, pFile);
+	fread(&fh, sizeof(fh), 1, pFile);
+	fread(&ih, sizeof(ih), 1, pFile);
 
-	//m_iWidth = ih.biWidth;
-	//m_iHeight = ih.biHeight;
+	m_iWidth = ih.biWidth;
+	m_iHeight = ih.biHeight;
 
-	//m_vecPixel.clear();
-	//m_vecPixel.resize(m_iWidth * m_iHeight);
+	m_vecPixel.clear();
+	m_vecPixel.resize(m_iWidth * m_iHeight);
 
-	//fread(&m_vecPixel[0], sizeof(PIXEL), m_vecPixel.size(), pFile);
+	fread(&m_vecPixel[0], sizeof(PIXEL), m_vecPixel.size(), pFile);
 
-	//pPIXEL pPixelArr = new PIXEL[m_iWidth];
+	pPIXEL pPixelArr = new PIXEL[m_iWidth];
+	// 위 아래를 반전시켜준다.
+	for (int i = 0; i < m_iHeight / 2; ++i)
+	{
+		memcpy(pPixelArr, &m_vecPixel[i * m_iWidth], sizeof(PIXEL) * m_iWidth); //현재 인덱스의 픽셀 한 줄을 저장해둔다.
+		memcpy(&m_vecPixel[i * m_iWidth], &m_vecPixel[(m_iHeight - i - 1) * m_iWidth], sizeof(PIXEL) * m_iWidth);
+		memcpy(&m_vecPixel[(m_iHeight - i - 1) * m_iWidth], pPixelArr, sizeof(PIXEL) * m_iWidth);
+	}
+	delete[] pPixelArr;
 
-	//// 위 아래를 반전시켜준다.
-	//for (int i = 0; i < m_iHeight / 2; ++i)
-	//{
-	//	memcpy(pPixelArr, &m_vecPixel[i * m_iWidth], sizeof(PIXEL) * m_iWidth);
-	//	memcpy(&m_vecPixel[i * m_iWidth], &m_vecPixel[(m_iHeight - i - 1) * m_iWidth],
-	//		sizeof(PIXEL) * m_iWidth);
-	//	memcpy(&m_vecPixel[(m_iHeight - i - 1) * m_iWidth], pPixelArr,
-	//		sizeof(PIXEL) * m_iWidth);
-	//}
-
-	//delete[] pPixelArr;
-
-	//fclose(pFile);
+	fclose(pFile);
 
 	return true;
 }
@@ -95,15 +91,13 @@ int CColliderPixel::LateUpdate(float fDeltaTime)
 
 bool CColliderPixel::Collision(CCollider * pDest)
 {
-	/*switch (pDest->GetColliderType())
+	switch (pDest->GetColliderType())
 	{
 	case CT_RECT:
-		return CollisionRectToPixel(((CColliderRect*)pDest)->GetWorldInfo(),
-			m_vecPixel, m_iWidth, m_iHeight);
-	case CT_POINT:
-		return CollisionPixelToPoint(m_vecPixel, m_iWidth, m_iHeight,
-			((CColliderPoint*)pDest)->GetPoint());
-	}*/
+		return CollisionRectToPixel(((CColliderRect*)pDest)->GetWorldInfo(), m_vecPixel, m_iWidth, m_iHeight);
+	//case CT_POINT:
+		//return CollisionPixelToPoint(m_vecPixel, m_iWidth, m_iHeight, ((CColliderPoint*)pDest)->GetPoint());
+	}
 	return false;
 }
 

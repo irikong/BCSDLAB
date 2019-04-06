@@ -58,7 +58,7 @@ bool CPlayer::Init()
 
 	pRC->SetRect(-50.f, -50.f, 50.f, 50.f);
 	pRC->AddCollisionFunction(CS_ENTER, this, &CPlayer::Hit);
-	//pRC->AddCollisionFunction(CS_STAY, this, &CPlayer::HitStay);
+	pRC->AddCollisionFunction(CS_STAY, this, &CPlayer::HitStay);
 
 	SAFE_RELEASE(pRC);
 
@@ -139,25 +139,24 @@ CPlayer * CPlayer::Clone()
 
 void CPlayer::Hit(CCollider * pSrc, CCollider * pDest, float fDeltaTime)
 {
-	m_iHP -= 100;
-	/*if (pDest->GetObj()->GetTag() == "MinionBullet") {
+	if (pDest->GetObj()->GetTag() == "MinionBullet") {
 		m_iHP -= 100;
 	}
 
 	else if (pDest->GetTag() == "StageColl")
 	{
 		ClearGravity();
-		JumpEnd();
-		m_tPos.y = pSrc->GetHitPoint().y - m_tPivot.y * m_tSize.y;
-	}*/
+		//JumpEnd();
+		//m_tPos.y = pSrc->GetHitPoint().y - m_tPivot.y * m_tSize.y;
+	}
 }
 
-//void CPlayer::HitStay(CCollider * pSrc, CCollider * pDest, float fDeltaTime)
-//{
-//	if (pDest->GetTag() == "StageColl")
-//	{
-//		ClearGravity();
-//		JumpEnd();
-//		m_tPos.y = pSrc->GetHitPoint().y - m_tPivot.y * m_tSize.y;
-//	}
-//}
+void CPlayer::HitStay(CCollider * pSrc, CCollider * pDest, float fDeltaTime)
+{
+	if (pDest->GetTag() == "StageColl")
+	{
+		ClearGravity();
+		//JumpEnd();
+		//m_tPos.y = pSrc->GetHitPoint().y - m_tPivot.y * m_tSize.y;
+	}
+}

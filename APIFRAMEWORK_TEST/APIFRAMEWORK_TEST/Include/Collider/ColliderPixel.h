@@ -1,12 +1,6 @@
 #pragma once
 #include "Collider.h"
 
-typedef struct _tagPixel {
-	unsigned char r;
-	unsigned char g;
-	unsigned char b;
-}PIXEL, *PPIXEL;
-
 class CColliderPixel :
 	public CCollider
 {
@@ -24,9 +18,9 @@ protected:
 
 public:
 	bool SetPixelInfo(char* pFileName, const string& strPathKey = TEXTURE_PATH);
-	//const vector<PIXEL>& GetPixel() const { return m_vecPixel; }
-	//int GetWidth() const { return m_iWidth; }
-	//int GetHeight() const { return m_iHeight; }
+	const vector<PIXEL>& GetPixel() const { return m_vecPixel; }
+	int GetWidth() const { return m_iWidth; }
+	int GetHeight() const { return m_iHeight; }
 
 	virtual bool	Init();
 	virtual void	Input(float fDeltaTime);
