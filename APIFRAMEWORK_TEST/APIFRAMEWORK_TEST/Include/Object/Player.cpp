@@ -1,6 +1,8 @@
 #include "Player.h"
 #include "..\Core\Input.h"
 #include "Bullet.h"
+#include "../Collider/ColliderRect.h"
+#include "../Core/Camera.h"
 
 CPlayer::CPlayer()
 {
@@ -51,6 +53,16 @@ bool CPlayer::Init()
 	SetPivot(0.5f, 0.5f);
 
 	SetTexture("Player", L"HOS.bmp");
+
+	CColliderRect* pRC = AddCollider<CColliderRect>("PlayerBody");
+
+	pRC->SetRect(-50.f, -50.f, 50.f, 50.f);
+	pRC->AddCollisionFunction(CS_ENTER, this, &CPlayer::Hit);
+	//pRC->AddCollisionFunction(CS_STAY, this, &CPlayer::HitStay);
+
+	SAFE_RELEASE(pRC);
+
+	m_iHP = 1000;
 
 	return true;
 }
@@ -110,6 +122,11 @@ void CPlayer::Collision(float fDeltaTime)
 void CPlayer::Render(HDC hDC, float fDeltaTime)
 {
 	CMoveObj::Render(hDC, fDeltaTime);
+	wchar_t strHP[32] = {};
+	wsprintf(strHP, L"HP : %d", m_iHP);
+	POSITION tPos = m_tPos - m_tSize * m_tPivot;
+	tPos -= GET_SINGLE(CCamera)->GetPos();
+	TextOut(hDC, (int)tPos.x, (int)tPos.y, strHP, lstrlen(strHP));
 	//Rectangle(hDC, (int)m_tPos.x, (int)m_tPos.y, (int)(m_tPos.x + m_tSize.x), (int)(m_tPos.y + m_tSize.y));
 }
 
@@ -117,3 +134,28 @@ CPlayer * CPlayer::Clone()
 {
 	return new CPlayer(*this);
 }
+
+void CPlayer::Hit(CCollider * pSrc, CCollider * pDest, float fDeltaTime)
+{
+	m_iHP -= 100;
+	/*if (pDest->GetObj()->GetTag() == "MinionBullet") {
+		m_iHP -= 100;
+	}
+
+	else if (pDest->GetTag() == "StageColl")
+	{
+		ClearGravity();
+		JumpEnd();
+		m_tPos.y = pSrc->GetHitPoint().y - m_tPivot.y * m_tSize.y;
+	}*/
+}
+
+//void CPlayer::HitStay(CCollider * pSrc, CCollider * pDest, float fDeltaTime)
+//{
+//	if (pDest->GetTag() == "StageColl")
+//	{
+//		ClearGravity();
+//		JumpEnd();
+//		m_tPos.y = pSrc->GetHitPoint().y - m_tPivot.y * m_tSize.y;
+//	}
+//}

@@ -97,11 +97,11 @@ void CMinion::CollisionBullet(CCollider * pSrc, CCollider * pDest, float fDeltaT
 
 void CMinion::Fire()
 {
-	CObj* pBullet = CObj::CreateCloneObj("Bullet", "MinionBullet",
-		/*m_pScene->GetSceneType(),*/ m_pLayer);
+	CObj* pBullet = CObj::CreateCloneObj("Bullet", "MinionBullet", /*m_pScene->GetSceneType(),*/ m_pLayer);
 
-	//pBullet->AddCollisionFunction("Bullet", CS_STAY, (CBullet*)pBullet, &CBullet::Hit);
+	pBullet->AddCollisionFunction("BulletBody", CS_STAY, (CBullet*)pBullet, &CBullet::Hit);
 
+	//((CMoveObj*)pBullet)->SetSpeed(100.f);
 	((CMoveObj*)pBullet)->SetAngle(PI);
 
 	float x = GetLeft() - (pBullet->GetSize().x * (1.f - GetPivot().x));
