@@ -1,7 +1,7 @@
 #include "ColliderRect.h"
 #include "../Object/Obj.h"
 #include "ColliderSphere.h"
-//#include "ColliderPixel.h"
+#include "ColliderPixel.h"
 //#include "ColliderPoint.h"
 #include "../Core/Camera.h"
 

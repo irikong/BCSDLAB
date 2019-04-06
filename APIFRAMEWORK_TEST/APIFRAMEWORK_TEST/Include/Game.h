@@ -8,6 +8,7 @@
 #include <typeinfo>
 #include <string>
 #include <functional>
+#include <conio.h>
 
 #include "resource.h"
 #include "Macro.h"
@@ -17,6 +18,7 @@
 #pragma comment(lib, "msimg32")
 
 #define PI 3.141592f
+#define GRAVITY 0.98f
 
 // Path Key
 #define ROOT_PATH		"RootPath"

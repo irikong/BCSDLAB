@@ -10,7 +10,7 @@
 list<CObj*> CObj::m_ObjList;
 
 CObj::CObj() :
-	m_pTexture(NULL)
+	m_pTexture(NULL), m_bIsPhysics(false), m_fGravityTime(0.f)
 {
 
 }
@@ -18,6 +18,8 @@ CObj::CObj() :
 CObj::CObj(const CObj & obj)
 {
 	*this = obj;
+
+	m_fGravityTime = 0.f;
 
 	if (m_pTexture)
 		m_pTexture->AddRef();
@@ -123,6 +125,12 @@ void CObj::Input(float fDeltaTime)
 
 int CObj::Update(float fDeltaTime)
 {
+	if (m_bIsPhysics) {
+		m_fGravityTime += fDeltaTime;
+
+		m_tPos.y += (GRAVITY * m_fGravityTime * m_fGravityTime);
+	}
+
 	list<CCollider*>::iterator iter;
 	list<CCollider*>::iterator iterEnd = m_ColliderList.end();
 

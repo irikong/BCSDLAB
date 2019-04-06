@@ -10,10 +10,23 @@ class CObj :
 protected:
 	friend class CScene;
 
-protected:
 	CObj();
 	CObj(const CObj& obj);
 	virtual ~CObj();
+
+	class CScene* m_pScene;
+	class CLayer* m_pLayer;
+	class CTexture* m_pTexture;
+	
+	string m_strTag;
+	POSITION m_tPos;
+	_SIZE m_tSize;
+	POSITION m_tPivot;
+
+	list<CCollider*> m_ColliderList;
+
+	bool		m_bIsPhysics;
+	float		m_fGravityTime;
 
 private:
 	static list<CObj*> m_ObjList;
@@ -25,11 +38,6 @@ public:
 	static void EraseObj(const string& strTag);
 	static void EraseObj();
 
-
-protected:
-	class CScene* m_pScene;
-	class CLayer* m_pLayer;
-
 public:
 	void SetScene(class CScene* pScene) { m_pScene = pScene; }
 
@@ -37,17 +45,11 @@ public:
 
 	class CScene* GetScene() const { return m_pScene; }
 
-	class CLayer* GetLayer() const { return m_pLayer; }
+	class CLayer* GetLayer() const { return m_pLayer; }	
 
-protected:
-	string m_strTag;
-	POSITION m_tPos;
-	_SIZE m_tSize;
-	POSITION m_tPivot;
-	class CTexture* m_pTexture;
-	list<CCollider*> m_ColliderList;
+	void SetPhysics(bool bPhysics) { m_bIsPhysics = bPhysics; }
+	bool GetPhysics() const noexcept { return m_bIsPhysics; }
 
-public:
 	float GetLeft() const { return m_tPos.x - m_tSize.x * m_tPivot.x; }
 	float GetRight() const { return GetLeft() + m_tSize.x; }
 	float GetTop() const { return m_tPos.y - m_tSize.y * m_tPivot.y; }

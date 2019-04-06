@@ -18,6 +18,11 @@ CCore::CCore()
 {
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 	//_CrtSetBreakAlloc(); // Memory Leak 생기는 부분으로 이동시켜주는 코드
+
+#ifdef _DEBUG
+// 콘솔 창을 생성시키는 함수
+	AllocConsole();
+#endif // _DEBUG
 }
 
 
@@ -32,6 +37,10 @@ CCore::~CCore()
 	DESTROY_SINGLE(CTimer);
 
 	ReleaseDC(m_hWnd, m_hDC);
+
+#ifdef _DEBUG
+	FreeConsole();
+#endif // _DEBUG
 }
 
 bool CCore::Init(HINSTANCE hInst) {
@@ -49,14 +58,15 @@ bool CCore::Init(HINSTANCE hInst) {
 	m_hDC = GetDC(m_hWnd);
 
 	// 타이머 초기화
-	if (!GET_SINGLE(CTimer)->Init()) return false;
+	if (!GET_SINGLE(CTimer)->Init(m_hWnd)) 
+		return false;
 
 	// 경로관리자 초기화
-	if (!GET_SINGLE(CPathManager)->Init())
+	if (!GET_SINGLE(CPathManager)->Init()) 
 		return false;
 
 	// 입력관리자 초기화
-	if (!GET_SINGLE(CInput)->Init(m_hWnd))
+	if (!GET_SINGLE(CInput)->Init(m_hWnd)) 
 		return false;
 
 	// 리소스 관리자 초기화

@@ -33,7 +33,7 @@ bool CMinion::Init()
 
 	m_eDir = MD_FRONT;
 
-	CColliderRect* pRC = AddCollider<CColliderRect>("Minion");
+	CColliderRect* pRC = AddCollider<CColliderRect>("MinionBody");
 
 	pRC->SetRect(-50.f, -50.f, 50.f, 50.f);
 	pRC->AddCollisionFunction(CS_ENTER, this, &CMinion::CollisionBullet);
