@@ -165,4 +165,12 @@ public:
 	static CObj* CreateCloneObj(const string& strPrototypeKey, const string& strTag, class CLayer* pLayer = NULL);
 
 	class CAnimation* CreateAnimation(const string& strTag);
+	
+	// Atlas 형식으로 추가
+	bool AddAnimationClip(const string& strName, ANIMATION_TYPE eType,
+		ANIMATION_OPTION eOption, float fAnimationLimitTime,
+		int iFrameMaxX, int iFrameMaxY, int iStartX, int iStartY,
+		int iLengthX, int iLengthY, float fOptionLimitTime,
+		const string& strTexKey, const wchar_t* pFileName,
+		const string& strPathKey = TEXTURE_PATH);
 };

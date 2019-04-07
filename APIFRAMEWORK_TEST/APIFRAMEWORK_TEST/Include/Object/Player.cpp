@@ -3,6 +3,7 @@
 #include "Bullet.h"
 #include "../Collider/ColliderRect.h"
 #include "../Core/Camera.h"
+#include "../Animation/Animation.h"
 
 CPlayer::CPlayer()
 {
@@ -67,6 +68,20 @@ bool CPlayer::Init()
 	SetPhysics(true); // 중력 적용
 
 	SetForce(300.f); // 점프할 힘을 설정한다.
+
+	CAnimation* pAni = CreateAnimation("PlayerAnimation");
+
+	AddAnimationClip("IdleLeft", AT_ATLAS, AO_LOOP, 1.f, 3, 1,
+		0, 0, 3, 1, 0.f, "PlayerIdleLeft",
+		L"Player/Idle/Left/Player_Idle_Left.bmp");
+	//SetAnimationClipColorKey("IdleLeft", 0, 255, 0);
+	
+	AddAnimationClip("IdleRight", AT_ATLAS, AO_LOOP, 1.f, 3, 1,
+		0, 0, 3, 1, 0.f, "PlayerIdleRight",
+		L"Player/Idle/Right/Player_Idle_Right.bmp");
+	//SetAnimationClipColorKey("IdleRight", 0, 255, 0);
+
+	SAFE_RELEASE(pAni);
 
 	return true;
 }
@@ -150,7 +165,7 @@ void CPlayer::Hit(CCollider * pSrc, CCollider * pDest, float fDeltaTime)
 	{
 		ClearGravity();
 		JumpEnd();
-		//m_tPos.y = pSrc->GetHitPoint().y - m_tPivot.y * m_tSize.y;
+		m_tPos.y = pSrc->GetHitPoint().y - m_tPivot.y * m_tSize.y;
 	}
 }
 
@@ -160,6 +175,6 @@ void CPlayer::HitStay(CCollider * pSrc, CCollider * pDest, float fDeltaTime)
 	{
 		ClearGravity();
 		JumpEnd();
-		//m_tPos.y = pSrc->GetHitPoint().y - m_tPivot.y * m_tSize.y;
+		m_tPos.y = pSrc->GetHitPoint().y - m_tPivot.y * m_tSize.y;
 	}
 }

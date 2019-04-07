@@ -7,12 +7,24 @@ private:
 	friend class CObj;
 
 	unordered_map<string, pANIMATIONCLIP>	m_mapClip;
+	pANIMATIONCLIP	m_pCurClip;
+	string			m_strCurClip;
+	string			m_strDefaultClip;
+	class CObj*		m_pObj;
+	bool			m_bMotionEnd;
 
 	CAnimation();
 	CAnimation(const CAnimation& anim);
 	~CAnimation();
 
+	pANIMATIONCLIP FindClip(const string& strName);
+
 public:
+	void SetObj(class CObj* pObj) { m_pObj = pObj; }
+	void SetCurrentClip(const string& strCurClip);
+	void SetDefaultClip(const string& strDefaultClip);
+	void ChangeClip(const string& strClip);
+
 	// Atlas 형식으로 추가
 	bool AddClip(const string& strName, ANIMATION_TYPE eType,
 		ANIMATION_OPTION eOption, float fAnimationLimitTime,

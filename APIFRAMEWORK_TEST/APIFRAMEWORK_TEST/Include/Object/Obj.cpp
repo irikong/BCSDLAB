@@ -256,7 +256,7 @@ CAnimation * CObj::CreateAnimation(const string & strTag)
 	m_pAnimation = new CAnimation;
 
 	m_pAnimation->SetTag(strTag);
-	//m_pAnimation->SetObj(this);
+	m_pAnimation->SetObj(this);
 
 	if (!m_pAnimation->Init())
 	{
@@ -264,7 +264,7 @@ CAnimation * CObj::CreateAnimation(const string & strTag)
 		return NULL;
 	}
 
-	//m_pAnimation->AddRef();
+	m_pAnimation->AddRef();
 
 	return m_pAnimation;
 }
@@ -284,4 +284,20 @@ CCollider * CObj::GetCollider(const string & strTag)
 	}
 
 	return NULL;
+}
+
+bool CObj::AddAnimationClip(const string & strName, ANIMATION_TYPE eType,
+	ANIMATION_OPTION eOption, float fAnimationLimitTime, int iFrameMaxX,
+	int iFrameMaxY, int iStartX, int iStartY, int iLengthX, int iLengthY,
+	float fOptionLimitTime, const string & strTexKey,
+	const wchar_t * pFileName, const string & strPathKey)
+{
+	if (!m_pAnimation)
+		return false;
+
+	m_pAnimation->AddClip(strName, eType, eOption, fAnimationLimitTime,
+		iFrameMaxX, iFrameMaxY, iStartX, iStartY, iLengthX, iLengthY,
+		fOptionLimitTime, strTexKey, pFileName, strPathKey);
+
+	return true;
 }

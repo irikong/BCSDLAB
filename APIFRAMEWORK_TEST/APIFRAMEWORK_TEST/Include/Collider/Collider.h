@@ -10,7 +10,7 @@ protected:
 	list<function<void(CCollider*, CCollider*, float)>>	m_FuncList[CS_END];
 	list<CCollider*>	m_CollisionList;
 	COLLLIDER_TYPE		m_eCollType;
-	//POSITION			m_tHitPoint;
+	POSITION			m_tHitPoint;
 	class CObj*			m_pObj;
 
 	CCollider();
@@ -32,12 +32,15 @@ protected:
 
 public:
 	COLLLIDER_TYPE GetColliderType() const { return m_eCollType; }
-	//POSITION GetHitPoint() const { return m_tHitPoint; }
-	class CObj* GetObj() const { return m_pObj; }
 
-	//void SetHitPoint(const POSITION& tPos) { m_tHitPoint = tPos; }
-	void AddCollider(CCollider* pCollider) { m_CollisionList.push_back(pCollider); }
+	class CObj* GetObj() const { return m_pObj; }
 	void SetObj(class CObj* pObj) { m_pObj = pObj; }
+
+	POSITION GetHitPoint() const { return m_tHitPoint; }
+	void SetHitPoint(const POSITION& tPos) { m_tHitPoint = tPos; }
+
+	void AddCollider(CCollider* pCollider) { m_CollisionList.push_back(pCollider); }
+
 	
 	void AddCollisionFunction(COLLISION_STATE eState, void(*pFunc)(CCollider*, CCollider*, float))
 	{
