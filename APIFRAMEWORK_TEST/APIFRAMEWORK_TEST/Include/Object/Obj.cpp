@@ -125,12 +125,6 @@ void CObj::Input(float fDeltaTime)
 
 int CObj::Update(float fDeltaTime)
 {
-	if (m_bIsPhysics) {
-		m_fGravityTime += fDeltaTime;
-
-		m_tPos.y += (GRAVITY * m_fGravityTime * m_fGravityTime);
-	}
-
 	list<CCollider*>::iterator iter;
 	list<CCollider*>::iterator iterEnd = m_ColliderList.end();
 

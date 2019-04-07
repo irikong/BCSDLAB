@@ -11,6 +11,10 @@ protected:
 private:
 	float m_fAngle;
 	float m_fSpeed;
+	float		m_fForce;
+	float		m_fForceOrigin;
+	bool		m_bMove;
+	bool		m_bFalling;
 
 public:
 	void SetAngle(float fAngle) { m_fAngle = fAngle; }
@@ -22,6 +26,8 @@ public:
 	float GetSpeed() const { return m_fSpeed; }
 
 public:
+	void SetForce(float fForce) { m_fForceOrigin = fForce; }
+
 	void Move(float x, float y);
 	void Move(float x, float y, float fDeltaTime);
 	void Move(const POSITION& tMove);
@@ -34,6 +40,9 @@ public:
 	void MoveY(float y, float fDeltaTime);
 	void MoveAngle();
 	void MoveAngle(float fDeltaTime);
+
+	void Jump();
+	void JumpEnd();
 
 public:
 	virtual bool Init() = 0;

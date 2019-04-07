@@ -66,6 +66,8 @@ bool CPlayer::Init()
 
 	SetPhysics(true); // 중력 적용
 
+	SetForce(300.f); // 점프할 힘을 설정한다.
+
 	return true;
 }
 
@@ -73,14 +75,15 @@ void CPlayer::Input(float fDeltaTime)
 {
 	CMoveObj::Input(fDeltaTime);
 
-	if (KEYPRESS("MoveFront")) // GetAsyncKeyState('W') & 0x8000
+	if (KEYDOWN("MoveFront")) // GetAsyncKeyState('W') & 0x8000
 	{
-		MoveYFromSpeed(fDeltaTime, MD_BACK);
+		Jump();
+		//MoveYFromSpeed(fDeltaTime, MD_BACK);
 	}
 
-	if (KEYPRESS("MoveBack")) // GetAsyncKeyState('S') & 0x8000
+	if (KEYDOWN("MoveBack")) // GetAsyncKeyState('S') & 0x8000
 	{
-		MoveYFromSpeed(fDeltaTime, MD_FRONT);
+		//MoveYFromSpeed(fDeltaTime, MD_FRONT);
 	}
 
 	if (KEYPRESS("MoveLeft")) // GetAsyncKeyState('A') & 0x8000
@@ -146,7 +149,7 @@ void CPlayer::Hit(CCollider * pSrc, CCollider * pDest, float fDeltaTime)
 	else if (pDest->GetTag() == "StageColl")
 	{
 		ClearGravity();
-		//JumpEnd();
+		JumpEnd();
 		//m_tPos.y = pSrc->GetHitPoint().y - m_tPivot.y * m_tSize.y;
 	}
 }
@@ -156,7 +159,7 @@ void CPlayer::HitStay(CCollider * pSrc, CCollider * pDest, float fDeltaTime)
 	if (pDest->GetTag() == "StageColl")
 	{
 		ClearGravity();
-		//JumpEnd();
+		JumpEnd();
 		//m_tPos.y = pSrc->GetHitPoint().y - m_tPivot.y * m_tSize.y;
 	}
 }
