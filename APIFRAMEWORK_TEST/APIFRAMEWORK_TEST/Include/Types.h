@@ -211,7 +211,7 @@ typedef struct _tagPixel {
 
 typedef struct _tagAnimationClip // 局聪皋捞记 府家胶 包府侩 备炼眉
 {
-	vector<class CTexture*>	vecTexture;
+	std::vector<class CTexture*>	vecTexture;
 	ANIMATION_TYPE		eType;
 	ANIMATION_OPTION	eOption;
 	float		fAnimationTime;
