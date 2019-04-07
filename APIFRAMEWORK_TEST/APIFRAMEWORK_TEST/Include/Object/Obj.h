@@ -7,6 +7,9 @@
 class CObj :
 	public CRef
 {
+private:
+	static list<CObj*> m_ObjList;
+
 protected:
 	friend class CScene;
 
@@ -17,7 +20,8 @@ protected:
 	class CScene* m_pScene;
 	class CLayer* m_pLayer;
 	class CTexture* m_pTexture;
-	
+	class CAnimation*	m_pAnimation;
+
 	string m_strTag;
 	POSITION m_tPos;
 	_SIZE m_tSize;
@@ -27,9 +31,6 @@ protected:
 
 	bool		m_bIsPhysics;
 	float		m_fGravityTime;
-
-private:
-	static list<CObj*> m_ObjList;
 
 public:
 	static void AddObj(CObj* pObj);
@@ -162,4 +163,6 @@ public:
 	bool CheckCollider() { return !m_ColliderList.empty(); }
 
 	static CObj* CreateCloneObj(const string& strPrototypeKey, const string& strTag, class CLayer* pLayer = NULL);
+
+	class CAnimation* CreateAnimation(const string& strTag);
 };

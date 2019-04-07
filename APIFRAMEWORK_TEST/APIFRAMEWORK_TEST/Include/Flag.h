@@ -32,3 +32,21 @@ enum COLLISION_STATE
 	CS_LEAVE,
 	CS_END
 };
+
+// Animation Type
+enum ANIMATION_TYPE
+{
+	AT_ATLAS,
+	AT_FRAME,
+	AT_END
+};
+
+// Animation Option
+enum ANIMATION_OPTION
+{
+	AO_LOOP, // 반복
+	AO_ONCE_RETURN, // 모션 후 다시 디폴트로 돌아감
+	AO_ONCE_DESTROY, // 모션 후 삭제
+	AO_TIME_RETURN, // 일정 시간 후 디폴트로 돌아감 
+	AO_TIME_DESTROY // 일정 시간 후 삭제
+};

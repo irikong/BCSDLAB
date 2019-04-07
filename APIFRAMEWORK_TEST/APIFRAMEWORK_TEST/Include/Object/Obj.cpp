@@ -5,12 +5,13 @@
 #include "../Resources/ResourcesManager.h"
 #include "../Resources/Texture.h"
 #include "../Core/Camera.h"
+#include "../Animation/Animation.h"
 
 // static 멤버 사용한다고 선언
 list<CObj*> CObj::m_ObjList;
 
 CObj::CObj() :
-	m_pTexture(NULL), m_bIsPhysics(false), m_fGravityTime(0.f)
+	m_pTexture(NULL), m_bIsPhysics(false), m_fGravityTime(0.f), m_pAnimation(NULL)
 {
 
 }
@@ -20,6 +21,9 @@ CObj::CObj(const CObj & obj)
 	*this = obj;
 
 	m_fGravityTime = 0.f;
+
+	if (obj.m_pAnimation)
+		m_pAnimation = obj.m_pAnimation->Clone();
 
 	if (m_pTexture)
 		m_pTexture->AddRef();
@@ -42,6 +46,7 @@ CObj::CObj(const CObj & obj)
 
 CObj::~CObj()
 {
+	SAFE_RELEASE(m_pAnimation);
 	Safe_Release_VecList(m_ColliderList);
 	SAFE_RELEASE(m_pTexture);
 }
@@ -242,6 +247,26 @@ CObj * CObj::CreateCloneObj(const string & strPrototypeKey, const string & strTa
 	AddObj(pObj);
 
 	return pObj;
+}
+
+CAnimation * CObj::CreateAnimation(const string & strTag)
+{
+	SAFE_RELEASE(m_pAnimation);
+
+	m_pAnimation = new CAnimation;
+
+	m_pAnimation->SetTag(strTag);
+	//m_pAnimation->SetObj(this);
+
+	if (!m_pAnimation->Init())
+	{
+		SAFE_RELEASE(m_pAnimation);
+		return NULL;
+	}
+
+	//m_pAnimation->AddRef();
+
+	return m_pAnimation;
 }
 
 CCollider * CObj::GetCollider(const string & strTag)

@@ -64,6 +64,9 @@
     <Filter Include="01.Core\05.Math">
       <UniqueIdentifier>{5dc91cb1-44e8-4774-ba23-027fde5ed0ef}</UniqueIdentifier>
     </Filter>
+    <Filter Include="06.Animation">
+      <UniqueIdentifier>{c9073cdb-8af6-463b-a59c-0f750bb3276d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -143,6 +146,9 @@
     </ClCompile>
     <ClCompile Include="Collider\ColliderPixel.cpp">
       <Filter>05.Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="Animation\Animation.cpp">
+      <Filter>06.Animation</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -235,6 +241,9 @@
     </ClInclude>
     <ClInclude Include="Collider\ColliderPixel.h">
       <Filter>05.Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="Animation\Animation.h">
+      <Filter>06.Animation</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
