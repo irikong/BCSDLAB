@@ -21,7 +21,12 @@ private:
 
 public:
 	void SetObj(class CObj* pObj) { m_pObj = pObj; }
+
+	void SetClipColorKey(const string& strClip, unsigned char r, unsigned char g, unsigned char b);
+
+	pANIMATIONCLIP GetCurrentClip() const { return m_pCurClip; }
 	void SetCurrentClip(const string& strCurClip);
+
 	void SetDefaultClip(const string& strDefaultClip);
 	void ChangeClip(const string& strClip);
 

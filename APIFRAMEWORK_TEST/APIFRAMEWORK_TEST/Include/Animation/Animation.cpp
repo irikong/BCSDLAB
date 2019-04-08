@@ -3,8 +3,8 @@
 #include "../Resources/ResourcesManager.h"
 #include "../Object/Obj.h"
 
-CAnimation::CAnimation() //:
-	//m_pCurClip(NULL), m_bMotionEnd(false)
+CAnimation::CAnimation() :
+	m_pCurClip(NULL)//, m_bMotionEnd(false)
 {
 }
 
@@ -30,10 +30,10 @@ CAnimation::CAnimation(const CAnimation & anim)
 		}
 	}
 
-	//m_pCurClip = NULL;
+	m_pCurClip = NULL;
 
-	//m_strCurClip = "";
-	//SetCurrentClip(anim.m_strCurClip);*/
+	m_strCurClip = "";
+	SetCurrentClip(anim.m_strCurClip);
 }
 
 
@@ -63,6 +63,19 @@ pANIMATIONCLIP CAnimation::FindClip(const string & strName)
 		return NULL;
 
 	return iter->second;
+}
+
+void CAnimation::SetClipColorKey(const string & strClip, unsigned char r, unsigned char g, unsigned char b)
+{
+	pANIMATIONCLIP pClip = FindClip(strClip);
+
+	if (!pClip)
+		return;
+
+	for (size_t i = 0; i < pClip->vecTexture.size(); ++i)
+	{
+		pClip->vecTexture[i]->SetColorKey(r, g, b);
+	}
 }
 
 void CAnimation::SetCurrentClip(const string & strCurClip)
@@ -119,7 +132,7 @@ bool CAnimation::AddClip(const string & strName, ANIMATION_TYPE eType,
 	pClip->iLengthX = iLengthX;
 	pClip->iLengthY = iLengthY;
 	pClip->fOptionLimitTime = fOptionLimitTime;
-	//pClip->fAnimationFrameTime = fAnimationLimitTime / (iLengthX * iLengthY);
+	pClip->fAnimationFrameTime = fAnimationLimitTime / (iLengthX * iLengthY);
 
 	CTexture* pTex = GET_SINGLE(CResourcesManager)->LoadTexture(strTexKey, pFileName, strPathKey);
 
@@ -140,11 +153,11 @@ bool CAnimation::AddClip(const string & strName, ANIMATION_TYPE eType,
 
 	m_mapClip.insert(make_pair(strName, pClip));
 
-	//if (m_strDefaultClip.empty())
-	//	SetDefaultClip(strName);
+	if (m_strDefaultClip.empty())
+		SetDefaultClip(strName);
 
-	//if (m_strCurClip.empty())
-	//	SetCurrentClip(strName);
+	if (m_strCurClip.empty())
+		SetCurrentClip(strName);
 
 	return true;
 }
@@ -156,7 +169,7 @@ bool CAnimation::Init()
 
 void CAnimation::Update(float fTime)
 {
-	/*m_bMotionEnd = false;
+	//m_bMotionEnd = false;
 	m_pCurClip->fAnimationTime += fTime;
 
 	while (m_pCurClip->fAnimationTime >= m_pCurClip->fAnimationFrameTime)
@@ -199,7 +212,7 @@ void CAnimation::Update(float fTime)
 			if (m_pCurClip->eType == AT_FRAME)
 				m_pObj->SetTexture(m_pCurClip->vecTexture[m_pCurClip->iFrameX]);
 		}
-	}*/
+	}
 }
 
 CAnimation * CAnimation::Clone()

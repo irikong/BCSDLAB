@@ -87,6 +87,7 @@ public:
 	void SetTexture(const string& strKey,
 		const wchar_t* pFileName = NULL,
 		const string& strPathKey = TEXTURE_PATH);
+	void SetColorKey(unsigned char r, unsigned char g, unsigned char b);
 
 	virtual bool Init() = 0;
 	virtual void Input(float fDeltaTime);
@@ -173,4 +174,7 @@ public:
 		int iLengthX, int iLengthY, float fOptionLimitTime,
 		const string& strTexKey, const wchar_t* pFileName,
 		const string& strPathKey = TEXTURE_PATH);
+
+	void SetAnimationClipColorKey(const string& strClip, unsigned char r, unsigned char g, unsigned char b);
+
 };

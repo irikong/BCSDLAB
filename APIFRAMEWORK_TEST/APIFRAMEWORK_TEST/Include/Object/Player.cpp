@@ -50,14 +50,17 @@ bool CPlayer::Init()
 {
 	SetPos(50.f, 50.f);
 	SetSize(100.f, 100.f);
+	// SetSize(256.f, 256.f);
 	SetSpeed(400.f);
 	SetPivot(0.5f, 0.5f);
 
 	SetTexture("Player", L"HOS.bmp");
+	SetColorKey(255, 255, 255);
 
 	CColliderRect* pRC = AddCollider<CColliderRect>("PlayerBody");
 
 	pRC->SetRect(-50.f, -50.f, 50.f, 50.f);
+	// pRC->SetRect(-128.f, -128.f, 128.f, 128.f);
 	pRC->AddCollisionFunction(CS_ENTER, this, &CPlayer::Hit);
 	pRC->AddCollisionFunction(CS_STAY, this, &CPlayer::HitStay);
 
@@ -71,15 +74,15 @@ bool CPlayer::Init()
 
 	CAnimation* pAni = CreateAnimation("PlayerAnimation");
 
-	AddAnimationClip("IdleLeft", AT_ATLAS, AO_LOOP, 1.f, 3, 1,
+	AddAnimationClip("IdleLeft", AT_ATLAS, AO_LOOP, 0.3f, 3, 1,
 		0, 0, 3, 1, 0.f, "PlayerIdleLeft",
 		L"Player/Idle/Left/Player_Idle_Left.bmp");
-	//SetAnimationClipColorKey("IdleLeft", 0, 255, 0);
+	SetAnimationClipColorKey("IdleLeft", 255, 255, 255);
 	
-	AddAnimationClip("IdleRight", AT_ATLAS, AO_LOOP, 1.f, 3, 1,
+	AddAnimationClip("IdleRight", AT_ATLAS, AO_LOOP, 0.3f, 3, 1,
 		0, 0, 3, 1, 0.f, "PlayerIdleRight",
 		L"Player/Idle/Right/Player_Idle_Right.bmp");
-	//SetAnimationClipColorKey("IdleRight", 0, 255, 0);
+	SetAnimationClipColorKey("IdleRight", 255, 255, 255);
 
 	SAFE_RELEASE(pAni);
 

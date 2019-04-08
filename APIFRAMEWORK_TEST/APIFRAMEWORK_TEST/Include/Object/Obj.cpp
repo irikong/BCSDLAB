@@ -123,6 +123,11 @@ void CObj::SetTexture(const string & strKey, const wchar_t * pFileName, const st
 	m_pTexture = GET_SINGLE(CResourcesManager)->LoadTexture(strKey, pFileName, strPathKey);
 }
 
+void CObj::SetColorKey(unsigned char r, unsigned char g, unsigned char b)
+{
+	m_pTexture->SetColorKey(r, g, b);
+}
+
 void CObj::Input(float fDeltaTime)
 {
 
@@ -153,6 +158,10 @@ int CObj::Update(float fDeltaTime)
 		else
 			++iter;
 	}
+
+	if (m_pAnimation)
+		m_pAnimation->Update(fDeltaTime);
+
 	return 0;
 }
 
@@ -194,13 +203,26 @@ void CObj::Render(HDC hDC, float fDeltaTime)
 		POSITION tPos = m_tPos - m_tSize * m_tPivot;
 		tPos -= GET_SINGLE(CCamera)->GetPos();
 
+		POSITION tImagePos;
+
+		if (m_pAnimation)
+		{
+			pANIMATIONCLIP pClip = m_pAnimation->GetCurrentClip();
+
+			if (pClip->eType == AT_ATLAS)
+			{
+				tImagePos.x = pClip->iFrameX * pClip->tFrameSize.x;
+				tImagePos.y = pClip->iFrameY * pClip->tFrameSize.y;
+			}
+		}
+
 		if (m_pTexture->GetColorKeyEnable()) {
 			TransparentBlt(hDC, (int)tPos.x, (int)tPos.y, (int)m_tSize.x, (int)m_tSize.y,
-				m_pTexture->GetDC(), 0, 0, (int)m_tSize.x, (int)m_tSize.y, m_pTexture->GetColorKey());
+				m_pTexture->GetDC(), tImagePos.x, tImagePos.y, (int)m_tSize.x, (int)m_tSize.y, m_pTexture->GetColorKey());
 		}
 		else {
 			BitBlt(hDC, (int)tPos.x, (int)tPos.y, (int)m_tSize.x, (int)m_tSize.y,
-				m_pTexture->GetDC(), 0, 0, SRCCOPY);
+				m_pTexture->GetDC(), tImagePos.x, tImagePos.y, SRCCOPY);
 		}
 	}
 
@@ -300,4 +322,10 @@ bool CObj::AddAnimationClip(const string & strName, ANIMATION_TYPE eType,
 		fOptionLimitTime, strTexKey, pFileName, strPathKey);
 
 	return true;
+}
+
+void CObj::SetAnimationClipColorKey(const string & strClip, unsigned char r, unsigned char g, unsigned char b)
+{
+	if (m_pAnimation)
+		m_pAnimation->SetClipColorKey(strClip, r, g, b);
 }
