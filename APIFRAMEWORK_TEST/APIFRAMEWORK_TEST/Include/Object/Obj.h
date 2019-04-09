@@ -25,6 +25,7 @@ protected:
 	string m_strTag;
 	POSITION m_tPos;
 	_SIZE m_tSize;
+	_SIZE m_tImageOffset;
 	POSITION m_tPivot;
 
 	list<CCollider*> m_ColliderList;
@@ -82,6 +83,9 @@ public:
 		m_tPivot.x = x;
 		m_tPivot.y = y;
 	}
+
+	void SetImageOffset(const _SIZE& tOffset) { m_tImageOffset = tOffset; }
+	void SetImageOffset(float x, float y) { m_tImageOffset.x = x; m_tImageOffset.y = y; }
 
 	void SetTexture(class CTexture* pTexture);
 	void SetTexture(const string& strKey,
@@ -173,6 +177,13 @@ public:
 		int iFrameMaxX, int iFrameMaxY, int iStartX, int iStartY,
 		int iLengthX, int iLengthY, float fOptionLimitTime,
 		const string& strTexKey, const wchar_t* pFileName,
+		const string& strPathKey = TEXTURE_PATH);
+	// Frame 형식으로 추가
+	bool AddAnimationClip(const string& strName, ANIMATION_TYPE eType,
+		ANIMATION_OPTION eOption, float fAnimationLimitTime,
+		int iFrameMaxX, int iFrameMaxY, int iStartX, int iStartY,
+		int iLengthX, int iLengthY, float fOptionLimitTime,
+		const string& strTexKey, const vector<wstring>& vecFileName,
 		const string& strPathKey = TEXTURE_PATH);
 
 	void SetAnimationClipColorKey(const string& strClip, unsigned char r, unsigned char g, unsigned char b);

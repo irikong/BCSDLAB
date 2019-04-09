@@ -20,6 +20,8 @@ private:
 	pANIMATIONCLIP FindClip(const string& strName);
 
 public:
+	bool GetMotionEnd() const { return m_bMotionEnd; }
+
 	void SetObj(class CObj* pObj) { m_pObj = pObj; }
 
 	void SetClipColorKey(const string& strClip, unsigned char r, unsigned char g, unsigned char b);
@@ -29,6 +31,7 @@ public:
 
 	void SetDefaultClip(const string& strDefaultClip);
 	void ChangeClip(const string& strClip);
+	void ReturnClip();
 
 	// Atlas 형식으로 추가
 	bool AddClip(const string& strName, ANIMATION_TYPE eType,
@@ -36,6 +39,13 @@ public:
 		int iFrameMaxX, int iFrameMaxY, int iStartX, int iStartY,
 		int iLengthX, int iLengthY, float fOptionLimitTime,
 		const string& strTexKey, const wchar_t* pFileName,
+		const string& strPathKey = TEXTURE_PATH);
+	// Frame 형식으로 추가
+	bool AddClip(const string& strName, ANIMATION_TYPE eType,
+		ANIMATION_OPTION eOption, float fAnimationLimitTime,
+		int iFrameMaxX, int iFrameMaxY, int iStartX, int iStartY,
+		int iLengthX, int iLengthY, float fOptionLimitTime,
+		const string& strTexKey, const vector<wstring>& vecFileName,
 		const string& strPathKey = TEXTURE_PATH);
 
 	bool Init();

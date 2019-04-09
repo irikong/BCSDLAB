@@ -4,7 +4,7 @@
 #include "../Object/Obj.h"
 
 CAnimation::CAnimation() :
-	m_pCurClip(NULL)//, m_bMotionEnd(false)
+	m_pCurClip(NULL), m_bMotionEnd(false)
 {
 }
 
@@ -12,7 +12,7 @@ CAnimation::CAnimation(const CAnimation & anim)
 {
 	*this = anim;
 	
-	//m_bMotionEnd = false;
+	m_bMotionEnd = false;
 	m_mapClip.clear();
 
 	unordered_map<string, pANIMATIONCLIP>::const_iterator	iter;
@@ -114,6 +114,7 @@ void CAnimation::ChangeClip(const string & strClip)
 		m_pObj->SetTexture(m_pCurClip->vecTexture[m_pCurClip->iFrameX]);
 }
 
+// Atlas
 bool CAnimation::AddClip(const string & strName, ANIMATION_TYPE eType,
 	ANIMATION_OPTION eOption, float fAnimationLimitTime, int iFrameMaxX,
 	int iFrameMaxY, int iStartX, int iStartY, int iLengthX, int iLengthY,
@@ -136,8 +137,8 @@ bool CAnimation::AddClip(const string & strName, ANIMATION_TYPE eType,
 
 	CTexture* pTex = GET_SINGLE(CResourcesManager)->LoadTexture(strTexKey, pFileName, strPathKey);
 
-	//pClip->tFrameSize.x = pTex->GetWidth() / iFrameMaxX;
-	//pClip->tFrameSize.y = pTex->GetHeight() / iFrameMaxY;
+	pClip->tFrameSize.x = (float)(pTex->GetWidth()) / iFrameMaxX;
+	pClip->tFrameSize.y = (float)(pTex->GetHeight()) / iFrameMaxY;
 
 	pClip->vecTexture.push_back(pTex);
 
@@ -161,6 +162,60 @@ bool CAnimation::AddClip(const string & strName, ANIMATION_TYPE eType,
 
 	return true;
 }
+// Frame
+bool CAnimation::AddClip(const string & strName, ANIMATION_TYPE eType,
+	ANIMATION_OPTION eOption, float fAnimationLimitTime, int iFrameMaxX,
+	int iFrameMaxY, int iStartX, int iStartY, int iLengthX, int iLengthY,
+	float fOptionLimitTime, const string & strTexKey,
+	const vector<wstring>& vecFileName, const string & strPathKey)
+{
+	pANIMATIONCLIP pClip = new ANIMATIONCLIP;
+
+	pClip->eType = eType;
+	pClip->eOption = eOption;
+	pClip->fAnimationLimitTime = fAnimationLimitTime;
+	pClip->iFrameMaxX = iFrameMaxX;
+	pClip->iFrameMaxY = iFrameMaxY;
+	pClip->iStartX = iStartX;
+	pClip->iStartY = iStartY;
+	pClip->iLengthX = iLengthX;
+	pClip->iLengthY = iLengthY;
+	pClip->fOptionLimitTime = fOptionLimitTime;
+	pClip->fAnimationFrameTime = fAnimationLimitTime / (iLengthX * iLengthY);
+
+	for (size_t i = 0; i < vecFileName.size(); ++i)
+	{
+		char strKey[256] = {};
+		sprintf_s(strKey, "%s%d", strTexKey.c_str(), i + 1);
+		CTexture* pTex = GET_SINGLE(CResourcesManager)->LoadTexture(strKey,
+			vecFileName[i].c_str(), strPathKey);
+
+		pClip->vecTexture.push_back(pTex);
+	}
+
+	pClip->tFrameSize.x = (float)(pClip->vecTexture[0]->GetWidth()) / iFrameMaxX;
+	pClip->tFrameSize.y = (float)(pClip->vecTexture[0]->GetHeight()) / iFrameMaxY;
+
+	pClip->fAnimationTime = 0.f;
+	pClip->iFrameX = iStartX;
+	pClip->iFrameY = iStartY;
+	pClip->fOptionTime = 0.f;
+
+	m_mapClip.insert(make_pair(strName, pClip));
+
+	if (m_strDefaultClip.empty())
+		SetDefaultClip(strName);
+
+	if (m_strCurClip.empty())
+		SetCurrentClip(strName);
+
+	return true;
+}
+
+void CAnimation::ReturnClip() // default clip으로 돌아감
+{
+	ChangeClip(m_strDefaultClip);
+}
 
 bool CAnimation::Init()
 {
@@ -169,7 +224,7 @@ bool CAnimation::Init()
 
 void CAnimation::Update(float fTime)
 {
-	//m_bMotionEnd = false;
+	m_bMotionEnd = false;
 	m_pCurClip->fAnimationTime += fTime;
 
 	while (m_pCurClip->fAnimationTime >= m_pCurClip->fAnimationFrameTime)

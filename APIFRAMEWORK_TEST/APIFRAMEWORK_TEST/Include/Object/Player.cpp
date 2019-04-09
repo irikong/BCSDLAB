@@ -21,7 +21,7 @@ CPlayer::~CPlayer()
 
 void CPlayer::Fire()
 {
-	//m_bAttack = true;
+	m_bAttack = true;
 
 	CObj* pBullet = CObj::CreateCloneObj("Bullet", "PlayerBullet", m_pLayer);
 	
@@ -30,18 +30,18 @@ void CPlayer::Fire()
 	// 오른쪽 가운데를 구한다.
 	POSITION tPos;
 	//pBullet->SetPos(m_tPos.x + m_tSize.x, (m_tPos.y + m_tPos.y + m_tSize.y) / 2.f - pBullet->GetSize().y / 2.f);
-	//if (m_iDir == -1)
-		//tPos.x = GetLeft() - pBullet->GetSize().x * (1.f - pBullet->GetPivot().x);
+	if (m_iDir == -1)
+		tPos.x = GetLeft() - pBullet->GetSize().x * (1.f - pBullet->GetPivot().x);
 
-	//else
-		//tPos.x = GetRight() + pBullet->GetSize().x * pBullet->GetPivot().x;
-	tPos.x = GetRight() + pBullet->GetSize().x * pBullet->GetPivot().x;
+	else
+		tPos.x = GetRight() + pBullet->GetSize().x * pBullet->GetPivot().x;
+
 	tPos.y = GetCenter().y;
 
 	pBullet->SetPos(tPos);
 
-	//if (m_iDir == -1)
-		//((CMoveObj*)pBullet)->SetAngle(PI);
+	if (m_iDir == -1)
+		((CMoveObj*)pBullet)->SetAngle(PI);
 
 	SAFE_RELEASE(pBullet);
 }
@@ -53,6 +53,7 @@ bool CPlayer::Init()
 	// SetSize(256.f, 256.f);
 	SetSpeed(400.f);
 	SetPivot(0.5f, 0.5f);
+	SetImageOffset(0.f, 0.f);
 
 	SetTexture("Player", L"HOS.bmp");
 	SetColorKey(255, 255, 255);
@@ -74,17 +75,47 @@ bool CPlayer::Init()
 
 	CAnimation* pAni = CreateAnimation("PlayerAnimation");
 
-	AddAnimationClip("IdleLeft", AT_ATLAS, AO_LOOP, 0.3f, 3, 1,
-		0, 0, 3, 1, 0.f, "PlayerIdleLeft",
-		L"Player/Idle/Left/Player_Idle_Left.bmp");
-	SetAnimationClipColorKey("IdleLeft", 255, 255, 255);
-	
 	AddAnimationClip("IdleRight", AT_ATLAS, AO_LOOP, 0.3f, 3, 1,
-		0, 0, 3, 1, 0.f, "PlayerIdleRight",
-		L"Player/Idle/Right/Player_Idle_Right.bmp");
+		0, 0, 3, 1, 0.f, "PlayerIdleRight", L"Player/Idle/Right/Player_Idle_Right.bmp");
 	SetAnimationClipColorKey("IdleRight", 255, 255, 255);
 
+	AddAnimationClip("IdleLeft", AT_ATLAS, AO_LOOP, 0.3f, 3, 1,
+		0, 0, 3, 1, 0.f, "PlayerIdleLeft", L"Player/Idle/Left/Player_Idle_Left.bmp");
+	SetAnimationClipColorKey("IdleLeft", 255, 255, 255);
+
+	AddAnimationClip("RunRight", AT_ATLAS, AO_ONCE_RETURN, 0.3f, 3, 1,
+		0, 0, 3, 1, 0.f, "PlayerRunRight", L"Player/Run/Right/Player_Run_Right.bmp");
+	SetAnimationClipColorKey("RunRight", 255, 255, 255);
+
+	AddAnimationClip("RunLeft", AT_ATLAS, AO_ONCE_RETURN, 0.3f, 3, 1,
+		0, 0, 3, 1, 0.f, "PlayerRunLeft", L"Player/Run/Left/Player_Run_Left.bmp");
+	SetAnimationClipColorKey("RunLeft", 255, 255, 255);
+
+	AddAnimationClip("NormalAttackRight", AT_ATLAS, AO_ONCE_RETURN, 1.f, 1, 1,
+		0, 0, 1, 1, 0.f, "PlayerNormalAttackRight",
+		L"Player/NormalAttack/Right/Player_NormalAttack_Right.bmp");
+	SetAnimationClipColorKey("NormalAttackRight", 0, 255, 0);
+
+	//AddAnimationClip("NormalAttackLeft", AT_ATLAS, AO_ONCE_RETURN, 1.f, 1, 1,
+	//	0, 0, 1, 1, 0.f, "PlayerNormalAttackLeft",
+	//	L"Player/NormalAttack/Right/Player_NormalAttack_Left.bmp");
+	//SetAnimationClipColorKey("NormalAttackLeft", 0, 255, 0);
+
+	// Frame 방식
+	vector<wstring> vecFileName;
+	for (int i = 1; i <= 1; ++i)
+	{
+		wchar_t strFileName[MAX_PATH] = {};
+		wsprintf(strFileName, L"Player/NormalAttack/Left/%d.bmp", i);
+		vecFileName.push_back(strFileName);
+	}
+	AddAnimationClip("NormalAttackLeft", AT_FRAME, AO_ONCE_RETURN, 1.f, 1, 1,
+		0, 0, 1, 1, 0.f, "PlayerNormalAttackLeft", vecFileName);
+	SetAnimationClipColorKey("NormalAttackLeft", 0, 255, 0);
+
 	SAFE_RELEASE(pAni);
+
+	m_iDir = 1;
 
 	return true;
 }
@@ -107,16 +138,28 @@ void CPlayer::Input(float fDeltaTime)
 	if (KEYPRESS("MoveLeft")) // GetAsyncKeyState('A') & 0x8000
 	{
 		MoveXFromSpeed(fDeltaTime, MD_BACK);
+		m_pAnimation->ChangeClip("RunLeft");
+		m_iDir = -1;
+		m_pAnimation->SetDefaultClip("IdleLeft");
 	}
 
 	if (KEYPRESS("MoveRight")) // GetAsyncKeyState('D') & 0x8000
 	{
 		MoveXFromSpeed(fDeltaTime, MD_FRONT);
+		m_pAnimation->ChangeClip("RunRight");
+		m_iDir = 1;
+		m_pAnimation->SetDefaultClip("IdleRight");
 	}
 
 	if (KEYDOWN("Fire")) // GetAsyncKeyState(VK_SPACE) & 0x8000
 	{
 		Fire();
+
+		if (m_iDir == -1)
+			m_pAnimation->ChangeClip("NormalAttackLeft");
+
+		else
+			m_pAnimation->ChangeClip("NormalAttackRight");
 	}
 
 	if (KEYDOWN("Skill1"))
@@ -128,6 +171,13 @@ void CPlayer::Input(float fDeltaTime)
 int CPlayer::Update(float fDeltaTime)
 {
 	CMoveObj::Update(fDeltaTime);
+
+	if (m_bAttack && m_pAnimation->GetMotionEnd())
+		m_bAttack = false;
+
+	if (!m_bMove && !m_bAttack)
+		m_pAnimation->ReturnClip();
+
 	return 0;
 }
 
@@ -150,6 +200,7 @@ void CPlayer::Render(HDC hDC, float fDeltaTime)
 	POSITION tPos = m_tPos - m_tSize * m_tPivot;
 	tPos -= GET_SINGLE(CCamera)->GetPos();
 	TextOut(hDC, (int)tPos.x, (int)tPos.y, strHP, lstrlen(strHP));
+
 	//Rectangle(hDC, (int)m_tPos.x, (int)m_tPos.y, (int)(m_tPos.x + m_tSize.x), (int)(m_tPos.y + m_tSize.y));
 }
 

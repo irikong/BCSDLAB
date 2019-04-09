@@ -101,11 +101,11 @@ bool CCollider::CollisionRectToPixel(const RECTANGLE & src, const vector<PIXEL>&
 	int iStartX, iEndX;
 	int iStartY, iEndY;
 
-	iStartX = (src.l < 0) ? 0 : src.l;
-	iEndX = (src.r >= iWidth) ? (iWidth - 1) : src.r;
+	iStartX = (src.l < 0) ? 0 : (int)src.l;
+	iEndX = (src.r >= iWidth) ? (iWidth - 1) : (int)src.r;
 
-	iStartY = (src.t < 0) ? 0 : src.t;
-	iEndY = (src.b >= iHeight) ? (iHeight - 1) : src.b;
+	iStartY = (src.t < 0) ? 0 : (int)src.t;
+	iEndY = (src.b >= iHeight) ? (iHeight - 1) : (int)src.b;
 
 	for (int i = iStartY; i <= iEndY; ++i)
 	{
@@ -115,8 +115,8 @@ bool CCollider::CollisionRectToPixel(const RECTANGLE & src, const vector<PIXEL>&
 			const PIXEL& pixel = vecPixel[idx];
 			if (pixel.r == 255 && pixel.g == 0 && pixel.b == 255)
 			{
-				m_tHitPoint.x = j;
-				m_tHitPoint.y = i;
+				m_tHitPoint.x = (float)j;
+				m_tHitPoint.y = (float)i;
 				return true;
 			}
 		}

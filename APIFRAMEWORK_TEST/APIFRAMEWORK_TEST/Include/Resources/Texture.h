@@ -24,8 +24,8 @@ public:
 	COLORREF GetColorKey() const { return m_ColorKey; }
 
 	bool GetColorKeyEnable() const { return m_bColorKeyEnable; }
-	//long GetWidth() const { return m_tInfo.bmWidth; }
-	//long GetHeight() const { return m_tInfo.bmHeight; }
+	long GetWidth() const { return m_tInfo.bmWidth; }
+	long GetHeight() const { return m_tInfo.bmHeight; }
 
 	bool LoadTexture(HINSTANCE hInst, HDC hDC, const string& strKey, const wchar_t* pFileName, const string& strPathKey = TEXTURE_PATH);
 	HDC GetDC() const { return m_hMemDC; }

@@ -8,9 +8,8 @@ protected:
 	CMoveObj(const CMoveObj& obj);
 	virtual ~CMoveObj();
 
-private:
-	float m_fAngle;
-	float m_fSpeed;
+	float		m_fAngle;
+	float		m_fSpeed;
 	float		m_fForce;
 	float		m_fForceOrigin;
 	bool		m_bMove;

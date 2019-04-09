@@ -216,13 +216,15 @@ void CObj::Render(HDC hDC, float fDeltaTime)
 			}
 		}
 
+		tImagePos += m_tImageOffset;
+
 		if (m_pTexture->GetColorKeyEnable()) {
 			TransparentBlt(hDC, (int)tPos.x, (int)tPos.y, (int)m_tSize.x, (int)m_tSize.y,
-				m_pTexture->GetDC(), tImagePos.x, tImagePos.y, (int)m_tSize.x, (int)m_tSize.y, m_pTexture->GetColorKey());
+				m_pTexture->GetDC(), (int)tImagePos.x, (int)tImagePos.y, (int)m_tSize.x, (int)m_tSize.y, m_pTexture->GetColorKey());
 		}
 		else {
 			BitBlt(hDC, (int)tPos.x, (int)tPos.y, (int)m_tSize.x, (int)m_tSize.y,
-				m_pTexture->GetDC(), tImagePos.x, tImagePos.y, SRCCOPY);
+				m_pTexture->GetDC(), (int)tImagePos.x, (int)tImagePos.y, SRCCOPY);
 		}
 	}
 
@@ -307,7 +309,7 @@ CCollider * CObj::GetCollider(const string & strTag)
 
 	return NULL;
 }
-
+// Atlas
 bool CObj::AddAnimationClip(const string & strName, ANIMATION_TYPE eType,
 	ANIMATION_OPTION eOption, float fAnimationLimitTime, int iFrameMaxX,
 	int iFrameMaxY, int iStartX, int iStartY, int iLengthX, int iLengthY,
@@ -320,6 +322,22 @@ bool CObj::AddAnimationClip(const string & strName, ANIMATION_TYPE eType,
 	m_pAnimation->AddClip(strName, eType, eOption, fAnimationLimitTime,
 		iFrameMaxX, iFrameMaxY, iStartX, iStartY, iLengthX, iLengthY,
 		fOptionLimitTime, strTexKey, pFileName, strPathKey);
+
+	return true;
+}
+// Frame
+bool CObj::AddAnimationClip(const string & strName, ANIMATION_TYPE eType,
+	ANIMATION_OPTION eOption, float fAnimationLimitTime, int iFrameMaxX,
+	int iFrameMaxY, int iStartX, int iStartY, int iLengthX, int iLengthY,
+	float fOptionLimitTime, const string & strTexKey,
+	const vector<wstring>& vecFileName, const string & strPathKey)
+{
+	if (!m_pAnimation)
+		return false;
+
+	m_pAnimation->AddClip(strName, eType, eOption, fAnimationLimitTime,
+		iFrameMaxX, iFrameMaxY, iStartX, iStartY, iLengthX, iLengthY,
+		fOptionLimitTime, strTexKey, vecFileName, strPathKey);
 
 	return true;
 }
