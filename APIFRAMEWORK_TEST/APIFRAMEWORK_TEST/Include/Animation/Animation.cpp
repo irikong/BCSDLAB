@@ -147,11 +147,6 @@ bool CAnimation::AddClip(const string & strName, ANIMATION_TYPE eType,
 	pClip->iFrameY = iStartY;
 	pClip->fOptionTime = 0.f;
 
-	if (m_mapClip.empty()) {
-		SetDefaultClip(strName);
-		SetCurrentClip(strName);
-	}
-
 	m_mapClip.insert(make_pair(strName, pClip));
 
 	if (m_strDefaultClip.empty())
