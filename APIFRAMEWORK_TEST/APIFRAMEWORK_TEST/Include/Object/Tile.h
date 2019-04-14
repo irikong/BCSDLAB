@@ -1,17 +1,15 @@
 #pragma once
 #include "StaticObj.h"
-class CStage :
+class CTile :
 	public CStaticObj
 {
 private:
 	friend class CObj;
-	friend class CScene;
+	friend class CStage;
 
-	CStage();
-	CStage(const CStage& stage);
-	~CStage();
-
-	vector<class CTile*> m_vecTile;
+	CTile();
+	CTile(const CTile& tile);
+	~CTile();
 
 public:
 	virtual bool	Init();
@@ -20,5 +18,5 @@ public:
 	virtual int		LateUpdate(float fDeltaTime);
 	virtual void	Collision(float fDeltaTime);
 	virtual void	Render(HDC hDC, float fDeltaTime);
-	virtual CStage*	Clone();
+	virtual CTile*	Clone();
 };

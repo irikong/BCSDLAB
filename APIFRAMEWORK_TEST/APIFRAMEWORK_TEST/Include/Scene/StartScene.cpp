@@ -8,6 +8,7 @@
 #include "../Core.h"
 #include "SceneManager.h"
 #include "InGameScene.h"
+#include "MapEditScene.h"
 
 CStartScene::CStartScene()
 {
@@ -43,16 +44,36 @@ bool CStartScene::Init()
 
 	CColliderRect* pRC = (CColliderRect*)pStartBtn->GetCollider("ButtonBody");
 
-	POSITION tPos = pStartBtn->GetPos();
 	pRC->SetRect(0.f, 0.f, 200, 100);
-	pRC->AddCollisionFunction(CS_ENTER, pStartBtn, &CUIButton::MouseOn);
-	pRC->AddCollisionFunction(CS_LEAVE, pStartBtn, &CUIButton::MouseOut);
+	//pRC->AddCollisionFunction(CS_ENTER, pStartBtn, &CUIButton::MouseOn);
+	//pRC->AddCollisionFunction(CS_LEAVE, pStartBtn, &CUIButton::MouseOut);
 
 	SAFE_RELEASE(pRC);
 
 	pStartBtn->SetCallback(this, &CStartScene::StartButtonCallback);
 
 	SAFE_RELEASE(pStartBtn);
+
+
+	// Edit 버튼
+
+	CUIButton* pEditBtn = CObj::CreateObj<CUIButton>("EditButton", pLayer);
+
+	pEditBtn->SetPos((float)GETRESOLUTION.iW / 2 - 100, (float)GETRESOLUTION.iH / 2 - 50);
+	pEditBtn->SetSize(200, 100);
+	pEditBtn->SetTexture("StartButton", L"StartButton.bmp");
+
+	pRC = (CColliderRect*)pEditBtn->GetCollider("ButtonBody");
+
+	pRC->SetRect(0.f, 0.f, 200, 100);
+
+	SAFE_RELEASE(pRC);
+
+	pEditBtn->SetCallback(this, &CStartScene::EditButtonCallback);
+
+	SAFE_RELEASE(pEditBtn);
+
+	
 
 	// 시작화면 종료버튼
 	CUIButton* pEndBtn = CObj::CreateObj<CUIButton>("EndButton", pLayer);
@@ -63,10 +84,9 @@ bool CStartScene::Init()
 
 	pRC = (CColliderRect*)pEndBtn->GetCollider("ButtonBody");
 
-	tPos = pEndBtn->GetPos();
 	pRC->SetRect(0.f, 0.f, 200, 100);
-	pRC->AddCollisionFunction(CS_ENTER, pEndBtn, &CUIButton::MouseOn);
-	pRC->AddCollisionFunction(CS_LEAVE, pEndBtn, &CUIButton::MouseOut);
+	//pRC->AddCollisionFunction(CS_ENTER, pEndBtn, &CUIButton::MouseOn);
+	//pRC->AddCollisionFunction(CS_LEAVE, pEndBtn, &CUIButton::MouseOut);
 
 	SAFE_RELEASE(pRC);
 
@@ -85,4 +105,9 @@ void CStartScene::StartButtonCallback(float fTime)
 void CStartScene::EndButtonCallback(float fTime)
 {
 	GET_SINGLE(CCore)->DestroyGame();
+}
+
+void CStartScene::EditButtonCallback(float fTime)
+{
+	GET_SINGLE(CSceneManager)->CreateScene<CMapEditScene>(SC_NEXT);
 }
