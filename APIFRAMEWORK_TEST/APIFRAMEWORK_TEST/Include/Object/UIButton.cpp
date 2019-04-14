@@ -43,7 +43,7 @@ int CUIButton::LateUpdate(float fDeltaTime)
 {
 	CUI::LateUpdate(fDeltaTime);
 
-	/*if (m_eState != BS_NONE)
+	if (m_eState != BS_NONE)
 	{
 		if (KEYPRESS("MouseLButton"))
 		{
@@ -58,7 +58,7 @@ int CUIButton::LateUpdate(float fDeltaTime)
 		SetImageOffset(m_tSize.x, 0.f);
 		if (m_bEnableCallback)
 			m_BtnCallback(fDeltaTime);
-	}*/
+	}
 
 	return 0;
 }
@@ -80,18 +80,18 @@ CUIButton * CUIButton::Clone()
 
 void CUIButton::MouseOn(CCollider * pSrc, CCollider * pDest, float fDeltaTime)
 {
-	/*if (pDest->GetTag() == "Mouse")
+	if (pDest->GetTag() == "Mouse")
 	{
 		m_eState = BS_MOUSEON;
 		SetImageOffset(m_tSize.x, 0.f);
-	}*/
+	}
 }
 
 void CUIButton::MouseOut(CCollider * pSrc, CCollider * pDest, float fDeltaTime)
 {
-	/*if (pDest->GetTag() == "Mouse")
+	if (pDest->GetTag() == "Mouse")
 	{
 		m_eState = BS_NONE;
 		SetImageOffset(0.f, 0.f);
-	}*/
+	}
 }

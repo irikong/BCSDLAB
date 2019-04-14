@@ -112,30 +112,32 @@ void CCore::Logic()
 	float fDeltaTime = GET_SINGLE(CTimer)->GetDeltaTime();
 
 	Input(fDeltaTime);
-	Update(fDeltaTime);
-	LateUpdate(fDeltaTime);
+	if (Update(fDeltaTime) == SC_CHANGE) return;
+	if (LateUpdate(fDeltaTime) == SC_CHANGE) return;
 	Collision(fDeltaTime);
 	Render(fDeltaTime);
 }
 
 void CCore::Input(float fDeltaTime)
 {
+	GET_SINGLE(CInput)->Update(fDeltaTime);
+
 	GET_SINGLE(CSceneManager)->Input(fDeltaTime);
 	GET_SINGLE(CCamera)->Input(fDeltaTime);
 }
 
 int CCore::Update(float fDeltaTime)
 {
-	GET_SINGLE(CInput)->Update(fDeltaTime);
-
-	GET_SINGLE(CSceneManager)->Update(fDeltaTime);
+	SCENE_CHANGE sc;
+	sc = GET_SINGLE(CSceneManager)->Update(fDeltaTime);
 	GET_SINGLE(CCamera)->Update(fDeltaTime);
-	return 0;
+	return sc;
 }
 
 int CCore::LateUpdate(float fDeltaTime)
 {
-	GET_SINGLE(CSceneManager)->LateUpdate(fDeltaTime);
+	SCENE_CHANGE sc;
+	sc = GET_SINGLE(CSceneManager)->LateUpdate(fDeltaTime);
 	return 0;
 }
 

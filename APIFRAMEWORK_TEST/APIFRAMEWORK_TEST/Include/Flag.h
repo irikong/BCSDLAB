@@ -3,7 +3,8 @@
 // Scene Type
 enum SCENE_CREATE {
 	SC_CURRENT,
-	SC_NEXT
+	SC_NEXT,
+	SC_END
 };
 
 // Direction
@@ -49,4 +50,10 @@ enum ANIMATION_OPTION
 	AO_ONCE_DESTROY, // 모션 후 삭제
 	AO_TIME_RETURN, // 일정 시간 후 디폴트로 돌아감 
 	AO_TIME_DESTROY // 일정 시간 후 삭제
+};
+
+enum SCENE_CHANGE
+{
+	SC_NONE,
+	SC_CHANGE
 };

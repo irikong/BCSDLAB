@@ -35,8 +35,7 @@ bool CInGameScene::Init()
 	SAFE_RELEASE(pMinion);
 
 	// 총알 프로토타입을 만들어준다.
-	CBullet* pBullet = CScene::CreatePrototype<CBullet>("Bullet");
-	//CBullet* pBullet = CScene::CreatePrototype<CBullet>("Bullet", m_eSceneType);
+	CBullet* pBullet = CScene::CreatePrototype<CBullet>("Bullet", m_eSceneType);
 
 	pBullet->SetSize(50.f, 50.f);
 

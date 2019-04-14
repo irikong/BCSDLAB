@@ -167,7 +167,7 @@ public:
 
 	bool CheckCollider() { return !m_ColliderList.empty(); }
 
-	static CObj* CreateCloneObj(const string& strPrototypeKey, const string& strTag, class CLayer* pLayer = NULL);
+	static CObj* CreateCloneObj(const string& strPrototypeKey, const string& strTag, SCENE_CREATE sc, class CLayer* pLayer = NULL);
 
 	class CAnimation* CreateAnimation(const string& strTag);
 	
