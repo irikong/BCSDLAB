@@ -2,7 +2,7 @@
 #include "../Object/Mouse.h"
 #include "../Animation/Animation.h"
 #include "../Scene/Layer.h"
-//#include "../Collider/CollisionManager.h"
+#include "../Collider/CollisionManager.h"
 
 DEFINITION_SINGLE(CInput)
 
@@ -14,7 +14,7 @@ CInput::CInput() :
 
 CInput::~CInput()
 {
-	//CObj::EraseObj(m_pMouse);
+	CObj::EraseObj(m_pMouse);
 	SAFE_RELEASE(m_pMouse);
 	Safe_Delete_Map(m_mapKey);
 }
@@ -109,7 +109,7 @@ void CInput::Update(float fDeltaTime)
 	m_pMouse->Update(fDeltaTime);
 	m_pMouse->LateUpdate(fDeltaTime);
 
-	//GET_SINGLE(CCollisionManager)->AddObject(m_pMouse);
+	GET_SINGLE(CCollisionManager)->AddObject(m_pMouse);
 }
 
 bool CInput::KeyDown(const string & strKey) const

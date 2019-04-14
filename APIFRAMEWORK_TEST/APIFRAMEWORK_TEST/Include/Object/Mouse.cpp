@@ -1,6 +1,6 @@
 #include "Mouse.h"
 #include "../Core.h"
-//#include "../Collider/ColliderPoint.h"
+#include "../Collider/ColliderPoint.h"
 
 CMouse::CMouse()
 {
@@ -28,9 +28,9 @@ bool CMouse::Init()
 
 	m_tPos = pt;
 
-	//CColliderPoint* pColl = AddCollider<CColliderPoint>("Mouse");
+	CColliderPoint* pColl = AddCollider<CColliderPoint>("Mouse");
 
-	//SAFE_RELEASE(pColl);
+	SAFE_RELEASE(pColl);
 
 	return true;
 }

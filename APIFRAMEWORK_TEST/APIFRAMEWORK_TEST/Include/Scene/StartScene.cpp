@@ -44,16 +44,13 @@ bool CStartScene::Init()
 	CColliderRect* pRC = (CColliderRect*)pStartBtn->GetCollider("ButtonBody");
 
 	POSITION tPos = pStartBtn->GetPos();
-	//pRC->SetRect(0.f, 0.f, 200, 100);
-	pRC->SetRect(tPos.x, tPos.y, tPos.x + 200, tPos.y + 100);
-	//pRC->AddCollisionFunction(CS_ENTER, pStartBtn,
-	//	&CUIButton::MouseOn);
-	//pRC->AddCollisionFunction(CS_LEAVE, pStartBtn,
-	//	&CUIButton::MouseOut);
+	pRC->SetRect(0.f, 0.f, 200, 100);
+	pRC->AddCollisionFunction(CS_ENTER, pStartBtn, &CUIButton::MouseOn);
+	pRC->AddCollisionFunction(CS_LEAVE, pStartBtn, &CUIButton::MouseOut);
 
 	SAFE_RELEASE(pRC);
 
-	//pStartBtn->SetCallback(this, &CStartScene::StartButtonCallback);
+	pStartBtn->SetCallback(this, &CStartScene::StartButtonCallback);
 
 	SAFE_RELEASE(pStartBtn);
 
@@ -67,16 +64,13 @@ bool CStartScene::Init()
 	pRC = (CColliderRect*)pEndBtn->GetCollider("ButtonBody");
 
 	tPos = pEndBtn->GetPos();
-	//pRC->SetRect(0.f, 0.f, 200, 100);
-	pRC->SetRect(tPos.x, tPos.y, tPos.x + 200, tPos.y + 100);
-	//pRC->AddCollisionFunction(CS_ENTER, pEndBtn,
-	//	&CUIButton::MouseOn);
-	//pRC->AddCollisionFunction(CS_LEAVE, pEndBtn,
-	//	&CUIButton::MouseOut);
+	pRC->SetRect(0.f, 0.f, 200, 100);
+	pRC->AddCollisionFunction(CS_ENTER, pEndBtn, &CUIButton::MouseOn);
+	pRC->AddCollisionFunction(CS_LEAVE, pEndBtn, &CUIButton::MouseOut);
 
 	SAFE_RELEASE(pRC);
 
-	//pEndBtn->SetCallback(this, &CStartScene::EndButtonCallback);
+	pEndBtn->SetCallback(this, &CStartScene::EndButtonCallback);
 
 	SAFE_RELEASE(pEndBtn);
 
@@ -90,5 +84,5 @@ void CStartScene::StartButtonCallback(float fTime)
 
 void CStartScene::EndButtonCallback(float fTime)
 {
-	//GET_SINGLE(CCore)->DestroyGame();
+	GET_SINGLE(CCore)->DestroyGame();
 }

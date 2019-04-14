@@ -21,14 +21,10 @@ protected:
 	bool CollisionRectToSphere(const RECTANGLE& src, const SPHERE& dest);
 	bool CollisionSphereToSphere(const SPHERE& src, const SPHERE& dest);
 	bool CollisionRectToPixel(const RECTANGLE& src, const vector<PIXEL>& vecPixel, int iWidth, int iHeight);
-	/*bool CollisionSphereToPixel(const SPHERE& src,
-		const vector<PIXEL>& vecPixel, int iWidth, int iHeight);
-	bool CollisionRectToPoint(const RECTANGLE& src,
-		const POSITION& dest);
-	bool CollisionSphereToPoint(const SPHERE& src,
-		const POSITION& dest);
-	bool CollisionPixelToPoint(const vector<PIXEL> vecPixel,
-		int iWidth, int iHeight, const POSITION& dest);*/
+	bool CollisionSphereToPixel(const SPHERE& src, const vector<PIXEL>& vecPixel, int iWidth, int iHeight);
+	bool CollisionRectToPoint(const RECTANGLE& src, const POSITION& dest);
+	bool CollisionSphereToPoint(const SPHERE& src, const POSITION& dest);
+	bool CollisionPixelToPoint(const vector<PIXEL> vecPixel, int iWidth, int iHeight, const POSITION& dest);
 
 public:
 	COLLLIDER_TYPE GetColliderType() const { return m_eCollType; }

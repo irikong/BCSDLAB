@@ -32,6 +32,11 @@ public:
 
 	HWND GetWindowHandle() const { return m_hWnd; }
 
+	void DestroyGame() // 창 삭제
+	{
+		DestroyWindow(m_hWnd); // 실패할 경우 0 반환
+	}
+
 	bool Init(HINSTANCE hInst);
 	int Run();
 
