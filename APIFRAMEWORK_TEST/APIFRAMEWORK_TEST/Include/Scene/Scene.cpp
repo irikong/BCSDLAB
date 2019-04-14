@@ -7,6 +7,7 @@ unordered_map<string, CObj*> CScene::m_mapPrototype;
 CScene::CScene()
 {
 	CLayer* pLayer = CreateLayer("UI", INT_MAX); // iZOrder = INT_MAX로 항상 뒤로 가게합니다.
+	pLayer = CreateLayer("HUD", INT_MAX - 1);
 	pLayer = CreateLayer("Default", 1);
 	pLayer = CreateLayer("Stage");
 }

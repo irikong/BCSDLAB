@@ -67,6 +67,9 @@
     <Filter Include="06.Animation">
       <UniqueIdentifier>{c9073cdb-8af6-463b-a59c-0f750bb3276d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03.Object\01.MoveObj\04.UI">
+      <UniqueIdentifier>{10d005e0-e896-4f2e-88ed-92b1a44e556e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -149,6 +152,15 @@
     </ClCompile>
     <ClCompile Include="Animation\Animation.cpp">
       <Filter>06.Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\UI.cpp">
+      <Filter>03.Object\01.MoveObj\04.UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\UIPanel.cpp">
+      <Filter>03.Object\01.MoveObj\04.UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\StartScene.cpp">
+      <Filter>02.Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -244,6 +256,15 @@
     </ClInclude>
     <ClInclude Include="Animation\Animation.h">
       <Filter>06.Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\StartScene.h">
+      <Filter>02.Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\UI.h">
+      <Filter>03.Object\01.MoveObj\04.UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\UIPanel.h">
+      <Filter>03.Object\01.MoveObj\04.UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

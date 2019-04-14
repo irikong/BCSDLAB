@@ -44,12 +44,12 @@ void CTimer::Update()
 		m_fFPSTime = 0.f;
 		m_iFrame = 0;
 
-#ifdef _DEBUG
+//#ifdef _DEBUG
 		char strFPS[64] = {};
 		sprintf_s(strFPS, "FPS : %.f\n", m_fFPS);
 		// _cprintf(strFPS); // 콘솔창에 fps 출력
 		SetWindowTextA(m_hWnd, strFPS); // 윈도우창에 fps 출력
-		OutputDebugStringA(strFPS); // 디버깅창에 fps 출력
-#endif // _DEBUG
+		//OutputDebugStringA(strFPS); // 디버깅창에 fps 출력
+//#endif // _DEBUG
 	}
 }
