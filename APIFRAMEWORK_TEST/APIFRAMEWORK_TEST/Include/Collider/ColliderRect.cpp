@@ -79,25 +79,19 @@ void CColliderRect::Render(HDC hDC, float fDeltaTime)
 #ifdef _DEBUG
 	CCollider::Render(hDC, fDeltaTime);
 
-	//POSITION tCamPos = GET_SINGLE(CCamera)->GetPos();
+	POSITION tCamPos = GET_SINGLE(CCamera)->GetPos();
 
 	RECTANGLE tRC = m_tWorldInfo;
-	//tRC.l -= tCamPos.x;
-	//tRC.r -= tCamPos.x;
-	//tRC.t -= tCamPos.y;
-	//tRC.b -= tCamPos.y;
+	tRC.l -= tCamPos.x;
+	tRC.r -= tCamPos.x;
+	tRC.t -= tCamPos.y;
+	tRC.b -= tCamPos.y;
 	
-	//MoveToEx(hDC, tRC.l, tRC.t, NULL);
-	//LineTo(hDC, tRC.r, tRC.t);
-	//LineTo(hDC, tRC.r, tRC.b);
-	//LineTo(hDC, tRC.l, tRC.b);
-	//LineTo(hDC, tRC.l, tRC.t);
-
-	MoveToEx(hDC, m_tInfo.l, m_tInfo.t, NULL);
-	LineTo(hDC, m_tInfo.r, m_tInfo.t);
-	LineTo(hDC, m_tInfo.r, m_tInfo.b);
-	LineTo(hDC, m_tInfo.l, m_tInfo.b);
-	LineTo(hDC, m_tInfo.l, m_tInfo.t);
+	MoveToEx(hDC, tRC.l, tRC.t, NULL);
+	LineTo(hDC, tRC.r, tRC.t);
+	LineTo(hDC, tRC.r, tRC.b);
+	LineTo(hDC, tRC.l, tRC.b);
+	LineTo(hDC, tRC.l, tRC.t);
 #endif // _DEBUG
 }
 

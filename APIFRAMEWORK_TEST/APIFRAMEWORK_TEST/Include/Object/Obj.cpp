@@ -199,10 +199,26 @@ void CObj::Collision(float fDeltaTime)
 
 void CObj::Render(HDC hDC, float fDeltaTime)
 {
-	if (m_pTexture) {
-		POSITION tPos = m_tPos - m_tSize * m_tPivot;
-		tPos -= GET_SINGLE(CCamera)->GetPos();
+	POSITION tPos = m_tPos - m_tSize * m_tPivot;
+	tPos -= GET_SINGLE(CCamera)->GetPos();
 
+	RESOLUTION tClientRS = GET_SINGLE(CCamera)->GetCllientRS();
+	
+	bool bInClient = true;
+
+	if (tPos.x + m_tSize.x < 0)
+		bInClient = false;
+
+	else if (tPos.x > tClientRS.iW)
+		bInClient = false;
+
+	else if (tPos.y + m_tSize.y < 0)
+		bInClient = false;
+
+	else if (tPos.y > tClientRS.iH)
+		bInClient = false;
+
+	if (m_pTexture && bInClient) {
 		POSITION tImagePos;
 
 		if (m_pAnimation)
@@ -227,29 +243,30 @@ void CObj::Render(HDC hDC, float fDeltaTime)
 				m_pTexture->GetDC(), (int)tImagePos.x, (int)tImagePos.y, SRCCOPY);
 		}
 	}
+	if (bInClient) {
+		list<CCollider*>::iterator iter;
+		list<CCollider*>::iterator iterEnd = m_ColliderList.end();
 
-	list<CCollider*>::iterator iter;
-	list<CCollider*>::iterator iterEnd = m_ColliderList.end();
-
-	for (iter = m_ColliderList.begin(); iter != iterEnd;)
-	{
-		if (!(*iter)->GetEnable())
+		for (iter = m_ColliderList.begin(); iter != iterEnd;)
 		{
-			++iter;
-			continue;
+			if (!(*iter)->GetEnable())
+			{
+				++iter;
+				continue;
+			}
+
+			(*iter)->Render(hDC, fDeltaTime);
+
+			if (!(*iter)->GetLife())
+			{
+				SAFE_RELEASE((*iter));
+				iter = m_ColliderList.erase(iter);
+				iterEnd = m_ColliderList.end();
+			}
+
+			else
+				++iter;
 		}
-
-		(*iter)->Render(hDC, fDeltaTime);
-
-		if (!(*iter)->GetLife())
-		{
-			SAFE_RELEASE((*iter));
-			iter = m_ColliderList.erase(iter);
-			iterEnd = m_ColliderList.end();
-		}
-
-		else
-			++iter;
 	}
 }
 
