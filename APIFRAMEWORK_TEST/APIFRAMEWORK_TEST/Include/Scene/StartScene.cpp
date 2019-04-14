@@ -1,10 +1,10 @@
 #include "StartScene.h"
 #include "../Object/UIPanel.h"
-//#include "../Object/UIButton.h"
+#include "../Object/UIButton.h"
 #include "Layer.h"
 #include "../Core/Camera.h"
 #include "../Collider/ColliderPixel.h"
-//#include "../Collider/ColliderRect.h"
+#include "../Collider/ColliderRect.h"
 #include "../Core.h"
 //#include "SceneManager.h"
 //#include "InGameScene.h"
@@ -34,51 +34,51 @@ bool CStartScene::Init()
 
 	SAFE_RELEASE(pBackPanel);
 
-	//// 시작화면 시작버튼
-	//CUIButton* pStartBtn = CObj::CreateObj<CUIButton>("StartButton",
-	//	pLayer);
+	// 시작화면 시작버튼
+	CUIButton* pStartBtn = CObj::CreateObj<CUIButton>("StartButton", pLayer);
 
-	//pStartBtn->SetPos(GETRESOLUTION.iW / 2 - 100, GETRESOLUTION.iH / 2 - 170);
-	//pStartBtn->SetSize(200, 100);
-	//pStartBtn->SetTexture("StartButton", L"StartButton.bmp");
+	pStartBtn->SetPos((float)GETRESOLUTION.iW / 2 - 300, (float)GETRESOLUTION.iH / 2 + 50);
+	pStartBtn->SetSize(200, 100);
+	pStartBtn->SetTexture("StartButton", L"StartButton.bmp");
 
-	//CColliderRect* pRC = (CColliderRect*)pStartBtn->GetCollider("ButtonBody");
+	CColliderRect* pRC = (CColliderRect*)pStartBtn->GetCollider("ButtonBody");
 
-	//POSITION tPos = pStartBtn->GetPos();
+	POSITION tPos = pStartBtn->GetPos();
 	//pRC->SetRect(0.f, 0.f, 200, 100);
+	pRC->SetRect(tPos.x, tPos.y, tPos.x + 200, tPos.y + 100);
 	//pRC->AddCollisionFunction(CS_ENTER, pStartBtn,
 	//	&CUIButton::MouseOn);
 	//pRC->AddCollisionFunction(CS_LEAVE, pStartBtn,
 	//	&CUIButton::MouseOut);
 
-	//SAFE_RELEASE(pRC);
+	SAFE_RELEASE(pRC);
 
 	//pStartBtn->SetCallback(this, &CStartScene::StartButtonCallback);
 
-	//SAFE_RELEASE(pStartBtn);
+	SAFE_RELEASE(pStartBtn);
 
-	//// 시작화면 종료버튼
-	//CUIButton* pEndBtn = CObj::CreateObj<CUIButton>("EndButton",
-	//	pLayer);
+	// 시작화면 종료버튼
+	CUIButton* pEndBtn = CObj::CreateObj<CUIButton>("EndButton", pLayer);
 
-	//pEndBtn->SetPos(GETRESOLUTION.iW / 2 - 100, GETRESOLUTION.iH / 2 + 20);
-	//pEndBtn->SetSize(200, 100);
-	//pEndBtn->SetTexture("EndButton", L"EndButton.bmp");
+	pEndBtn->SetPos((float)GETRESOLUTION.iW / 2 + 100, (float)GETRESOLUTION.iH / 2 + 50);
+	pEndBtn->SetSize(200, 100);
+	pEndBtn->SetTexture("EndButton", L"EndButton.bmp");
 
-	//pRC = (CColliderRect*)pEndBtn->GetCollider("ButtonBody");
+	pRC = (CColliderRect*)pEndBtn->GetCollider("ButtonBody");
 
-	//tPos = pEndBtn->GetPos();
+	tPos = pEndBtn->GetPos();
 	//pRC->SetRect(0.f, 0.f, 200, 100);
+	pRC->SetRect(tPos.x, tPos.y, tPos.x + 200, tPos.y + 100);
 	//pRC->AddCollisionFunction(CS_ENTER, pEndBtn,
 	//	&CUIButton::MouseOn);
 	//pRC->AddCollisionFunction(CS_LEAVE, pEndBtn,
 	//	&CUIButton::MouseOut);
 
-	//SAFE_RELEASE(pRC);
+	SAFE_RELEASE(pRC);
 
 	//pEndBtn->SetCallback(this, &CStartScene::EndButtonCallback);
 
-	//SAFE_RELEASE(pEndBtn);
+	SAFE_RELEASE(pEndBtn);
 
 	return true;
 }

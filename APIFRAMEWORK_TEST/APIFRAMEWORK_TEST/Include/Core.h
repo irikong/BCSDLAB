@@ -30,6 +30,8 @@ private:
 public:
 	RESOLUTION GetResolution() const { return m_tRS; }
 
+	HWND GetWindowHandle() const { return m_hWnd; }
+
 	bool Init(HINSTANCE hInst);
 	int Run();
 

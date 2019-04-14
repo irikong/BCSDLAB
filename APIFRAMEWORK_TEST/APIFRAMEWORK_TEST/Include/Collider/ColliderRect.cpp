@@ -92,6 +92,12 @@ void CColliderRect::Render(HDC hDC, float fDeltaTime)
 	//LineTo(hDC, tRC.r, tRC.b);
 	//LineTo(hDC, tRC.l, tRC.b);
 	//LineTo(hDC, tRC.l, tRC.t);
+
+	MoveToEx(hDC, m_tInfo.l, m_tInfo.t, NULL);
+	LineTo(hDC, m_tInfo.r, m_tInfo.t);
+	LineTo(hDC, m_tInfo.r, m_tInfo.b);
+	LineTo(hDC, m_tInfo.l, m_tInfo.b);
+	LineTo(hDC, m_tInfo.l, m_tInfo.t);
 #endif // _DEBUG
 }
 

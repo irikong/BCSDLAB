@@ -27,6 +27,7 @@
 #define DESTROY_SINGLE(Type) Type::DestroyInst()
 
 #define GETRESOLUTION CCore::GetInst()->GetResolution()
+#define WINDOWHANDLE CCore::GetInst()->GetWindowHandle()
 
 #define KEYDOWN(key)	CInput::GetInst()->KeyDown(key)
 #define KEYPRESS(key)	CInput::GetInst()->KeyPress(key)

@@ -188,4 +188,5 @@ public:
 
 	void SetAnimationClipColorKey(const string& strClip, unsigned char r, unsigned char g, unsigned char b);
 
+
 };

@@ -7,7 +7,7 @@
 #include "Core/Camera.h"
 #include "Core\Input.h"
 #include "Collider/CollisionManager.h"
-
+#include "Object\Mouse.h"
 
 // static 멤버 변수를 사용하기 위해 선언
 CCore* CCore::m_pInst = NULL;
@@ -65,12 +65,12 @@ bool CCore::Init(HINSTANCE hInst) {
 	if (!GET_SINGLE(CPathManager)->Init()) 
 		return false;
 
-	// 입력관리자 초기화
-	if (!GET_SINGLE(CInput)->Init(m_hWnd)) 
-		return false;
-
 	// 리소스 관리자 초기화
 	if (!GET_SINGLE(CResourcesManager)->Init(hInst, m_hDC))
+		return false;
+
+	// 입력관리자 초기화
+	if (!GET_SINGLE(CInput)->Init(m_hWnd)) 
 		return false;
 
 	// 카메라 관리자 초기화
@@ -151,9 +151,12 @@ void CCore::Render(float fDeltaTime)
 	// 더블 버퍼링
 	CTexture* pBackBuffer = GET_SINGLE(CResourcesManager)->GetBackBuffer();
 
-	Rectangle(pBackBuffer->GetDC(), 0, 0, 1280, 720); // 임시 코드
-	
 	GET_SINGLE(CSceneManager)->Render(pBackBuffer->GetDC(), fDeltaTime); // 백버퍼의 DC 전달
+
+	// 마지막에 마우스를 그린다.
+	CMouse* pMouse = GET_SINGLE(CInput)->GetMouse();
+
+	pMouse->Render(pBackBuffer->GetDC(), fDeltaTime);
 
 	BitBlt(m_hDC, 0, 0, m_tRS.iW, m_tRS.iH, pBackBuffer->GetDC(), 0, 0, SRCCOPY);
 

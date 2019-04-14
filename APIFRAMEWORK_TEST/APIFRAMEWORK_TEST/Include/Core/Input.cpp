@@ -1,7 +1,7 @@
 #include "Input.h"
-//#include "../Object/Mouse.h"
-//#include "../Animation/Animation.h"
-//#include "../Scene/Layer.h"
+#include "../Object/Mouse.h"
+#include "../Animation/Animation.h"
+#include "../Scene/Layer.h"
 //#include "../Collider/CollisionManager.h"
 
 DEFINITION_SINGLE(CInput)
@@ -15,7 +15,7 @@ CInput::CInput() :
 CInput::~CInput()
 {
 	//CObj::EraseObj(m_pMouse);
-	//SAFE_RELEASE(m_pMouse);
+	SAFE_RELEASE(m_pMouse);
 	Safe_Delete_Map(m_mapKey);
 }
 
@@ -41,34 +41,33 @@ bool CInput::Init(HWND hWnd)
 	AddKey(VK_CONTROL, "Skill1", '1');
 	AddKey(VK_LBUTTON, "MouseLButton");
 
-	//// 마우스 위치를 얻어오는 함수
-	//GetCursorPos(&m_tMousePos);
+	// 마우스 위치를 얻어오는 함수
+	GetCursorPos(&m_tMousePos);
 
 	//// 마우스 생성
-	//m_pMouse = CObj::CreateObj<CMouse>("Mouse");
+	m_pMouse = CObj::CreateObj<CMouse>("Mouse");
 
-	//m_pMouse->SetSize(32, 31);
+	m_pMouse->SetSize(32, 32);
 
-	//CAnimation* pAni = m_pMouse->CreateAnimation("PlayerAnimation");
+	CAnimation* pAni = m_pMouse->CreateAnimation("PlayerAnimation");
 
-	//vector<wstring> vecFileName;
+	vector<wstring> vecFileName;
 
-	//for (int i = 0; i <= 3; ++i)
-	//{
-	//	wchar_t strFileName[MAX_PATH] = {};
-	//	wsprintf(strFileName, L"Mouse/%d.bmp", i);
-	//	vecFileName.push_back(strFileName);
-	//}
+	for (int i = 0; i <= 3; ++i)
+	{
+		wchar_t strFileName[MAX_PATH] = {};
+		wsprintf(strFileName, L"Mouse/%d.bmp", i);
+		vecFileName.push_back(strFileName);
+	}
 
-	//m_pMouse->AddAnimationClip("MouseNormal", AT_FRAME, AO_LOOP, 1.f, 4, 1,
-	//	0, 0, 4, 1, 0.f, "MouseNormal", vecFileName);
-	//m_pMouse->SetAnimationClipColorKey("MouseNormal", 0, 255, 0);
+	m_pMouse->AddAnimationClip("MouseNormal", AT_FRAME, AO_LOOP, 1.f, 4, 1, 0, 0, 4, 1, 0.f, "MouseNormal", vecFileName);
+	m_pMouse->SetAnimationClipColorKey("MouseNormal", 255, 255, 255);
 
-	//SAFE_RELEASE(pAni);
+	SAFE_RELEASE(pAni);
 
 	return true;
 }
-//
+
 void CInput::Update(float fDeltaTime)
 {
 	unordered_map<string, pKEYINFO>::iterator	iter;
@@ -107,12 +106,12 @@ void CInput::Update(float fDeltaTime)
 		}
 	}
 
-	//m_pMouse->Update(fDeltaTime);
-	//m_pMouse->LateUpdate(fDeltaTime);
+	m_pMouse->Update(fDeltaTime);
+	m_pMouse->LateUpdate(fDeltaTime);
 
 	//GET_SINGLE(CCollisionManager)->AddObject(m_pMouse);
 }
-//
+
 bool CInput::KeyDown(const string & strKey) const
 {
 	pKEYINFO	pInfo = FindKey(strKey);
