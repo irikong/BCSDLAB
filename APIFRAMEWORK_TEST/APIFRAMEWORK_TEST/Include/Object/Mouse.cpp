@@ -1,6 +1,7 @@
 #include "Mouse.h"
 #include "../Core.h"
 #include "../Collider/ColliderPoint.h"
+#include "../Core/Camera.h"
 
 CMouse::CMouse()
 {
@@ -28,6 +29,9 @@ bool CMouse::Init()
 
 	m_tPos = pt;
 
+	POSITION tCamPos = GET_SINGLE(CCamera)->GetPos();
+	m_tWorldPos = m_tPos + tCamPos;
+
 	CColliderPoint* pColl = AddCollider<CColliderPoint>("Mouse");
 
 	SAFE_RELEASE(pColl);
@@ -52,6 +56,9 @@ int CMouse::Update(float fDeltaTime)
 	m_tMove.y = pt.y - m_tPos.y;
 
 	m_tPos = pt;
+
+	POSITION tCamPos = GET_SINGLE(CCamera)->GetPos();
+	m_tWorldPos = m_tPos + tCamPos;
 
 	return 0;
 }

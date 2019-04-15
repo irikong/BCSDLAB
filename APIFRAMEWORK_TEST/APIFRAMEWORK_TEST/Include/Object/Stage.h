@@ -28,4 +28,9 @@ public:
 	virtual CStage*	Clone();
 
 	void CreateTile(int iNumX, int iNumY, int iSizeX, int iSizeY, const string& strKey = "", const wchar_t* pFileName = NULL, const string& strPathKey = TEXTURE_PATH);
+	void ChangeTileTexture(const POSITION& tPos, class CTexture* pTexture);
+	void ChangeTileOption(const POSITION& tPos, TILE_OPTION eOption);
+	int GetTileIndex(const POSITION& tPos);
+	int GetTileIndex(float x, float y);
+
 };

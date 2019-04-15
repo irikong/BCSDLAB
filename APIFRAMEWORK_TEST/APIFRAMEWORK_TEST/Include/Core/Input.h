@@ -36,6 +36,11 @@ public:
 
 	class CMouse* GetMouse() const { return m_pMouse; }
 
+	POSITION GetMouseClientPos() const;
+	POSITION GetMouseWorldPos() const;
+	POSITION GetMouseMovePos() const;
+
+
 	// 재귀적으로 입력을 처리하는 함수 AddKey
 	// AddKey의 Base function
 	template <typename T>

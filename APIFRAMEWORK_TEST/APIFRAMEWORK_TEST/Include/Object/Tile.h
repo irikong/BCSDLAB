@@ -12,6 +12,7 @@ private:
 	~CTile();
 
 	TILE_OPTION m_eOption;
+	class CTexture* m_pOptionTex;
 
 public:
 	virtual bool	Init();
@@ -22,7 +23,7 @@ public:
 	virtual void	Render(HDC hDC, float fDeltaTime);
 	virtual CTile*	Clone();
 
-	void SetTileOption(TILE_OPTION eOption) { m_eOption = eOption; }
+	void SetTileOption(TILE_OPTION eOption);
 	TILE_OPTION GetTileOption()const { return m_eOption; }
 
 

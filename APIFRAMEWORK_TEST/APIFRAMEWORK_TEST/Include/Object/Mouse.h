@@ -8,12 +8,16 @@ private:
 	friend class CScene;
 
 	POSITION	m_tMove;
+	POSITION	m_tWorldPos;
 
 	CMouse();
 	CMouse(const CMouse& mouse);
 	~CMouse();
 
 public:
+	POSITION GetMove() const { return m_tMove; }
+	POSITION GetWorldPos() const { return m_tWorldPos; }
+
 	virtual bool	Init();
 	virtual void	Input(float fDeltaTime);
 	virtual int		Update(float fDeltaTime);

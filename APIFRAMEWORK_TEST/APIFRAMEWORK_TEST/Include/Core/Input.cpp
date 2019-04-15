@@ -40,6 +40,7 @@ bool CInput::Init(HWND hWnd)
 	AddKey("Fire", VK_SPACE);
 	AddKey(VK_CONTROL, "Skill1", '1');
 	AddKey(VK_LBUTTON, "MouseLButton");
+	AddKey(VK_RBUTTON, "MouseRButton");
 
 	// 마우스 위치를 얻어오는 함수
 	GetCursorPos(&m_tMousePos);
@@ -140,4 +141,19 @@ bool CInput::KeyUp(const string & strKey) const
 		return false;
 
 	return pInfo->bUp;
+}
+
+POSITION CInput::GetMouseClientPos() const
+{
+	return m_pMouse->GetPos();
+}
+
+POSITION CInput::GetMouseWorldPos() const
+{
+	return m_pMouse->GetWorldPos();
+}
+
+POSITION CInput::GetMouseMovePos() const
+{
+	return m_pMouse->GetMove();
 }
