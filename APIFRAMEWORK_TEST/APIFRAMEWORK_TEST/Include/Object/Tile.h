@@ -11,6 +11,8 @@ private:
 	CTile(const CTile& tile);
 	~CTile();
 
+	TILE_OPTION m_eOption;
+
 public:
 	virtual bool	Init();
 	virtual void	Input(float fDeltaTime);
@@ -19,4 +21,9 @@ public:
 	virtual void	Collision(float fDeltaTime);
 	virtual void	Render(HDC hDC, float fDeltaTime);
 	virtual CTile*	Clone();
+
+	void SetTileOption(TILE_OPTION eOption) { m_eOption = eOption; }
+	TILE_OPTION GetTileOption()const { return m_eOption; }
+
+
 };

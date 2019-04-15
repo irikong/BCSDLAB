@@ -12,6 +12,11 @@ private:
 	~CStage();
 
 	vector<class CTile*> m_vecTile;
+	int m_iTileNumX;
+	int m_iTileNumY;
+	int m_iTileSizeX;
+	int m_iTileSizeY;
+
 
 public:
 	virtual bool	Init();
@@ -21,4 +26,6 @@ public:
 	virtual void	Collision(float fDeltaTime);
 	virtual void	Render(HDC hDC, float fDeltaTime);
 	virtual CStage*	Clone();
+
+	void CreateTile(int iNumX, int iNumY, int iSizeX, int iSizeY, const string& strKey = "", const wchar_t* pFileName = NULL, const string& strPathKey = TEXTURE_PATH);
 };

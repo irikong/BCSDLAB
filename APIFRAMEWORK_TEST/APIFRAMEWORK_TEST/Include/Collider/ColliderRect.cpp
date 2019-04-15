@@ -87,11 +87,11 @@ void CColliderRect::Render(HDC hDC, float fDeltaTime)
 	tRC.t -= tCamPos.y;
 	tRC.b -= tCamPos.y;
 	
-	MoveToEx(hDC, tRC.l, tRC.t, NULL);
-	LineTo(hDC, tRC.r, tRC.t);
-	LineTo(hDC, tRC.r, tRC.b);
-	LineTo(hDC, tRC.l, tRC.b);
-	LineTo(hDC, tRC.l, tRC.t);
+	MoveToEx(hDC, (int)tRC.l, (int)tRC.t, NULL);
+	LineTo(hDC, (int)tRC.r, (int)tRC.t);
+	LineTo(hDC, (int)tRC.r, (int)tRC.b);
+	LineTo(hDC, (int)tRC.l, (int)tRC.b);
+	LineTo(hDC, (int)tRC.l, (int)tRC.t);
 #endif // _DEBUG
 }
 

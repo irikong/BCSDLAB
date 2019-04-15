@@ -52,8 +52,16 @@ enum ANIMATION_OPTION
 	AO_TIME_DESTROY // 일정 시간 후 삭제
 };
 
+// Scene Change
 enum SCENE_CHANGE
 {
 	SC_NONE,
 	SC_CHANGE
+};
+
+// Tile Option
+enum TILE_OPTION
+{
+	TO_NONE,
+	TONOMOVE
 };

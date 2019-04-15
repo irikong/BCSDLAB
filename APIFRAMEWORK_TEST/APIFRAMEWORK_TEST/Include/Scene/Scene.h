@@ -33,10 +33,8 @@ public:
 	virtual void Collision(float fDeltaTime);
 	virtual void Render(HDC hDC, float fDeltaTime);
 
-public:
 	static bool LayerSort(class CLayer* pL1, class CLayer* pL2);
 
-public:
 	template <typename T>
 	static T* CreatePrototype(const string& strTag, SCENE_CREATE sc)
 	{
