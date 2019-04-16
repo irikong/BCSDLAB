@@ -9,7 +9,7 @@ protected:
 	
 	list<function<void(CCollider*, CCollider*, float)>>	m_FuncList[CS_END];
 	list<CCollider*>	m_CollisionList;
-	COLLLIDER_TYPE		m_eCollType;
+	COLLIDER_TYPE		m_eCollType;
 	POSITION			m_tHitPoint;
 	class CObj*			m_pObj;
 
@@ -27,7 +27,7 @@ protected:
 	bool CollisionPixelToPoint(const vector<PIXEL> vecPixel, int iWidth, int iHeight, const POSITION& dest);
 
 public:
-	COLLLIDER_TYPE GetColliderType() const { return m_eCollType; }
+	COLLIDER_TYPE GetColliderType() const { return m_eCollType; }
 
 	class CObj* GetObj() const { return m_pObj; }
 	void SetObj(class CObj* pObj) { m_pObj = pObj; }

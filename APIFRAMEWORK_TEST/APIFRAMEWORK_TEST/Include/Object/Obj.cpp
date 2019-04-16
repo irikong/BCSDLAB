@@ -7,6 +7,10 @@
 #include "../Core/Camera.h"
 #include "../Animation/Animation.h"
 #include "../Core/PathManager.h"
+#include "../Collider/ColliderPixel.h"
+#include "../Collider/ColliderPoint.h"
+#include "../Collider/ColliderRect.h"
+#include "../Collider/ColliderSphere.h"
 
 // static 멤버 사용한다고 선언
 list<CObj*> CObj::m_ObjList;
@@ -20,6 +24,7 @@ CObj::CObj() :
 CObj::CObj(const CObj & obj)
 {
 	*this = obj;
+	m_iRef = 1;
 
 	m_fGravityTime = 0.f;
 
@@ -344,6 +349,8 @@ void CObj::Save(FILE * pFile)
 	list<CCollider*>::iterator iterEnd = m_ColliderList.end();
 
 	for (iter = m_ColliderList.begin(); iter != iterEnd; ++iter) {
+		COLLIDER_TYPE eType = (*iter)->GetColliderType();
+		fwrite(&eType, 4, 1, pFile);
 		(*iter)->Save(pFile);
 	}
 
@@ -359,7 +366,6 @@ void CObj::Save(FILE * pFile)
 	else {
 		fwrite(&m_pAnimation, 1, 1, pFile);
 	}
-
 }
 
 void CObj::LoadFromPath(const char * pFileName, const string & strPathKey)
@@ -389,6 +395,94 @@ void CObj::LoadFromFullPath(const char * pFullPath)
 
 void CObj::Load(FILE * pFile)
 {
+	// Tag 정보 저장
+	int iLength = 0;
+	char strText[MAX_PATH] = {};
+
+	// Tag 길이 읽어옴
+	fread(&iLength, 4, 1, pFile);
+
+	// Tag 문자열 읽어옴
+	fread(strText, 1, iLength, pFile);
+	strText[iLength] = 0;
+	m_strTag = strText;
+
+	// 물리 사용 여부 읽어옴
+	fread(&m_bIsPhysics, 1, 1, pFile);
+
+	// 위치 읽어옴
+	fread(&m_tPos, sizeof(m_tPos), 1, pFile);
+
+	// 크기 읽어옴
+	fread(&m_tSize, sizeof(m_tSize), 1, pFile);
+
+	// ImageOffset 읽어옴
+	fread(&m_tImageOffset, sizeof(m_tImageOffset), 1, pFile);
+
+	// Pivot 읽어옴
+	fread(&m_tPivot, sizeof(m_tPivot), 1, pFile);
+
+	// Texture 읽어옴
+	bool bTexture = false;
+	fread(&bTexture, 1, 1, pFile);
+	SAFE_RELEASE(m_pTexture);
+
+	if (bTexture) {
+		m_pTexture = GET_SINGLE(CResourcesManager)->LoadTexture(pFile);
+	}
+
+	// 충돌체 수 읽어옴
+	iLength = 0;
+
+	fread(&iLength, 4, 1, pFile);
+
+	for (int i = 0; i < iLength; ++i) {
+		COLLIDER_TYPE eType;
+		fread(&eType, 4, 1, pFile);
+
+		CCollider* pCollider = NULL;
+
+		switch (eType) {
+		case CT_RECT:
+			pCollider = AddCollider<CColliderRect>("");
+			break;
+		case CT_SPHERE:
+			pCollider = AddCollider<CColliderSphere>("");
+			break;
+		case CT_LINE:
+			break;
+		case CT_POINT:
+			pCollider = AddCollider<CColliderPoint>("");
+			break;
+		case CT_PIXEL:
+			pCollider = AddCollider<CColliderPixel>("");
+			break;
+		}
+
+		pCollider->Load(pFile);
+
+		SAFE_RELEASE(pCollider);
+	}
+
+	list<CCollider*>::iterator iter;
+	list<CCollider*>::iterator iterEnd = m_ColliderList.end();
+
+	for (iter = m_ColliderList.begin(); iter != iterEnd; ++iter) {
+		(*iter)->Save(pFile);
+	}
+
+	// 애니메이션 읽어옴
+	bool bAnimation = false;
+
+	fread(&bAnimation, 1, 1, pFile);
+	SAFE_RELEASE(m_pAnimation);
+
+	if (bAnimation) {
+		m_pAnimation = new CAnimation;
+
+		m_pAnimation->Init();
+		m_pAnimation->Load(pFile);
+	}
 }
 
 CObj * CObj::CreateCloneObj(const string & strPrototypeKey, const string & strTag, SCENE_CREATE sc, class CLayer* pLayer)

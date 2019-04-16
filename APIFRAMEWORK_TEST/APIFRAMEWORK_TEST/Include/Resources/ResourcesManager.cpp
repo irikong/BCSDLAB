@@ -53,6 +53,46 @@ CTexture * CResourcesManager::LoadTexture(const string & strKey,
 	return pTexture;
 }
 
+CTexture * CResourcesManager::LoadTexture(FILE * pFile)
+{
+	int iLength = 0;
+
+	char strKey[MAX_PATH] = {};
+	wchar_t strFileName[MAX_PATH] = {};
+	char strPathKey[MAX_PATH] = {};
+
+	// Key
+	fread(&iLength, 4, 1, pFile);
+	fread(strKey, 1, iLength, pFile);
+	strKey[iLength] = 0;
+
+	// FileName
+	iLength = 0;
+	fread(&iLength, 4, 1, pFile);
+	fread(strFileName, 2, iLength, pFile);
+	strFileName[iLength] = 0;
+
+	// PathKey
+	iLength = 0;
+	fread(&iLength, 4, 1, pFile);
+	fread(strPathKey, 1, iLength, pFile);
+	strPathKey[iLength] = 0;
+
+	// ColorKey
+	bool bColorKey = false;
+	COLORREF dwColorKey = 0;
+	fread(&bColorKey, 1, 1, pFile);
+	fread(&dwColorKey, sizeof(COLORREF), 1, pFile);
+
+	CTexture* pTex = GET_SINGLE(CResourcesManager)->LoadTexture(strKey, strFileName, strPathKey);
+
+	if (pTex && bColorKey) {
+		pTex->SetColorKey(dwColorKey);
+	}
+
+	return pTex;
+}
+
 CTexture * CResourcesManager::FindTexture(const string & strKey)
 {
 	unordered_map<string, class CTexture*>::iterator iter = m_mapTexture.find(strKey);

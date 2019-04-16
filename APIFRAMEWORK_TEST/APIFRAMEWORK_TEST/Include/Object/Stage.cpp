@@ -23,6 +23,14 @@ CStage::CStage(const CStage & stage) :
 
 CStage::~CStage()
 {
+	ClearTile();
+}
+
+void CStage::ClearTile()
+{
+	for (size_t i = 0; i < m_vecTile.size(); ++i) {
+		CObj::EraseObj(m_vecTile[i]);
+	}
 	Safe_Release_VecList(m_vecTile);
 }
 
@@ -115,13 +123,13 @@ void CStage::Load(FILE * pFile)
 {
 	CStaticObj::Load(pFile);
 
-	// 스테이지 정보 저장
+	// 스테이지 정보 읽어옴
 	fread(&m_iTileNumX, 4, 1, pFile);
 	fread(&m_iTileNumY, 4, 1, pFile);
 	fread(&m_iTileSizeX, 4, 1, pFile);
 	fread(&m_iTileSizeY, 4, 1, pFile);
 
-	Safe_Release_VecList(m_vecTile);
+	ClearTile();
 
 	for (int i = 0; i < m_iTileNumX * m_iTileNumY; ++i) {
 		CTile* pTile = CObj::CreateObj<CTile>("Tile");
@@ -129,15 +137,13 @@ void CStage::Load(FILE * pFile)
 		pTile->Load(pFile);
 
 		m_vecTile.push_back(pTile);
-
-		SAFE_RELEASE(pTile);
 	}
 
 }
 
 void CStage::CreateTile(int iNumX, int iNumY, int iSizeX, int iSizeY, const string & strKey, const wchar_t * pFileName, const string & strPathKey)
 {
-	Safe_Release_VecList(m_vecTile);
+	ClearTile();
 
 	m_iTileNumX = iNumX;
 	m_iTileNumY = iNumY;
@@ -154,8 +160,6 @@ void CStage::CreateTile(int iNumX, int iNumY, int iSizeX, int iSizeY, const stri
 			pTile->SetTexture(strKey, pFileName, strPathKey);
 
 			m_vecTile.push_back(pTile);
-
-			SAFE_RELEASE(pTile);
 		}
 	}
 }

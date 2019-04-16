@@ -17,6 +17,8 @@ private:
 	int m_iTileSizeX;
 	int m_iTileSizeY;
 
+	void ClearTile();
+
 
 public:
 	virtual bool	Init();

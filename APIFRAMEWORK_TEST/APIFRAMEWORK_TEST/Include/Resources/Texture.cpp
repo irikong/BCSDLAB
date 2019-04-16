@@ -95,32 +95,10 @@ void CTexture::Save(FILE * pFile)
 
 void CTexture::LoadFromPath(const char * pFileName, const string & strPayhKey)
 {
+
 }
 
 void CTexture::Load(FILE * pFile)
 {
-	int iLength = 0;
-
-	char strKey[MAX_PATH] = {};
-	wchar_t strFileName[MAX_PATH] = {};
-	char strPathKey[MAX_PATH] = {};
-
-	// Key
-	fread(&iLength, 4, 1, pFile);
-	fread(strKey, 1, iLength, pFile);
-	strKey[iLength] = 0;
-
-	// FileName
-	iLength = 0;
-	fread(&iLength, 4, 1, pFile);
-	fread(strFileName, 2, iLength, pFile);
-	strFileName[iLength] = 0;
-
-	// PathKey
-	iLength = 0;
-	fread(&iLength, 4, 1, pFile);
-	fread(strPathKey, 1, iLength, pFile);
-	strPathKey[iLength] = 0;
-
-	GET_SINGLE(CResourcesManager)->LoadTexture(strKey, strFileName, strPathKey);
+	
 }

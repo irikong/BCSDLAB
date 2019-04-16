@@ -15,7 +15,7 @@ enum MOVE_DIR {
 };
 
 // Collider Type
-enum COLLLIDER_TYPE
+enum COLLIDER_TYPE
 {
 	CT_RECT,
 	CT_SPHERE,
