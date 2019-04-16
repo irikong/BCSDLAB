@@ -269,3 +269,74 @@ CAnimation * CAnimation::Clone()
 {
 	return new CAnimation(*this);
 }
+
+void CAnimation::SaveFromPath(const char * pFileName, const string & strPathKey)
+{
+}
+
+void CAnimation::Save(FILE * pFile)
+{
+	// Tag 정보 저장
+	int iLength = m_strTag.length();
+
+	// Tag 길이 저장
+	fwrite(&iLength, 4, 1, pFile);
+
+	// Tag 문자열 저장
+	fwrite(m_strTag.c_str(), 1, iLength, pFile);
+
+	int iCount = m_mapClip.size();
+	fwrite(&iCount, 4, 1, pFile);
+
+	unordered_map<string, pANIMATIONCLIP>::iterator iter;
+	unordered_map<string, pANIMATIONCLIP>::iterator iterEnd = m_mapClip.end();
+
+	for (iter = m_mapClip.begin(); iter != iterEnd; ++iter) {
+		fwrite(&iter->second->eType, 4, 1, pFile);
+		fwrite(&iter->second->eOption, 4, 1, pFile);
+
+		iCount = iter->second->vecTexture.size();
+		fwrite(&iCount, 4, 1, pFile);
+
+		for (size_t i = 0; i < iCount; ++i) {
+			iter->second->vecTexture[i]->Save(pFile);
+		}
+
+		fwrite(&iter->second->fAnimationLimitTime, 4, 1, pFile);
+		fwrite(&iter->second->fAnimationFrameTime, 4, 1, pFile);
+		fwrite(&iter->second->iFrameMaxX, 4, 1, pFile);
+		fwrite(&iter->second->iFrameMaxY, 4, 1, pFile);
+		fwrite(&iter->second->iStartX, 4, 1, pFile);
+		fwrite(&iter->second->iStartY, 4, 1, pFile);
+		fwrite(&iter->second->iLengthX, 4, 1, pFile);
+		fwrite(&iter->second->iLengthY, 4, 1, pFile);
+		fwrite(&iter->second->fOptionLimitTime, 4, 1, pFile);
+		fwrite(&iter->second->tFrameSize, sizeof(_SIZE), 1, pFile);
+	}
+
+	// DefaultClip 정보 저장
+	iLength = m_strDefaultClip.length();
+
+	// DefaultClip 길이 저장
+	fwrite(&iLength, 4, 1, pFile);
+
+	// DefaultClip 문자열 저장
+	fwrite(m_strDefaultClip.c_str(), 1, iLength, pFile);
+
+	// CurClip 정보 저장
+	iLength = m_strCurClip.length();
+
+	// CurClip 길이 저장
+	fwrite(&iLength, 4, 1, pFile);
+
+	// CurClip 문자열 저장
+	fwrite(m_strCurClip.c_str(), 1, iLength, pFile);
+}
+
+void CAnimation::LoadFromPath(const char * pFileName, const string & strPathKey)
+{
+}
+
+void CAnimation::Load(FILE * pFile)
+{
+}

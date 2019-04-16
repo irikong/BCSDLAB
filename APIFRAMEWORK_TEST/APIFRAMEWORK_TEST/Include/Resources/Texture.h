@@ -17,6 +17,9 @@ private:
 	BITMAP		m_tInfo;
 	COLORREF	m_ColorKey;
 	bool		m_bColorKeyEnable;
+	wstring		m_strFileName;
+	string		m_strKey;
+	string		m_strPathKey;
 
 public:
 	void SetColorKey(unsigned char r, unsigned char g, unsigned char b);
@@ -29,4 +32,9 @@ public:
 
 	bool LoadTexture(HINSTANCE hInst, HDC hDC, const string& strKey, const wchar_t* pFileName, const string& strPathKey = TEXTURE_PATH);
 	HDC GetDC() const { return m_hMemDC; }
+
+	void SaveFromPath(const char* pFileName, const string& strPayhKey = DATA_PATH);
+	void Save(FILE* pFile);
+	void LoadFromPath(const char* pFileName, const string& strPayhKey = DATA_PATH);
+	void Load(FILE* pFile);
 };

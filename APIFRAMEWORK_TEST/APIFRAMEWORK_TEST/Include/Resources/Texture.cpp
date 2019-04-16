@@ -1,6 +1,6 @@
 #include "Texture.h"
 #include "../Core/PathManager.h"
-
+#include "ResourcesManager.h"
 
 CTexture::CTexture() :
 	m_hMemDC(NULL),
@@ -34,10 +34,12 @@ void CTexture::SetColorKey(COLORREF colorKey)
 	m_bColorKeyEnable = true;
 }
 
-bool CTexture::LoadTexture(HINSTANCE hInst, HDC hDC
-	, const string & strKey, const wchar_t * pFileName,
-	const string & strPathKey)
+bool CTexture::LoadTexture(HINSTANCE hInst, HDC hDC, const string & strKey, const wchar_t * pFileName, const string & strPathKey)
 {
+	m_strFileName = pFileName;
+	m_strKey = strKey;
+	m_strPathKey = strPathKey;
+
 	// 메모리 DC를 만들어준다.
 	m_hMemDC = CreateCompatibleDC(hDC);
 
@@ -62,4 +64,63 @@ bool CTexture::LoadTexture(HINSTANCE hInst, HDC hDC
 	GetObject(m_hBitmap, sizeof(m_tInfo), &m_tInfo);
 	
 	return true;
+}
+
+void CTexture::SaveFromPath(const char * pFileName, const string & strPayhKey)
+{
+}
+
+void CTexture::Save(FILE * pFile)
+{
+	int iLength = m_strKey.length();
+
+	// Key의 길이 저장
+	fwrite(&iLength, 4, 1, pFile);
+	fwrite(m_strKey.c_str(), 1, iLength, pFile);
+
+	// FileName 저장
+	iLength = m_strFileName.length();
+	fwrite(&iLength, 4, 1, pFile);
+	fwrite(m_strFileName.c_str(), 2, iLength, pFile);
+
+	// PathKey 저장
+	iLength = m_strPathKey.length();
+	fwrite(&iLength, 4, 1, pFile);
+	fwrite(m_strPathKey.c_str(), 1, iLength, pFile);
+
+	// ColorKey
+	fwrite(&m_bColorKeyEnable, 1, 1, pFile);
+	fwrite(&m_ColorKey, sizeof(COLORREF), 1, pFile);
+}
+
+void CTexture::LoadFromPath(const char * pFileName, const string & strPayhKey)
+{
+}
+
+void CTexture::Load(FILE * pFile)
+{
+	int iLength = 0;
+
+	char strKey[MAX_PATH] = {};
+	wchar_t strFileName[MAX_PATH] = {};
+	char strPathKey[MAX_PATH] = {};
+
+	// Key
+	fread(&iLength, 4, 1, pFile);
+	fread(strKey, 1, iLength, pFile);
+	strKey[iLength] = 0;
+
+	// FileName
+	iLength = 0;
+	fread(&iLength, 4, 1, pFile);
+	fread(strFileName, 2, iLength, pFile);
+	strFileName[iLength] = 0;
+
+	// PathKey
+	iLength = 0;
+	fread(&iLength, 4, 1, pFile);
+	fread(strPathKey, 1, iLength, pFile);
+	strPathKey[iLength] = 0;
+
+	GET_SINGLE(CResourcesManager)->LoadTexture(strKey, strFileName, strPathKey);
 }

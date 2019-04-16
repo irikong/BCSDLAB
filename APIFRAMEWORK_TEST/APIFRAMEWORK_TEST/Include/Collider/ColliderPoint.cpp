@@ -70,3 +70,11 @@ CColliderPoint * CColliderPoint::Clone()
 {
 	return new CColliderPoint(*this);
 }
+
+void CColliderPoint::Save(FILE * pFile)
+{
+}
+
+void CColliderPoint::Load(FILE * pFile)
+{
+}

@@ -22,7 +22,6 @@ protected:
 	class CTexture* m_pTexture;
 	class CAnimation*	m_pAnimation;
 
-	string m_strTag;
 	POSITION m_tPos;
 	_SIZE m_tSize;
 	_SIZE m_tImageOffset;
@@ -40,14 +39,10 @@ public:
 	static void EraseObj(const string& strTag);
 	static void EraseObj();
 
-public:
-	void SetScene(class CScene* pScene) { m_pScene = pScene; }
-
-	void SetLayer(class CLayer* pLayer) { m_pLayer = pLayer; }
-
 	class CScene* GetScene() const { return m_pScene; }
-
+	void SetScene(class CScene* pScene) { m_pScene = pScene; }
 	class CLayer* GetLayer() const { return m_pLayer; }	
+	void SetLayer(class CLayer* pLayer) { m_pLayer = pLayer; }
 
 	void ClearGravity() { m_fGravityTime = 0.f; }
 	void SetPhysics(bool bPhysics) { m_bIsPhysics = bPhysics; }
@@ -58,9 +53,6 @@ public:
 	float GetTop() const { return m_tPos.y - m_tSize.y * m_tPivot.y; }
 	float GetBottom() const { return GetTop() + m_tSize.y; }
 	POSITION GetCenter() const { return POSITION(GetLeft() + m_tSize.x / 2.f, GetTop() + m_tSize.y / 2.f); }
-
-	string GetTag() const { return m_strTag; }
-	void SetTag(const string& strTag) { m_strTag = strTag; }
 
 	POSITION GetPos() const { return m_tPos; }
 	void SetPos(const POSITION& tPos) {	m_tPos = tPos; }
@@ -100,6 +92,13 @@ public:
 	virtual void Collision(float fDeltaTime);
 	virtual void Render(HDC hDC, float fDeltaTime);
 	virtual CObj* Clone() = 0;
+
+	virtual void Save(FILE* pFile);
+	virtual void Load(FILE* pFile);
+	void SaveFromPath(const char* pFileName, const string& strPathKey = DATA_PATH);
+	void SaveFromFullPath(const char* pFullPath);
+	void LoadFromPath(const char* pFileName, const string& strPathKey = DATA_PATH);
+	void LoadFromFullPath(const char* pFullPath);
 
 	template <typename T>
 	void AddCollisionFunction(const string& strTag,	COLLISION_STATE eState, T* pObj,

@@ -40,3 +40,12 @@ void CStaticObj::Render(HDC hDC, float fDeltaTime)
 {
 	CObj::Render(hDC, fDeltaTime);
 }
+
+void CStaticObj::Save(FILE * pFile)
+{
+	CObj::Save(pFile);
+}
+
+void CStaticObj::Load(FILE * pFile)
+{
+}

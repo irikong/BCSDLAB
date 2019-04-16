@@ -105,5 +105,8 @@ public:
 	virtual bool	Collision(CCollider* pDest);
 	virtual void	Render(HDC hDC, float fDeltaTime);
 	virtual CCollider*	Clone() = 0;
+
+	virtual void Save(FILE* pFile);
+	virtual void Load(FILE* pFile);
 	
 };

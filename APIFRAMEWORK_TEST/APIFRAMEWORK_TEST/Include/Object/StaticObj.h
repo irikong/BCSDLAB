@@ -16,4 +16,7 @@ public:
 	virtual void Collision(float fDeltaTime);
 	virtual void Render(HDC hDC, float fDeltaTime);
 	virtual CStaticObj* Clone() = 0;
+
+	virtual void Save(FILE* pFile);
+	virtual void Load(FILE* pFile);
 };

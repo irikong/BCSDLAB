@@ -70,3 +70,11 @@ CColliderSphere * CColliderSphere::Clone()
 {
 	return new CColliderSphere(*this);;
 }
+
+void CColliderSphere::Save(FILE * pFile)
+{
+}
+
+void CColliderSphere::Load(FILE * pFile)
+{
+}

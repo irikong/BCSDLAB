@@ -23,6 +23,9 @@ public:
 	virtual void	Render(HDC hDC, float fDeltaTime);
 	virtual CTile*	Clone();
 
+	virtual void Save(FILE* pFile);
+	virtual void Load(FILE* pFile);
+
 	void SetTileOption(TILE_OPTION eOption);
 	TILE_OPTION GetTileOption()const { return m_eOption; }
 

@@ -8,6 +8,8 @@ private:
 	vector<PIXEL>	m_vecPixel;
 	int		m_iWidth;
 	int		m_iHeight;
+	string	m_strFileName;
+	string	m_strPathKey;
 
 protected:
 	friend class CObj;
@@ -29,4 +31,7 @@ public:
 	virtual bool	Collision(CCollider* pDest);
 	virtual void	Render(HDC hDC, float fDeltaTime);
 	virtual CColliderPixel*	Clone();
+
+	virtual void Save(FILE* pFile);
+	virtual void Load(FILE* pFile);
 };

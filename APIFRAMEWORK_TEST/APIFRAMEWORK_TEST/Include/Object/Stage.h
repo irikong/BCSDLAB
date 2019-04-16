@@ -27,6 +27,9 @@ public:
 	virtual void	Render(HDC hDC, float fDeltaTime);
 	virtual CStage*	Clone();
 
+	virtual void Save(FILE* pFile);
+	virtual void Load(FILE* pFile);
+
 	void CreateTile(int iNumX, int iNumY, int iSizeX, int iSizeY, const string& strKey = "", const wchar_t* pFileName = NULL, const string& strPathKey = TEXTURE_PATH);
 	void ChangeTileTexture(const POSITION& tPos, class CTexture* pTexture);
 	void ChangeTileOption(const POSITION& tPos, TILE_OPTION eOption);

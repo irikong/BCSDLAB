@@ -99,3 +99,11 @@ CColliderRect * CColliderRect::Clone()
 {
 	return new CColliderRect(*this);
 }
+
+void CColliderRect::Save(FILE * pFile)
+{
+}
+
+void CColliderRect::Load(FILE * pFile)
+{
+}

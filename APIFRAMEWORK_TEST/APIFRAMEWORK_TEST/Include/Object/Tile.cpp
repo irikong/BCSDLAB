@@ -94,6 +94,19 @@ CTile * CTile::Clone()
 	return new CTile(*this);
 }
 
+void CTile::Save(FILE * pFile)
+{
+	CStaticObj::Save(pFile);
+
+	fwrite(&m_eOption, 4, 1, pFile);
+}
+
+void CTile::Load(FILE * pFile)
+{
+	CStaticObj::Load(pFile);
+	fread(&m_eOption, 4, 1, pFile);
+}
+
 void CTile::SetTileOption(TILE_OPTION eOption)
 {
 	m_eOption = eOption;
