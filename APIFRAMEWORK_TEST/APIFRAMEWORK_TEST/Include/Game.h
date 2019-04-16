@@ -23,6 +23,7 @@
 // Path Key
 #define ROOT_PATH		"RootPath"
 #define TEXTURE_PATH	"TexturePath"
+#define DATA_PATH		"DataPath"
 
 using namespace std;
 

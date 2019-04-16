@@ -32,6 +32,8 @@ public:
 
 	HWND GetWindowHandle() const { return m_hWnd; }
 
+	HINSTANCE GetWindowInstance() const { return m_hInst; }
+
 	void DestroyGame() // 창 삭제
 	{
 		DestroyWindow(m_hWnd); // 실패할 경우 0 반환

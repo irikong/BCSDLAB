@@ -28,6 +28,7 @@
 
 #define GETRESOLUTION CCore::GetInst()->GetResolution()
 #define WINDOWHANDLE CCore::GetInst()->GetWindowHandle()
+#define WINDOWINSTANCE CCore::GetInst()->GetWindowInstance()
 
 #define KEYDOWN(key)	CInput::GetInst()->KeyDown(key)
 #define KEYPRESS(key)	CInput::GetInst()->KeyPress(key)
