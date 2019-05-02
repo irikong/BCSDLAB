@@ -13,7 +13,6 @@ private:
 public:
 	class CScene* GetScene() const { return m_pScene; }
 
-public:
 	bool Init();
 	void Input(float fDeltaTime);
 	SCENE_CHANGE Update(float fDeltaTime);
@@ -21,7 +20,6 @@ public:
 	void Collision(float fDeltaTime);
 	void Render(HDC hDC, float fDeltaTime);
 
-public:
 	template <typename T>
 	T* CreateScene(SCENE_CREATE sc = SC_CURRENT) {
 		T* pScene = new T;

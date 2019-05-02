@@ -5,8 +5,7 @@ class CInGameScene :
 {
 private:
 	friend class CSceneManager;
-	
-private:
+
 	CInGameScene();
 	~CInGameScene();
 

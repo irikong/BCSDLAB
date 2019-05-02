@@ -3,10 +3,7 @@
 
 DEFINITION_SINGLE(CCamera)
 
-CCamera::CCamera() :
-	m_pTarget(NULL)
-{
-}
+CCamera::CCamera() : m_pTarget(NULL) {}
 
 
 CCamera::~CCamera()

@@ -28,6 +28,4 @@ public:
 
 	void SetTileOption(TILE_OPTION eOption);
 	TILE_OPTION GetTileOption()const { return m_eOption; }
-
-
 };

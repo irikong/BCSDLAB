@@ -16,15 +16,12 @@ protected:
 	bool		m_bFalling;
 
 public:
+	float GetAngle() const { return m_fAngle; }
 	void SetAngle(float fAngle) { m_fAngle = fAngle; }
 
+	float GetSpeed() const { return m_fSpeed; }
 	void SetSpeed(float fSpeed) { m_fSpeed = fSpeed; }
 
-	float GetAngle() const { return m_fAngle; }
-
-	float GetSpeed() const { return m_fSpeed; }
-
-public:
 	void SetForce(float fForce) { m_fForceOrigin = fForce; }
 
 	void Move(float x, float y);

@@ -11,7 +11,6 @@ private:
 
 public:
 	virtual bool Init();
-
 	void StartButtonCallback(float fTime);
 	void EndButtonCallback(float fTime);
 	void EditButtonCallback(float fTime);

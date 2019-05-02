@@ -384,7 +384,7 @@ void CObj::LoadFromFullPath(const char * pFullPath)
 {
 	FILE* pFile = NULL;
 
-	fopen_s(&pFile, pFullPath, "wb");
+	fopen_s(&pFile, pFullPath, "rb");
 
 	if (pFile) {
 		Load(pFile);
