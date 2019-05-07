@@ -14,6 +14,8 @@ public class Enemy : MovingObject
     //Start overrides the virtual Start function of the base class.
     protected override void Start()
     {
+        GameManager.instance.AddEnemyToList(this);
+
         //Get and store a reference to the attached Animator component.
         animator = GetComponent<Animator>();
 
@@ -73,10 +75,10 @@ public class Enemy : MovingObject
         //Declare hitPlayer and set it to equal the encountered component.
         Player hitPlayer = component as Player;
 
-        //Call the LoseFood function of hitPlayer passing it playerDamage, the amount of foodpoints to be subtracted.
-        hitPlayer.LoseFood(playerDamage);
-
         //Set the attack trigger of animator to trigger Enemy attack animation.
         animator.SetTrigger("enemyAttack");
+        
+        //Call the LoseFood function of hitPlayer passing it playerDamage, the amount of foodpoints to be subtracted.
+        hitPlayer.LoseFood(playerDamage);
     }
 }
