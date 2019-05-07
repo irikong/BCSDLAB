@@ -5,7 +5,10 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance = null;              //Static instance of GameManager which allows it to be accessed by any other script.
-    private BoardManager boardScript;                       //Store a reference to our BoardManager which will set up the level.
+    public BoardManager boardScript;                        //Store a reference to our BoardManager which will set up the level.
+    public int playerFoodPoints = 100;
+    [HideInInspector] public bool playersTurn = true;        //If it is public, it won't be displayed in editor.
+
     private int level = 3;                                  //Current level number, expressed in game as "Day 1".
 
     //Awake is always called before any Start functions
@@ -40,6 +43,11 @@ public class GameManager : MonoBehaviour
         //Call the SetupScene function of the BoardManager script, pass it current level number.
         boardScript.SetupScene(level);
 
+    }
+
+    public void GameOver()
+    {
+        enabled = false;
     }
 
     //Update is called every frame.
