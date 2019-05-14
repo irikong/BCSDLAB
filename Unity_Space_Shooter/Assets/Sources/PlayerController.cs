@@ -4,12 +4,23 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public GameObject shot;
+    public Transform firePosition;
+
     float speed = 5;
     float tilt = 5;
 
     void Start()
     {
         
+    }
+
+    private void Update()
+    {
+        if (Input.GetButtonDown("Fire1") == true)
+        {
+            Instantiate(shot, firePosition.position, firePosition.rotation);
+        }
     }
 
     void FixedUpdate()
